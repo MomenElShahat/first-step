@@ -1,0 +1,30 @@
+class StorageKeys {
+  static const userDataBox = "userData";
+  static const appDataBox = "appData";
+  static const userDataKey = "userData";
+  static const profileDataKey = "profileData";
+  static const userPhotographerKey = "userPhotographerKey";
+  static const guest = "guest";
+  static const splashImages = "splashImages";
+  static const vatData = "vatData";
+  static const statusData = "statusData";
+  static const buttonsData = "buttonsData";
+  // static const password = "password";
+
+  static const boarding = "boarding";
+  static const showOnBoardKey = "showOnBoard";
+  static const appLanguage = 'appLanguage';
+  static const language = 'language';
+
+  static const String googleMapToken = "AIzaSyC-6NLKfE5w7yelQxuttpeMFlJy7mfos1Y";
+
+  static const String paymentToken =
+      "rLtt6JWvbUHDDhsZnfpAhpYk4dxYDQkbcPTyGaKp2TYqQgG7FGZ5Th_WD53Oq8Ebz6A53njUoo1w3pjU1D4vs_ZMqFiz_j0urb_BH9Oq9VZoKFoJEDAbRZepGcQanImyYrry7Kt6MnMdgfG5jn4HngWoRdKduNNyP4kzcp3mRv7x00ahkm9LAK7ZRieg7k1PDAnBIOG3EyVSJ5kK4WLMvYr7sCwHbHcu4A5WwelxYK0GMJy37bNAarSJDFQsJ2ZvJjvMDmfWwDVFEVe_5tOomfVNt6bOg9mexbGjMrnHBnKnZR1vQbBtQieDlQepzTZMuQrSuKn-t5XZM7V6fCW7oP-uXGX-sMOajeX65JOf6XVpk29DP6ro8WTAflCDANC193yof8-f5_EYY-3hXhJj7RBXmizDpneEQDSaSz5sFk0sV5qPcARJ9zGG73vuGFyenjPPmtDtXtpx35A-BVcOSBYVIWe9kndG3nclfefjKEuZ3m4jL9Gg1h2JBvmXSMYiZtp9MR5I6pvbvylU_PP5xJFSjVTIz7IQSjcVGO41npnwIxRXNRxFOdIUHn0tjQ-7LwvEcTXyPsHXcMD8WtgBh-wxR8aKX7WPSsT1O8d8reb2aR7K3rkV3K82K_0OgawImEpwSvp9MNKynEAJQS6ZHe_J_l77652xwPNxMRTMASk1ZsJL";
+  static const String testPaymentToken =
+      "rLtt6JWvbUHDDhsZnfpAhpYk4dxYDQkbcPTyGaKp2TYqQgG7FGZ5Th_WD53Oq8Ebz6A53njUoo1w3pjU1D4vs_ZMqFiz_j0urb_BH9Oq9VZoKFoJEDAbRZepGcQanImyYrry7Kt6MnMdgfG5jn4HngWoRdKduNNyP4kzcp3mRv7x00ahkm9LAK7ZRieg7k1PDAnBIOG3EyVSJ5kK4WLMvYr7sCwHbHcu4A5WwelxYK0GMJy37bNAarSJDFQsJ2ZvJjvMDmfWwDVFEVe_5tOomfVNt6bOg9mexbGjMrnHBnKnZR1vQbBtQieDlQepzTZMuQrSuKn-t5XZM7V6fCW7oP-uXGX-sMOajeX65JOf6XVpk29DP6ro8WTAflCDANC193yof8-f5_EYY-3hXhJj7RBXmizDpneEQDSaSz5sFk0sV5qPcARJ9zGG73vuGFyenjPPmtDtXtpx35A-BVcOSBYVIWe9kndG3nclfefjKEuZ3m4jL9Gg1h2JBvmXSMYiZtp9MR5I6pvbvylU_PP5xJFSjVTIz7IQSjcVGO41npnwIxRXNRxFOdIUHn0tjQ-7LwvEcTXyPsHXcMD8WtgBh-wxR8aKX7WPSsT1O8d8reb2aR7K3rkV3K82K_0OgawImEpwSvp9MNKynEAJQS6ZHe_J_l77652xwPNxMRTMASk1ZsJL";
+
+  // static const String paymentToken = "2gITFqhqzffOzQdED40JqjN0Incul2zQp-ldlCmL13uuxiztRXEFUIn9RWrvl_eWrQziBZ_OM7ZE33WA8LGB_ViXjfJWQWE9RNGm5Xc8jdY3GeBHYZfHmiQjs_K47JtYVV_whHouStT3E6IeImoJNQ8wnmCFRqTq_y73qqBkn8ZrJqfRmzgFSAaEeqGhJYfenATEWyX3hX-YOCaMQeTVrsa1LeMJ76qsNXeiVuWe_hLq1WfTR8BL1p_jfwdkIs6uKhsSmlIIThbE8gTi1cFyxnaipXHZyK5hKk_8zTOoJf-jum5ZwT174qK-dC0ihlJM66n8FfRM0YczTxmL3UXZf2DLV1twiTGvtHyIy-SOZBCLgYShaiWkdE4JTwA73gwgpHdm03q2HhwxNhla3ns8wgQ_pai2vjidVv7xSg7cF1_EPJEdob1AZ5lz3QZlDPP3SJcQ3iDQ__QJl_S18sIHMZdxKeUPsxOp-nPggT9kYBGJgpQTjmzT805HXpmvuXCdeKCxWPZZyA97uoQ22juaWT1yvIuZdv6gJeSVRLgrIVJGRdYnejNa_KhZe2vcx4P67SW1GADHMZnHRBvcD-6BifJ9VQtCrylXe2xYto3bleK5uvDjtYVr-jKMUTxZucFp7ygnYCIxBHTcnYx7PrFfS0ic1dcVe4wOZ2XUzj2s2uujQ5XsRL4WT_QzMFoztXB26cFuHw";
+
+  static const String pushNotificationToken =
+      "AAAAorWKsD0:APA91bFrRTukfHU5YW8hdsZfzZ1b0PIpG2ZeHGA7X6SLde_D0glshqa32Pgx2CsEzn7FXBxmlRPY8nN9FLUDj0Zk7iYGFA81DJdWFckij1QkawAnkVMeoCw1ZhAQw3jmTOys9chNQy68";
+}

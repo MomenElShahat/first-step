@@ -1,0 +1,9 @@
+<resources>
+    <string name="facebook_app_id">752917770333768</string>
+    <string name="fb_login_protocol_scheme">fb752917770333768</string>
+    <string name="facebook_client_token">64b299785c1d48be66de9cc251260fa2</string>
+    <string name="app_name">firststep</string>
+
+</resources>
+
+

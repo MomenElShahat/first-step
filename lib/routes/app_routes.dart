@@ -1,0 +1,46 @@
+part of 'app_pages.dart';
+
+abstract class Routes {
+  static const SPLASH = '/splash';
+  static const TYPESELECTIONSCREEN = '/typeSelectionScreen';
+  static const ONBOARDING = '/onboarding';
+  static const SIGNUP = '/signup';
+  static const SIGNUP_PARENT = '/signupParent';
+  static const ADD_CHILD = '/addChild';
+  static const LOGIN = '/LoginScreen';
+  static const VERIFY_EMAIL = '/VerifyEmailScreen';
+  static const OTP = '/OtpScreen';
+  static const RESET_PASSWORD = '/ResetPasswordScreen';
+  static const BOTTOM_NAVIGATION = '/BottomNavigationWidget';
+  static const SEARCH_PARENT = '/searchParentScreen';
+  static const SEARCH_CENTER = '/searchCenterScreen';
+  static const CENTER_DETAILS_PARENT = '/centerDetailsParentScreen';
+  static const PARENT_DETAILS = '/parentDetails';
+  static const CHILD_DETAILS_SCREEN = '/childDetailsScreen';
+  static const BRANCH_DETAILS_SCREEN = '/branchDetailsScreen';
+  static const ADD_MEMBER_SCREEN = '/addMemberScreen';
+  static const EDIT_MEMBER_SCREEN = '/editMemberScreen';
+  static const CHAT_DETAILS_SCREEN = '/chatDetailsScreen';
+  static const BRANCH_EDIT_SCREEN = '/branchEditScreen';
+  static const EDIT_CHILD_DETAILS_SCREEN = '/editChildDetailsScreen';
+  static const ADD_CHILD_PARENT_SCREEN = '/addChildParentScreen';
+  static const TERMS = '/terms';
+  static const CONTROL_PANEL_SCREEN = '/controlPanelScreen';
+  static const BOOKING_SCREEN = '/bookingScreen';
+  static const BLOG_DETAILS_SCREEN = '/blogDetailsScreen';
+  static const DAILY_REPORT_DETAILS_SCREEN = '/dailyReportDetailsScreen';
+  static const CHOOSE_PARENTS_SCREEN = '/chooseParentsScreen';
+  static const SEND_DAILY_REPORT_SCREEN = '/sendDailyReportScreen';
+  static const FAQ_SCREEN = '/faqScreen';
+  static const PARENT_RESERVATIONS_SCREEN = '/parentReservationsScreen';
+  static const BOOKING_DETAILS_SCREEN = '/bookingDetailsScreen';
+  static const CHILD_RESERVATIONS_SCREEN = '/childReservationsScreen';
+  static const PARENT_PAYMENT_SCREEN = '/parentPaymentScreen';
+  static const CENTER_FREE_TRAIL_SCREEN = '/centerFreeTrailScreen';
+  static const PRIVACY = '/privacy';
+  static const BRANCH_ADD_SCREEN = '/branchAddScreen';
+  static const PAYMENT_SUCCESS_SCREEN = '/paymentSuccessScreen';
+  static const EDIT_PROFILE_SCREEN = '/editProfileScreen';
+  static const EDIT_PROFILE_PARENT_SCREEN = '/editProfileParentScreen';
+  static const BILLING_HISTORY_SCREEN = '/billingHistoryScreen';
+}

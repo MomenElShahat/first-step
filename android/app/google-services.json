@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "920460640742",
+    "project_id": "first-step-60186",
+    "storage_bucket": "first-step-60186.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:920460640742:android:7eafb881925d1305fad627",
+        "android_client_info": {
+          "package_name": "com.qader.firststep"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "920460640742-564eecrrr5bgdet43rgthi2o458701ei.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.qader.firststep",
+            "certificate_hash": "3f85be3721de2b4404656d8abdf8961ca15c7c37"
+          }
+        },
+        {
+          "client_id": "920460640742-gqmk2b4rgedj899vshcc1kn29or4l8jt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.qader.firststep",
+            "certificate_hash": "9279276ff779eecbc1bf4ddba8f3ca0f253a8836"
+          }
+        },
+        {
+          "client_id": "920460640742-0p9lho9e9upsaf83fb11r8c4padt8gfc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeuW6PYXUa-cfaOrM_0uRpMfXglZfEGUA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "920460640742-0p9lho9e9upsaf83fb11r8c4padt8gfc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

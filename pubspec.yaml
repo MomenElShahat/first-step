@@ -1,0 +1,105 @@
+dependencies:
+  cached_network_image: ^3.3.1
+  connectivity_plus: ^6.0.3
+  cupertino_icons: ^1.0.8
+  flutter_switch: ^0.3.2
+  dropdown_button2: ^2.3.9
+  dropdown_search: ^6.0.2
+  flutter:
+    sdk: flutter
+  flutter_rating_bar: ^4.0.1
+  flutter_screenutil: ^5.9.3
+  flutter_spinkit: ^5.2.1
+  flutter_svg: ^2.0.10+1
+  flutter_staggered_grid_view:
+  get: ^4.6.6
+  google_maps_flutter: ^2.1.3
+  fluttertoast: ^8.2.8
+  get_storage: ^2.1.1
+  mime: ^2.0.0
+  persistent_bottom_nav_bar: ^6.2.1
+  shared_preferences: ^2.2.3
+  shimmer: ^3.0.0
+  validators: ^3.0.0
+  cloud_firestore: ^6.0.0
+  firebase_core: ^4.0.0
+  intl: ^0.20.2
+  flutter_searchable_dropdown: ^2.0.0
+  geocoding: ^4.0.0
+  flutter_map: ^8.2.1
+  permission_handler: ^12.0.1
+  geolocator: ^14.0.2
+  flutter_map_location_marker: ^10.1.0
+  dio: ^5.4.3+1
+  google_places_flutter: ^2.0.8
+  image_picker: ^1.1.2
+  url_launcher: ^6.3.0
+  awesome_dialog: ^3.2.1
+  flutter_verification_code: ^1.1.7
+  pin_code_fields: ^8.0.1
+  device_preview: ^1.2.0
+  onboarding: ^4.0.2
+  country_code_picker: ^3.0.0
+  sign_in_with_apple: ^7.0.1
+  the_apple_sign_in: ^1.1.1
+  flutter_floating_bottom_bar: ^1.2.0
+  firebase_auth: ^6.0.1
+  google_sign_in: ^7.1.1
+  firebase_messaging: ^16.0.0
+  flutter_local_notifications: ^19.4.0
+  # flutter_login_facebook: ^2.0.1
+  carousel_slider: ^5.1.1
+  font_awesome_flutter: ^10.7.0
+  equatable: ^2.0.5
+  #  my_fatoorah: ^3.3.0
+  moyasar: ^2.0.13
+  searchfield: ^1.0.5
+  readmore: ^3.0.0
+  time_picker_spinner: ^1.0.0
+  photo_view: ^0.15.0
+  timeago: ^3.7.0
+  youtube_player_flutter: ^9.1.2
+  super_tooltip: ^2.0.9
+  flutter_html: ^3.0.0-beta.2
+  dotted_border: ^3.1.0
+  # image_gallery_saver:
+  share_plus:
+  path_provider:
+  file_picker: ^10.3.2
+  open_file:
+  image:
+  collection:
+  #  video_compress:
+  #  ffmpeg_kit_flutter:
+  video_player:
+  video_thumbnail:
+  google_fonts: ^6.2.1
+  fl_chart:
+  flutter_widget_from_html: ^0.17.0
+  table_calendar:
+  month_year_picker: ^0.5.0+1
+  app_links: ^6.4.0
+  pusher_channels_flutter:
+  flutter_image_compress: ^2.4.0
+
+description: A new Flutter project.
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_localizations:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
+environment:
+  sdk: '>=3.6.0 <4.0.0'
+flutter:
+  assets:
+    - assets/images/
+    - assets/
+    - assets/svg_icons/
+    - assets/docs/faqs_content.docx
+    - assets/docs/faqs_content.html
+
+  uses-material-design: true
+name: first_step
+publish_to: none
+version: 1.0.0
