@@ -60,10 +60,10 @@ class Assets {
   static const String imagesUk = 'assets/images/uk.png';
   static const String imagesVideo = 'assets/images/video.png';
   static const String imagesWaitSticker = 'assets/images/wait_sticker.png';
-  static const String imagesWarningIcon = 'assets/images/warning_icon.png';
   static const String imagesWeb = 'assets/images/web.png';
   static const String imagesWebCenter = 'assets/images/web_center.png';
   static const String imagesWeekly = 'assets/images/weekly.png';
+  static const String warningIcon = 'assets/images/warning_icon.png';
   static const String imagesWoman = 'assets/images/woman.png';
   static const String svgIconsAddBoxFill = 'assets/svg_icons/add_box_fill.svg';
   static const String svgIconsAddBoxLine = 'assets/svg_icons/add_box_line.svg';
@@ -293,6 +293,7 @@ class Assets {
   static const String svgIconsUserFill = 'assets/svg_icons/user_fill.svg';
   static const String svgIconsUserLine = 'assets/svg_icons/user_line.svg';
   static const String svgIconsWarningFill = 'assets/svg_icons/warning_fill.svg';
+  static const String svgIconsWarningIcon = 'assets/svg_icons/warning_icon.svg';
   static const String svgIconsWarningLine = 'assets/svg_icons/warning_line.svg';
   static const String svgIconsWeb = 'assets/svg_icons/web.svg';
   static const String svgIconsWeekly = 'assets/svg_icons/weekly.svg';

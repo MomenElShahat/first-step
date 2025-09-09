@@ -234,6 +234,7 @@ class AppSVGAssets {
   static const iconBase = "assets/svg_icons/icon_base.svg";
   static const checkMark = "assets/svg_icons/check_mark.svg";
   static const billingControl = "assets/svg_icons/billing_control.svg";
+  // static const warningIcon = "assets/svg_icons/warning_icon.svg";
 
   static SvgPicture getWidget(String assetName, {BoxFit fit = BoxFit.none, Color? color, double? width, double? height}) {
     if (width != null && height != null) {

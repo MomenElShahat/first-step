@@ -45,6 +45,13 @@
             {
               "client_id": "920460640742-0p9lho9e9upsaf83fb11r8c4padt8gfc.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "920460640742-3fn3pmkmedv927c57blhsuh8qp0k2fsl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.v1.cami"
+              }
             }
           ]
         }

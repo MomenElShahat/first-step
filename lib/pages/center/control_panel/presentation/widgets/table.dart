@@ -6,15 +6,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../../widgets/custom_text.dart';
 import '../../models/branch_model.dart';
-import '../../models/statistics_model.dart';
 
 class ArabicTableExample extends StatelessWidget {
-  final List<BranchesOrderingDependingOnTheNumberOfEnrollments> data;
+  final List<BranchModel> data;
 
   const ArabicTableExample({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
+    // Sort the data list by enrollmentsCount ascending
+    final sortedData = [...data]..sort((a, b) {
+        return (a.enrollmentsCount ?? 0).compareTo(b.enrollmentsCount ?? 0);
+      });
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       physics: const NeverScrollableScrollPhysics(),
@@ -41,32 +45,32 @@ class ArabicTableExample extends StatelessWidget {
               textStyle: TextStyles.body16Medium.copyWith(color: Colors.white, fontSize: 12.sp),
             ),
           ),
-          DataColumn(
-            label: CustomText(
-              AppStrings.revenue,
-              textStyle: TextStyles.body16Medium.copyWith(color: Colors.white, fontSize: 12.sp),
-            ),
-          ),
+          // DataColumn(
+          //   label: CustomText(
+          //     AppStrings.revenue,
+          //     textStyle: TextStyles.body16Medium.copyWith(color: Colors.white, fontSize: 12.sp),
+          //   ),
+          // ),
         ],
-        rows: List.generate(data.length, (index) {
-          final item = data[index];
+        rows: List.generate(sortedData.length, (index) {
+          final item = sortedData[index];
           return DataRow(cells: [
             DataCell(CustomText(
               (index + 1).toString(), // rank
               textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.neutral500),
             )),
             DataCell(CustomText(
-              item.nurseryName ?? '',
+              item.name ?? '',
               textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.neutral500, fontSize: 12.sp),
             )),
             DataCell(CustomText(
-              (item.enrollmentCount ?? 0).toString(),
+              (item.enrollmentsCount ?? 0).toString(),
               textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.neutral500, fontSize: 12.sp),
             )),
-            DataCell(CustomText(
-              '${item.totalRevenue} ${AppStrings.sar}', // fixed revenue for now
-              textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.neutral500, fontSize: 12.sp),
-            )),
+            // DataCell(CustomText(
+            //   '0 ${AppStrings.sar}', // fixed revenue for now
+            //   textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.neutral500, fontSize: 12.sp),
+            // )),
           ]);
         }),
       ),

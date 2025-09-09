@@ -147,7 +147,8 @@ class PlanCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Gaps.vGap16,
-                        const Image(image: AppAssets.warningIcon),
+                        // AppSVGAssets.getWidget(AppSVGAssets.warningIcon),
+                        const Image(image: AppAssets.warningIcon,),
                         Gaps.vGap16,
                         CustomText(
                           AppStrings.yourCurrentSubscriptionIsValid,
@@ -156,11 +157,9 @@ class PlanCard extends StatelessWidget {
                         ),
                         Gaps.vGap8,
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             CustomText(
-                              "${AppStrings
-                                  .thisActionWillCancelIt} ",
+                              AppStrings.thisActionWillCancelIt,
                               textStyle: TextStyles.title24Bold.copyWith(
                                   color: ColorCode.danger600, fontSize: 20.sp),
                             ),
@@ -185,7 +184,8 @@ class PlanCard extends StatelessWidget {
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 10.5),
                                     margin:
-                                        const EdgeInsetsDirectional.only(start: 50),
+                                        const EdgeInsetsDirectional.symmetric(
+                                            horizontal: 30),
                                     decoration: BoxDecoration(
                                       gradient: const LinearGradient(
                                         begin: Alignment(-1.0, -1.0),
@@ -212,7 +212,6 @@ class PlanCard extends StatelessWidget {
                                     )),
                                   )),
                             ),
-                            Gaps.hGap16,
                             Expanded(
                               child: InkWell(
                                 onTap: () {
@@ -222,7 +221,8 @@ class PlanCard extends StatelessWidget {
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
                                       vertical: 10.5),
-                                  margin: const EdgeInsetsDirectional.only(end: 50),
+                                  margin: const EdgeInsetsDirectional.symmetric(
+                                      horizontal: 30),
                                   decoration: BoxDecoration(
                                     color: ColorCode.white,
                                     border:

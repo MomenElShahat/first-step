@@ -268,9 +268,7 @@ class DashboardHome extends GetView<ControlPanelController> {
                 Gaps.vGap16,
                 Center(
                   child: ArabicTableExample(
-                    data: controller.statisticsModel
-                            ?.branchesOrderingDependingOnTheNumberOfEnrollments ??
-                        [],
+                    data: controller.branches ?? [],
                   ),
                 ),
                 Gaps.vGap40,
@@ -294,8 +292,8 @@ class DashboardHome extends GetView<ControlPanelController> {
   }
 }
 
-Widget buildEnrollmentsList(Map<String, dynamic> enrollmentsOverTime,
-    ControlPanelController controller) {
+Widget buildEnrollmentsList(
+    Map<String, dynamic> enrollmentsOverTime, ControlPanelController controller) {
   final sortedKeys = enrollmentsOverTime.keys.toList()..sort();
 
   final lastThreeKeys = sortedKeys.length > 3

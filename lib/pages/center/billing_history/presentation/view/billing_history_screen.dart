@@ -9,7 +9,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 
 import '../../../../../consts/colors.dart';
-import '../../../../../resources/assets_generated.dart';
+import '../../../../../resources/assets_generated.dart' show AppAssets;
 import '../../../../../resources/assets_svg_generated.dart';
 import '../../../../../resources/strings_generated.dart';
 import '../../../../../services/auth_service.dart';
@@ -324,7 +324,10 @@ class BillingHistoryScreen extends GetView<BillingHistoryController> {
                                                               .center,
                                                       children: [
                                                         Gaps.vGap16,
-                                                        const Image(image: AppAssets.warningIcon),
+                                                        // AppSVGAssets.getWidget(
+                                                        //     AppSVGAssets
+                                                        //         .warningIcon),
+                                                        const Image(image: AppAssets.warningIcon,),
                                                         Gaps.vGap16,
                                                         CustomText(
                                                           AppStrings
@@ -339,8 +342,8 @@ class BillingHistoryScreen extends GetView<BillingHistoryController> {
                                                         Row(
                                                           children: [
                                                             CustomText(
-                                                              "${AppStrings
-                                                                  .thisActionWillCancelIt} ",
+                                                              AppStrings
+                                                                  .thisActionWillCancelIt,
                                                               textStyle: TextStyles
                                                                   .title24Bold
                                                                   .copyWith(

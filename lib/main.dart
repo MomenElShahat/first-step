@@ -22,6 +22,7 @@ import 'config/ConfigReader.dart';
 import 'consts/colors.dart';
 import 'consts/storage.dart';
 import 'consts/themes.dart';
+import 'firebase_options.dart' show DefaultFirebaseOptions;
 import 'lang/translation_service.dart';
 import 'package:app_links/app_links.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -46,11 +47,13 @@ void main() async {
         ColorCode.primary600, // Change this to whatever color you want
   ));
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await Get.putAsync(() => PusherService().init());
   await GetStorage.init(StorageKeys.boarding);
   await GetStorage.init(StorageKeys.splashImages);
   await ConfigReader.initialize();
-  await Firebase.initializeApp();
   // GlobalNotification().setupNotification();
   final authService = Get.put(AuthService(), permanent: true);
   await authService.onInit();
