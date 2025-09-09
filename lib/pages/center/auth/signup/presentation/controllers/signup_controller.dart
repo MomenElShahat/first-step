@@ -182,7 +182,7 @@ class SignupController extends SuperController<dynamic> {
   }
 
   Future<File?> pickFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.image);
 
     if (result != null) {
       return File(result.files.single.path!);

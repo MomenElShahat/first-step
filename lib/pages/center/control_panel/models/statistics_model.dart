@@ -237,18 +237,21 @@ class TotalRevenueForTheLates5Months {
 
 class BranchesOrderingDependingOnTheNumberOfEnrollments {
   String? nurseryName;
+  String? totalRevenue;
   int? enrollmentCount;
 
-  BranchesOrderingDependingOnTheNumberOfEnrollments({this.nurseryName, this.enrollmentCount});
+  BranchesOrderingDependingOnTheNumberOfEnrollments({this.nurseryName, this.enrollmentCount,this.totalRevenue});
 
   BranchesOrderingDependingOnTheNumberOfEnrollments.fromJson(Map<String, dynamic> json) {
     nurseryName = json['nursery_name'];
+    totalRevenue = json['total_revenue'];
     enrollmentCount = json['enrollment_count'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['nursery_name'] = this.nurseryName;
+    data['total_revenue'] = this.totalRevenue;
     data['enrollment_count'] = this.enrollmentCount;
     return data;
   }

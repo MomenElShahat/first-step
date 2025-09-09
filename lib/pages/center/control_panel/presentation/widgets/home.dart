@@ -268,7 +268,9 @@ class DashboardHome extends GetView<ControlPanelController> {
                 Gaps.vGap16,
                 Center(
                   child: ArabicTableExample(
-                    data: controller.branches ?? [],
+                    data: controller.statisticsModel
+                        ?.branchesOrderingDependingOnTheNumberOfEnrollments ??
+                        [],
                   ),
                 ),
                 Gaps.vGap40,
