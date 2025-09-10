@@ -1,4 +1,6 @@
 // ignore: one_member_abstracts
+import 'dart:developer';
+
 import 'package:get/get_connect/http/src/response/response.dart';
 
 import '../../../../base/api_end_points.dart';
@@ -24,9 +26,8 @@ class LoginProvider extends BaseAuthProvider implements ILoginProvider {
   }
 
   @override
-  Future<Response<LoginResponseModel>> loginWithGoogle(
-      {required String token}) {
-    print("google token $token");
+  Future<Response<LoginResponseModel>> loginWithGoogle({required String token}) {
+    log("google token $token");
     return post<LoginResponseModel>(
       EndPoints.loginWithGoogle,
       {"token": token},

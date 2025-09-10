@@ -55,14 +55,14 @@ class LoginController extends SuperController<dynamic> {
     isLoggingIn.value = true;
 
     try {
-      final GoogleSignIn googleSignIn = GoogleSignIn.instance;
-      await googleSignIn.initialize();
+      // Initialize Google Sign-In with scopes
+      final GoogleSignIn googleSignIn = GoogleSignIn();
 
       // Always sign out to force account selection
       await googleSignIn.signOut();
 
-      // Step 1: Trigger the Google Sign-In flow (v7 uses authenticate)
-      final GoogleSignInAccount? googleUser = await googleSignIn.authenticate();
+      // Step 1: Trigger the Google Sign-In flow
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
 
       if (googleUser == null) {
         customSnackBar("Google Sign-In was cancelled", ColorCode.danger600);
@@ -70,28 +70,31 @@ class LoginController extends SuperController<dynamic> {
       }
 
       // Step 2: Get authentication details
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
 
-      // Step 3: Create credentials
+      final accessToken = googleAuth.accessToken;
+      final idToken = googleAuth.idToken;
+
+      if (accessToken == null) {
+        customSnackBar("Failed to retrieve accessToken", ColorCode.danger600);
+        return;
+      }
+
+      // Step 3: Firebase sign-in (optional, only if you still need Firebase auth locally)
       final AuthCredential credential = GoogleAuthProvider.credential(
-        idToken: googleAuth.idToken,
+        accessToken: accessToken,
+        idToken: idToken,
       );
 
-      // Step 4: Firebase sign-in
-      final UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithCredential(credential);
+      final UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
       final firebaseUser = userCredential.user;
 
       if (firebaseUser != null) {
-        final idToken = await firebaseUser.getIdToken();
+        print("googleAuth.accessToken: $accessToken");
+        print("googleAuth.idToken: $idToken");
 
-        print("googleAuth.idToken ${googleAuth.idToken}");
-        print("idToken ${idToken}");
-
-        // Prefer idToken for backend verification
-        final response = await loginRepository.loginWithGoogle(
-            token: idToken ?? googleAuth.idToken ?? "");
+        // Send accessToken to backend instead of serverAuthCode
+        final response = await loginRepository.loginWithGoogle(token: accessToken);
 
         if (response.body?.user != null) {
           AuthService.to.isGuest = false;
@@ -99,12 +102,10 @@ class LoginController extends SuperController<dynamic> {
         } else {
           await FirebaseAuth.instance.signOut();
           await googleSignIn.signOut();
-          customSnackBar(
-              response.body?.message ?? "Login failed", ColorCode.danger600);
+          customSnackBar(response.body?.message ?? "Login failed", ColorCode.danger600);
         }
       } else {
-        customSnackBar("Google Sign-In failed: Firebase user is null",
-            ColorCode.danger600);
+        customSnackBar("Google Sign-In failed: Firebase user is null", ColorCode.danger600);
       }
     } catch (e) {
       print("errorerror $e");
@@ -113,7 +114,6 @@ class LoginController extends SuperController<dynamic> {
       isLoggingIn.value = false;
     }
   }
-
 
   @override
   void onInit() async {
