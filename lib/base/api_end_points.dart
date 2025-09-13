@@ -1,6 +1,6 @@
 class EndPoints {
   // static const String baseURl = "https://back.firststep-app.com/api/";
-  static const String baseURl = "https://development.firststep-app.com/api/";
+  static const String baseURl = "https://back.firststep-app.com/api/";
   static const String login = "login";
   static const String registerCenter = "register-center";
   static const String registerParent = "register-parent";

@@ -40,7 +40,6 @@ dependencies:
   device_preview: ^1.2.0
   onboarding: ^4.0.2
   country_code_picker: ^3.0.0
-  sign_in_with_apple: ^7.0.1
   the_apple_sign_in: ^1.1.1
   flutter_floating_bottom_bar: ^1.2.0
   firebase_auth: ^6.0.1
