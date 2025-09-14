@@ -180,22 +180,6 @@ class ProfileParentScreen extends GetView<ProfileParentController> {
                             ),
                             Gaps.vGap8,
                             InkWell(
-                              onTap: () {
-                                // String appLink = '';
-                                // if (Platform.isAndroid) {
-                                //   appLink = AuthService.to.googlePlayAppLink;
-                                // } else if (Platform.isIOS) {
-                                //   appLink = AuthService.to.appStoreAppLink;
-                                // }
-                                // Share.share(appLink);
-                              },
-                              child: ProfileRow(
-                                title: AppStrings.shareApp,
-                                icon: AppSVGAssets.share,
-                              ),
-                            ),
-                            Gaps.vGap8,
-                            InkWell(
                               onTap: () async {
                                 await AuthService.to.logout();
                               },
