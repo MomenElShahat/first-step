@@ -50,11 +50,12 @@ class AddChildScreen extends GetView<AddChildController> {
                         children: [
                           AppSVGAssets.getWidget(AppSVGAssets.firstStep),
                           PositionedDirectional(
-                            bottom: -12,
+                            bottom: -20,
+                            start: -10,
                             child: CustomText(
                               AppStrings.yourChildData,
                               textStyle: TextStyles.button12.copyWith(
-                                  fontSize: 8.sp, color: ColorCode.primary600),
+                                  fontSize: 4.sp, color: ColorCode.primary600),
                             ),
                           ),
                         ],
@@ -71,12 +72,12 @@ class AddChildScreen extends GetView<AddChildController> {
                               ? AppSVGAssets.secondStepFill
                               : AppSVGAssets.secondStep),
                           PositionedDirectional(
-                            bottom: -22,
-                            start: -6,
+                            bottom: -30,
+                            start: -17,
                             child: CustomText(
                                         AppStrings.chronicDiseasesAndAllergies,
                                         textStyle: TextStyles.button12.copyWith(
-                                            fontSize: 8.sp,
+                                            fontSize: 4.sp,
                                             color: controller.index.value >= 2
                                                 ? ColorCode.primary600
                                                 : ColorCode.black),
@@ -96,12 +97,12 @@ class AddChildScreen extends GetView<AddChildController> {
                               ? AppSVGAssets.thirdStepFill
                               : AppSVGAssets.thirdStep),
                           PositionedDirectional(
-                            bottom: -22,
-                            start: -6,
+                            bottom: -30,
+                            start: -10,
                             child: CustomText(
                                         AppStrings.recommendationsForChildren,
                                         textStyle: TextStyles.button12.copyWith(
-                                            fontSize: 8.sp,
+                                            fontSize: 4.sp,
                                             color: controller.index.value >= 3
                                                 ? ColorCode.primary600
                                                 : ColorCode.black),
@@ -121,13 +122,13 @@ class AddChildScreen extends GetView<AddChildController> {
                               ? AppSVGAssets.fourthStepFill
                               : AppSVGAssets.fourthStep),
                           PositionedDirectional(
-                            bottom: -32,
-                            start: -12,
+                            bottom: -45,
+                            start: -5,
                             child: CustomText(
                                         AppStrings.personsAuthorizedToSendOrReceiveChildren,
                                         maxLines: 3,
                                         textStyle: TextStyles.button12.copyWith(
-                                            fontSize: 8.sp,
+                                            fontSize: 4.sp,
                                             color: controller.index.value == 4
                                                 ? ColorCode.primary600
                                                 : ColorCode.black),
@@ -138,52 +139,6 @@ class AddChildScreen extends GetView<AddChildController> {
                     ],
                   ),
                   Gaps.vGap20,
-                  // Padding(
-                  //   padding: const EdgeInsets.symmetric(horizontal: 40),
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //     children: [
-                  //       Expanded(
-                  //         child: CustomText(
-                  //           AppStrings.yourChildData,
-                  //           textStyle: TextStyles.button12.copyWith(
-                  //               fontSize: 8.sp, color: ColorCode.primary600),
-                  //         ),
-                  //       ),
-                  //       Expanded(
-                  //         child: CustomText(
-                  //           AppStrings.chronicDiseasesAndAllergies,
-                  //           textStyle: TextStyles.button12.copyWith(
-                  //               fontSize: 8.sp,
-                  //               color: controller.index.value >= 2
-                  //                   ? ColorCode.primary600
-                  //                   : ColorCode.black),
-                  //         ),
-                  //       ),
-                  //       Expanded(
-                  //         child: CustomText(
-                  //           AppStrings.recommendationsForChildren,
-                  //           textStyle: TextStyles.button12.copyWith(
-                  //               fontSize: 8.sp,
-                  //               color: controller.index.value >= 3
-                  //                   ? ColorCode.primary600
-                  //                   : ColorCode.black),
-                  //         ),
-                  //       ),
-                  //       Expanded(
-                  //         child: CustomText(
-                  //           AppStrings.personsAuthorizedToSendOrReceiveChildren,
-                  //           maxLines: 3,
-                  //           textStyle: TextStyles.button12.copyWith(
-                  //               fontSize: 8.sp,
-                  //               color: controller.index.value == 4
-                  //                   ? ColorCode.primary600
-                  //                   : ColorCode.black),
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // )
                 ],
               );
             }),
