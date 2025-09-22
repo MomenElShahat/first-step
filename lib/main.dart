@@ -22,13 +22,12 @@ import 'config/ConfigReader.dart';
 import 'consts/colors.dart';
 import 'consts/storage.dart';
 import 'consts/themes.dart';
-import 'firebase_options.dart' show DefaultFirebaseOptions;
 import 'lang/translation_service.dart';
 import 'package:app_links/app_links.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class NativeBridge {
-  static const _channel = MethodChannel('com.qader.firststep/native');
+  static const _channel = MethodChannel('com.firststep.firststepapp/native');
 
   static Future<void> sendTokenToNative(String token) async {
     try {
@@ -43,13 +42,10 @@ void main() async {
   await GetStorage.init('userData');
   await GetStorage.init('appLanguage');
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor:
-        ColorCode.primary600, // Change this to whatever color you want
+    statusBarColor: ColorCode.primary600, // Change this to whatever color you want
   ));
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp();
   await Get.putAsync(() => PusherService().init());
   await GetStorage.init(StorageKeys.boarding);
   await GetStorage.init(StorageKeys.splashImages);
@@ -72,8 +68,7 @@ void main() async {
   timeago.setLocaleMessages('ar', timeago.ArMessages());
   timeago.setLocaleMessages('ar_short', timeago.ArShortMessages());
 
-  SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   runApp(const MyApp());
 }
 
@@ -123,8 +118,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     initConnectivity();
     initDeepLinks();
-    _connectivitySubscription =
-        _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
+    _connectivitySubscription = _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
     super.initState();
   }
 
@@ -186,9 +180,7 @@ class _MyAppState extends State<MyApp> {
             //   return SplashView();
             // }),
             initialRoute: Routes.SPLASH,
-            locale: Locale(AuthService.to.language != null
-                ? AuthService.to.language ?? "en"
-                : 'ar'),
+            locale: Locale(AuthService.to.language != null ? AuthService.to.language ?? "en" : 'ar'),
             fallbackLocale: TranslationService.fallbackLocale,
             supportedLocales: const [Locale('en'), Locale('ar')],
             translations: TranslationService(),

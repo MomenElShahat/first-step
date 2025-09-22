@@ -7,26 +7,26 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:920460640742:android:7eafb881925d1305fad627",
+        "mobilesdk_app_id": "1:920460640742:android:f416ce3d81059b03fad627",
         "android_client_info": {
-          "package_name": "com.qader.firststep"
+          "package_name": "com.firststep.firststepapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "920460640742-564eecrrr5bgdet43rgthi2o458701ei.apps.googleusercontent.com",
+          "client_id": "920460640742-4t0hs601msl6bnmjb08fvk6c9ouh01uq.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.qader.firststep",
+            "package_name": "com.firststep.firststepapp",
             "certificate_hash": "3f85be3721de2b4404656d8abdf8961ca15c7c37"
           }
         },
         {
-          "client_id": "920460640742-gqmk2b4rgedj899vshcc1kn29or4l8jt.apps.googleusercontent.com",
+          "client_id": "920460640742-im743v0ra646pi0nvshe7k1vbks08llk.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.qader.firststep",
-            "certificate_hash": "9279276ff779eecbc1bf4ddba8f3ca0f253a8836"
+            "package_name": "com.firststep.firststepapp",
+            "certificate_hash": "d184b2563fe5da6e2dc2799d6f5f71a05596fb9a"
           }
         },
         {

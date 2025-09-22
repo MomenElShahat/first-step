@@ -111,4 +111,4 @@ flutter:
   uses-material-design: true
 name: first_step
 publish_to: none
-version: 1.0.4+4
+version: 1.0.0

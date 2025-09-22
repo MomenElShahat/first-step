@@ -8,7 +8,9 @@ import '../pages/auth/login/models/user_model.dart';
 import '../pages/center/auth/signup/models/signup_response_model.dart';
 import '../pages/lifecycle/presentation/controller/lifecycle_controller.dart';
 import '../routes/app_pages.dart';
+
 int? userId = 0;
+
 class AuthService extends GetxService {
   static AuthService get to => Get.find();
   GetStorage box = GetStorage(StorageKeys.userDataBox);
@@ -39,7 +41,7 @@ class AuthService extends GetxService {
   String? nameEn;
   Color? plus;
   Color? minus;
-  String googlePlayAppLink = 'https://play.google.com/store/apps/details?id=com.qader.firststep';
+  String googlePlayAppLink = 'https://play.google.com/store/apps/details?id=com.firststep.firststepapp';
   String appStoreAppLink = 'https://play.google.com/store/apps/details?id=com.example.myapp';
   String? startOfSubscription;
   String? endOfSubscription;
@@ -52,7 +54,6 @@ class AuthService extends GetxService {
   bool? isUser;
   bool isGuest = false;
   // String? password;
-
 
   @override
   Future<void> onInit() async {
@@ -118,7 +119,7 @@ class AuthService extends GetxService {
     Get.offAllNamed(Routes.LOGIN);
   }
 
-  Future<void> logoutSignupCenter() async{
+  Future<void> logoutSignupCenter() async {
     final controller = Get.find<LifecycleController>();
     await controller.goOffline();
     isLoggedIn.value = false;
@@ -129,7 +130,7 @@ class AuthService extends GetxService {
     Get.offAllNamed(Routes.SIGNUP);
   }
 
-  Future<void> logoutSignupParent() async{
+  Future<void> logoutSignupParent() async {
     final controller = Get.find<LifecycleController>();
     await controller.goOffline();
     isLoggedIn.value = false;
@@ -138,7 +139,6 @@ class AuthService extends GetxService {
     box.remove(StorageKeys.userDataKey);
     // box.remove(StorageKeys.password);
     Get.offAllNamed(Routes.SIGNUP_PARENT);
-
   }
 
   void selectLanguage(lan) {
