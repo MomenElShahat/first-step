@@ -13,6 +13,7 @@ import '../widgets/step1.dart';
 import '../widgets/step2.dart';
 import '../widgets/step3.dart';
 import '../widgets/step4.dart';
+import '../widgets/step_widget_parent.dart';
 
 class AddChildScreen extends GetView<AddChildController> {
   const AddChildScreen({super.key});
@@ -39,108 +40,7 @@ class AddChildScreen extends GetView<AddChildController> {
             ),
             Gaps.vGap20,
             Obx(() {
-              return Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Stack(
-                        fit: StackFit.passthrough,
-                        clipBehavior: Clip.none,
-                        children: [
-                          AppSVGAssets.getWidget(AppSVGAssets.firstStep),
-                          PositionedDirectional(
-                            bottom: -20,
-                            start: -10,
-                            child: CustomText(
-                              AppStrings.yourChildData,
-                              textStyle: TextStyles.button12.copyWith(
-                                  fontSize: 4.sp, color: ColorCode.primary600),
-                            ),
-                          ),
-                        ],
-                      ),
-                      AppSVGAssets.getWidget(AppSVGAssets.stepper,
-                          color: controller.index.value > 1
-                              ? ColorCode.primary600
-                              : null),
-                      Stack(
-                        fit: StackFit.passthrough,
-                        clipBehavior: Clip.none,
-                        children: [
-                          AppSVGAssets.getWidget(controller.index.value >= 2
-                              ? AppSVGAssets.secondStepFill
-                              : AppSVGAssets.secondStep),
-                          PositionedDirectional(
-                            bottom: -30,
-                            start: -17,
-                            child: CustomText(
-                                        AppStrings.chronicDiseasesAndAllergies,
-                                        textStyle: TextStyles.button12.copyWith(
-                                            fontSize: 4.sp,
-                                            color: controller.index.value >= 2
-                                                ? ColorCode.primary600
-                                                : ColorCode.black),
-                                      ),
-                          ),
-                        ],
-                      ),
-                      AppSVGAssets.getWidget(AppSVGAssets.stepper,
-                          color: controller.index.value > 2
-                              ? ColorCode.primary600
-                              : null),
-                      Stack(
-                        fit: StackFit.passthrough,
-                        clipBehavior: Clip.none,
-                        children: [
-                          AppSVGAssets.getWidget(controller.index.value >= 3
-                              ? AppSVGAssets.thirdStepFill
-                              : AppSVGAssets.thirdStep),
-                          PositionedDirectional(
-                            bottom: -30,
-                            start: -10,
-                            child: CustomText(
-                                        AppStrings.recommendationsForChildren,
-                                        textStyle: TextStyles.button12.copyWith(
-                                            fontSize: 4.sp,
-                                            color: controller.index.value >= 3
-                                                ? ColorCode.primary600
-                                                : ColorCode.black),
-                                      ),
-                          ),
-                        ],
-                      ),
-                      AppSVGAssets.getWidget(AppSVGAssets.stepper,
-                          color: controller.index.value > 3
-                              ? ColorCode.primary600
-                              : null),
-                      Stack(
-                        fit: StackFit.passthrough,
-                        clipBehavior: Clip.none,
-                        children: [
-                          AppSVGAssets.getWidget(controller.index.value == 4
-                              ? AppSVGAssets.fourthStepFill
-                              : AppSVGAssets.fourthStep),
-                          PositionedDirectional(
-                            bottom: -45,
-                            start: -5,
-                            child: CustomText(
-                                        AppStrings.personsAuthorizedToSendOrReceiveChildren,
-                                        maxLines: 3,
-                                        textStyle: TextStyles.button12.copyWith(
-                                            fontSize: 4.sp,
-                                            color: controller.index.value == 4
-                                                ? ColorCode.primary600
-                                                : ColorCode.black),
-                                      ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Gaps.vGap20,
-                ],
-              );
+              return ResponsiveStepperParent(currentIndex: controller.index.value,);
             }),
             Gaps.vGap16,
             const Step1(),

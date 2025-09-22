@@ -21,7 +21,7 @@ class ResponsiveStepperParent extends StatelessWidget {
         children: [
           StepItem(
             svg: AppSVGAssets.firstStep,
-            label: AppStrings.basicInformation,
+            label: AppStrings.yourChildData,
             isActive: currentIndex >= 1,
           ),
           Connector(isActive: currentIndex > 1),
@@ -29,7 +29,7 @@ class ResponsiveStepperParent extends StatelessWidget {
             svg: currentIndex >= 2
                 ? AppSVGAssets.secondStepFill
                 : AppSVGAssets.secondStep,
-            label: AppStrings.acceptableAgesAndWorkingHours,
+            label: AppStrings.chronicDiseasesAndAllergies,
             isActive: currentIndex >= 2,
           ),
           Connector(isActive: currentIndex > 2),
@@ -37,7 +37,7 @@ class ResponsiveStepperParent extends StatelessWidget {
             svg: currentIndex >= 3
                 ? AppSVGAssets.thirdStepFill
                 : AppSVGAssets.thirdStep,
-            label: AppStrings.communicatingWithParentsAndProvidingFood,
+            label: AppStrings.recommendationsForChildren,
             isActive: currentIndex >= 3,
           ),
           Connector(isActive: currentIndex > 3),
@@ -45,7 +45,7 @@ class ResponsiveStepperParent extends StatelessWidget {
             svg: currentIndex == 4
                 ? AppSVGAssets.fourthStepFill
                 : AppSVGAssets.fourthStep,
-            label: AppStrings.requiredStatements,
+            label: AppStrings.personsAuthorizedToSendOrReceiveChildren,
             isActive: currentIndex == 4,
           ),
         ],
