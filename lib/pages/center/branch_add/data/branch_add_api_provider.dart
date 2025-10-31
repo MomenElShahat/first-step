@@ -72,20 +72,20 @@ class BranchAddProvider extends BaseAuthProvider implements IBranchAddProvider {
     addField('special_needs', branchModel.specialNeeds == true ? '1' : '0');
     addField('provides_food', branchModel.providesFood == true ? '1' : '0');
 
-    for (int i = 0; i < branchModel.services.length; i++) {
-      final service = branchModel.services[i];
+    for (int i = 0; i < (branchModel.services?.length ?? 0); i++) {
+      final service = branchModel.services?[i];
       addField('services[$i]', service);
     }
-    for (int i = 0; i < branchModel.nurseryType.length; i++) {
-      final nurseryType = branchModel.nurseryType[i];
+    for (int i = 0; i < (branchModel.nurseryType?.length ?? 0); i++) {
+      final nurseryType = branchModel.nurseryType?[i];
       addField('nursery_type[$i]', nurseryType);
     }
-    for (int i = 0; i < branchModel.acceptedAges.length; i++) {
-      final acceptedAges = branchModel.acceptedAges[i];
+    for (int i = 0; i < (branchModel.acceptedAges?.length ?? 0); i++) {
+      final acceptedAges = branchModel.acceptedAges?[i];
       addField('accepted_ages[$i]', acceptedAges);
     }
-    for (int i = 0; i < branchModel.communicationMethods.length; i++) {
-      final communicationMethods = branchModel.communicationMethods[i];
+    for (int i = 0; i < (branchModel.communicationMethods?.length ?? 0); i++) {
+      final communicationMethods = branchModel.communicationMethods?[i];
       addField('communication_methods[$i]', communicationMethods);
     }
 

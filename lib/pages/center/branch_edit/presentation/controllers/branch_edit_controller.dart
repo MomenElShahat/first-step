@@ -22,8 +22,6 @@ class BranchEditScreenController extends SuperController<dynamic> {
   final IBranchEditRepository branchEditRepository;
 
   TextEditingController arabic = TextEditingController();
-
-  // TextEditingController nationalID = TextEditingController();
   TextEditingController mobileNumber = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController city = TextEditingController();
@@ -31,6 +29,7 @@ class BranchEditScreenController extends SuperController<dynamic> {
   TextEditingController street = TextEditingController();
   TextEditingController fromHour = TextEditingController();
   TextEditingController untilHour = TextEditingController();
+  RxString phone = "".obs;
 
   RxBool isHidden = true.obs;
   RxBool isHiddenConfirm = true.obs;
@@ -39,41 +38,13 @@ class BranchEditScreenController extends SuperController<dynamic> {
 
   List<Map<String, dynamic>> services = [
     {"key": "Nursing", "type": AppStrings.nursing, "isChecked": false.obs},
-    {
-      "key": "Educational",
-      "type": AppStrings.educational,
-      "isChecked": false.obs
-    },
-    {
-      "key": "kindergarten",
-      "type": AppStrings.kindergarten,
-      "isChecked": false.obs
-    },
-    {
-      "key": "After school",
-      "type": AppStrings.afterSchool,
-      "isChecked": false.obs
-    },
-    {
-      "key": "Special needs",
-      "type": AppStrings.specialNeeds,
-      "isChecked": false.obs
-    },
-    {
-      "key": "Physical therapy",
-      "type": AppStrings.physicalTherapy,
-      "isChecked": false.obs
-    },
-    {
-      "key": "Speech therapy",
-      "type": AppStrings.speechTherapy,
-      "isChecked": false.obs
-    },
-    {
-      "key": "Occupational therapy",
-      "type": AppStrings.occupationalTherapy,
-      "isChecked": false.obs
-    },
+    {"key": "Educational", "type": AppStrings.educational, "isChecked": false.obs},
+    {"key": "kindergarten", "type": AppStrings.kindergarten, "isChecked": false.obs},
+    {"key": "After school", "type": AppStrings.afterSchool, "isChecked": false.obs},
+    {"key": "Special needs", "type": AppStrings.specialNeeds, "isChecked": false.obs},
+    {"key": "Physical therapy", "type": AppStrings.physicalTherapy, "isChecked": false.obs},
+    {"key": "Speech therapy", "type": AppStrings.speechTherapy, "isChecked": false.obs},
+    {"key": "Occupational therapy", "type": AppStrings.occupationalTherapy, "isChecked": false.obs},
   ];
 
   RxString selectedStartDay = AppStrings.sunday.obs;
@@ -122,8 +93,7 @@ class BranchEditScreenController extends SuperController<dynamic> {
     for (var service in services) {
       print("Checking service key: ${service["key"]}");
       print("Match found: ${selectedServicesFromApi.contains(service["key"])}");
-      service["isChecked"].value =
-          selectedServicesFromApi.contains(service["key"]);
+      service["isChecked"].value = selectedServicesFromApi.contains(service["key"]);
     }
   }
 
@@ -132,8 +102,7 @@ class BranchEditScreenController extends SuperController<dynamic> {
     for (var type in centerTypes) {
       print("Checking service key: ${type["key"]}");
       print("Match found: ${selectedTypesFromApi.contains(type["key"])}");
-      type["isChecked"].value =
-          selectedTypesFromApi.contains(type["key"]);
+      type["isChecked"].value = selectedTypesFromApi.contains(type["key"]);
     }
   }
 
@@ -142,27 +111,21 @@ class BranchEditScreenController extends SuperController<dynamic> {
     for (var age in ages) {
       print("Checking service key: ${age["key"]}");
       print("Match found: ${selectedAgesFromApi.contains(age["key"])}");
-      age["isChecked"].value =
-          selectedAgesFromApi.contains(age["key"]);
+      age["isChecked"].value = selectedAgesFromApi.contains(age["key"]);
     }
   }
-
 
   void updateCommChecksFromApi(List<String> selectedCommFromApi) {
     print("API selected services: $selectedCommFromApi");
     for (var comm in commWays) {
       print("Checking service key: ${comm["key"]}");
       print("Match found: ${selectedCommFromApi.contains(comm["key"])}");
-      comm["isChecked"].value =
-          selectedCommFromApi.contains(comm["key"]);
+      comm["isChecked"].value = selectedCommFromApi.contains(comm["key"]);
     }
   }
 
   List<String> getSelectedServices(List<Map<String, dynamic>> services) {
-    return services
-        .where((element) => (element['isChecked'] as RxBool).value)
-        .map((element) => element['type'].toString())
-        .toList();
+    return services.where((element) => (element['isChecked'] as RxBool).value).map((element) => element['key'].toString()).toList();
   }
 
   TimeOfDay? parseTimeOfDay(String timeString) {
@@ -177,6 +140,7 @@ class BranchEditScreenController extends SuperController<dynamic> {
     return null;
   }
 
+  bool isPlaceholderPassword = true;
   // RxString selectedCity = "".obs;
   getBranchDetails(String branchId) async {
     change(false, status: RxStatus.loading());
@@ -198,16 +162,13 @@ class BranchEditScreenController extends SuperController<dynamic> {
           untilHour.text = branch?.workHoursTo ?? "";
           locationLink.text = branch?.location ?? "";
           service.text = branch?.additionalService ?? "";
-          selectedStartDay.value =
-              dayNameMap[branch?.workDaysFrom] ?? AppStrings.selectADay;
-          selectedEndDay.value =
-              dayNameMap[branch?.workDaysTo] ?? AppStrings.selectADay;
+          selectedStartDay.value = dayNameMap[branch?.workDaysFrom] ?? AppStrings.selectADay;
+          selectedEndDay.value = dayNameMap[branch?.workDaysTo] ?? AppStrings.selectADay;
           updateServiceChecksFromApi(branch?.services ?? []);
           updateTypesChecksFromApi(branch?.nurseryType ?? []);
           updateAgesChecksFromApi(branch?.acceptedAges ?? []);
           updateCommChecksFromApi(branch?.communicationMethods ?? []);
-          startTime =
-              parseTimeOfDay(branch?.workHoursFrom ?? "${DateTime.now()}");
+          startTime = parseTimeOfDay(branch?.workHoursFrom ?? "${DateTime.now()}");
           endTime = parseTimeOfDay(branch?.workHoursTo ?? "${DateTime.now()}");
           practiceLicence.text = branch?.licensePath?.split("/").last ?? "";
           commercialRegister.text = branch?.commercialRecordPath?.split("/").last ?? "";
@@ -215,6 +176,7 @@ class BranchEditScreenController extends SuperController<dynamic> {
           startTimeSecondPeriodController.text = branch?.timeOfSecondPeriod ?? "";
           firstPeriodMeals.value = branch?.firstMeals ?? [];
           secondPeriodMeals.value = branch?.secondMeals ?? [];
+          isPlaceholderPassword = true;
           update();
         }
         change(true, status: RxStatus.success());
@@ -226,13 +188,33 @@ class BranchEditScreenController extends SuperController<dynamic> {
       change(true, status: RxStatus.success());
     });
   }
+
+  void onPasswordChanged(String val) {
+    // Once user starts typing, we know it’s real input
+    if (isPlaceholderPassword) {
+      password.clear();
+      isPlaceholderPassword = false;
+      update();
+    }
+    password.text = val;
+    update();
+  }
+
+  void onConfirmPasswordChanged(String val) {
+    if (isPlaceholderPassword) {
+      confirmPassword.clear();
+      isPlaceholderPassword = false;
+      update();
+    }
+    confirmPassword.text = val;
+    update();
+  }
+
   TextEditingController locationLink = TextEditingController();
   TextEditingController service = TextEditingController();
   TextEditingController added = TextEditingController();
-  TextEditingController startTimeFirstPeriodController =
-  TextEditingController();
-  TextEditingController startTimeSecondPeriodController =
-  TextEditingController();
+  TextEditingController startTimeFirstPeriodController = TextEditingController();
+  TextEditingController startTimeSecondPeriodController = TextEditingController();
   TextEditingController firstMealName = TextEditingController();
   TextEditingController firstMealComponents = TextEditingController();
   TextEditingController firstMealDrinks = TextEditingController();
@@ -248,37 +230,36 @@ class BranchEditScreenController extends SuperController<dynamic> {
   GlobalKey<FormState> formKey3 = GlobalKey<FormState>();
   GlobalKey<FormState> formKey4 = GlobalKey<FormState>();
 
-
   City? selectedCity;
 
   RxBool isCityError = false.obs;
 
   List<Map<String, dynamic>> centerTypes = [
-    {"key": "nursing","type": AppStrings.nursing, "isChecked": false.obs},
-    {"key": "educational","type": AppStrings.educational, "isChecked": false.obs},
-    {"key": "support and rehabilitation","type": AppStrings.supportAndRehabilitation, "isChecked": false.obs},
+    {"key": "nursing", "type": AppStrings.nursing, "isChecked": false.obs},
+    {"key": "educational", "type": AppStrings.educational, "isChecked": false.obs},
+    {"key": "support and rehabilitation", "type": AppStrings.supportAndRehabilitation, "isChecked": false.obs},
   ];
 
   List<Map<String, dynamic>> commWays = [
-    {"key": "phone","type": AppStrings.voiceCommunication, "isChecked": false.obs},
-    {"key": "sms","type": AppStrings.textCommunication, "isChecked": false.obs},
-    {"key": "video","type": AppStrings.visualCommunication, "isChecked": false.obs},
+    {"key": "phone", "type": AppStrings.voiceCommunication, "isChecked": false.obs},
+    {"key": "sms", "type": AppStrings.textCommunication, "isChecked": false.obs},
+    {"key": "video", "type": AppStrings.visualCommunication, "isChecked": false.obs},
   ];
 
   List<Map<String, dynamic>> ages = [
-    {"key": "0-3","type": AppStrings.from0To3Years, "isChecked": false.obs},
-    {"key": "3-6","type": AppStrings.from3To6Years, "isChecked": false.obs},
-    {"key": "disabled","type": AppStrings.childrenWithSpecialNeeds, "isChecked": false.obs},
+    {"key": "0-3", "type": AppStrings.from0To3Years, "isChecked": false.obs},
+    {"key": "3-6", "type": AppStrings.from3To6Years, "isChecked": false.obs},
+    {"key": "disabled", "type": AppStrings.childrenWithSpecialNeeds, "isChecked": false.obs},
   ];
 
   List<String> getSelectedAges(List<Map<String, dynamic>> ages) {
     return ages
         .where((element) => (element['isChecked'] as RxBool).value)
         .map((element) => element['type'].toString() == AppStrings.from0To3Years
-        ? "0-3"
-        : element['type'].toString() == AppStrings.from3To6Years
-        ? "3-6"
-        : "disabled")
+            ? "0-3"
+            : element['type'].toString() == AppStrings.from3To6Years
+                ? "3-6"
+                : "disabled")
         .toList();
   }
 
@@ -286,25 +267,23 @@ class BranchEditScreenController extends SuperController<dynamic> {
     return centerTypes
         .where((element) => (element['isChecked'] as RxBool).value)
         .map((element) => element['type'].toString() == AppStrings.nursing
-        ? "nursing"
-        : element['type'].toString() == AppStrings.educational
-        ? "educational"
-        : "support and rehabilitation")
+            ? "nursing"
+            : element['type'].toString() == AppStrings.educational
+                ? "educational"
+                : "support and rehabilitation")
         .toList();
   }
 
   List<String> getSelectedCommWays(List<Map<String, dynamic>> commWays) {
     return commWays
         .where((element) => (element['isChecked'] as RxBool).value)
-        .map((element) =>
-    element['type'].toString() == AppStrings.voiceCommunication
-        ? "phone"
-        : element['type'].toString() == AppStrings.textCommunication
-        ? "sms"
-        : "video")
+        .map((element) => element['type'].toString() == AppStrings.voiceCommunication
+            ? "phone"
+            : element['type'].toString() == AppStrings.textCommunication
+                ? "sms"
+                : "video")
         .toList();
   }
-
 
   String formatTime(TimeOfDay time) {
     // final now = DateTime.now();
@@ -330,8 +309,7 @@ class BranchEditScreenController extends SuperController<dynamic> {
   final ImagePicker _picker = ImagePicker();
 
   Future<void> pickImage() async {
-    final XFile? pickedImage =
-    await _picker.pickImage(source: ImageSource.gallery);
+    final XFile? pickedImage = await _picker.pickImage(source: ImageSource.gallery);
 
     if (pickedImage != null) {
       logo = File(pickedImage.path);
@@ -355,11 +333,9 @@ class BranchEditScreenController extends SuperController<dynamic> {
     );
   }
 
-  RxList<FirstMeals> firstPeriodMeals =
-      <FirstMeals>[FirstMeals(mealName: "", components: "", juice: "")].obs;
+  RxList<FirstMeals> firstPeriodMeals = <FirstMeals>[FirstMeals(mealName: "", components: "", juice: "")].obs;
 
-  RxList<FirstMeals> secondPeriodMeals =
-      <FirstMeals>[FirstMeals(mealName: "", components: "", juice: "")].obs;
+  RxList<FirstMeals> secondPeriodMeals = <FirstMeals>[FirstMeals(mealName: "", components: "", juice: "")].obs;
   RxBool isSaving = false.obs;
 
   onSaveEditsClicked({required BuildContext context}) async {
@@ -376,10 +352,8 @@ class BranchEditScreenController extends SuperController<dynamic> {
       location: locationLink.text,
       nurseryType: getSelectedTypes(centerTypes),
       services: getSelectedServices(services),
-      firstMeals:
-      selectedValue2.value == AppStrings.no ? null : firstPeriodMeals,
-      secondMeals:
-      selectedValue2.value == AppStrings.no ? null : secondPeriodMeals,
+      firstMeals: selectedValue2.value == AppStrings.no ? null : firstPeriodMeals,
+      secondMeals: selectedValue2.value == AppStrings.no ? null : secondPeriodMeals,
       neighborhood: neighborhood.text,
       workDaysFrom: selectedStartDay.value,
       workDaysTo: selectedEndDay.value,
@@ -393,9 +367,12 @@ class BranchEditScreenController extends SuperController<dynamic> {
       emergencyContact: false,
     );
     branchEditRepository
-        .editBranch(branchModel: signupRequestModel, branchId: branchId ?? "",logo: logo,
-        licenseFile: practiceLicenceFile,
-        commercialRecordFile: commercialRegisterFile)
+        .editBranch(
+            branchModel: signupRequestModel,
+            branchId: branchId ?? "",
+            logo: logo,
+            licenseFile: practiceLicenceFile,
+            commercialRecordFile: commercialRegisterFile)
         .then(
       (value) async {
         if (value.statusCode == 200 || value.statusCode == 201) {

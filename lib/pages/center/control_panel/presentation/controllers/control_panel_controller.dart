@@ -15,12 +15,12 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import '../../../../../../resources/strings_generated.dart';
 import '../../../../../consts/colors.dart';
-import '../../../../../resources/assets_svg_generated.dart';
 import '../../../../../services/pusher_service.dart';
 import '../../../../../widgets/custom_snackbar.dart';
 import '../../../../../widgets/custom_text.dart';
@@ -32,14 +32,18 @@ import '../../../edit_member/models/branch_team_member_model.dart';
 import '../../models/branch_model.dart';
 import '../../models/branch_team_model.dart';
 import '../../models/center_enrollment_model.dart';
+import '../../models/center_notify_parents_request_model.dart';
+import '../../models/center_notify_parents_response_model.dart';
 import '../../models/chats_model.dart';
 import '../../models/parent_model.dart';
 import '../../models/portfolio_prices_model.dart';
-import '../../models/program_model.dart';
 import '../../models/show_portfolio_response_model.dart';
 import '../widgets/center_info.dart';
 import '../widgets/daily_report_center.dart';
 import '../widgets/home.dart';
+import '../widgets/notifications.dart';
+import '../widgets/pricing_row.dart';
+import '../widgets/multi_select_branches_dropdown.dart';
 import '../../data/control_panel_repository.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
@@ -56,6 +60,228 @@ class ControlPanelController extends SuperController<dynamic> {
   ControlPanelController({required this.controlPanelRepository});
 
   final IControlPanelRepository controlPanelRepository;
+
+  final List<String> statuses = [
+    "all",
+    "accepted",
+    "pending",
+    "rejected",
+    "paid",
+    "existing",
+    "expired",
+  ];
+
+  RxList<CenterEnrollment> filteredEnrollments = <CenterEnrollment>[].obs;
+
+  String getStatusText(String? status) {
+    switch (status) {
+      case 'accepted':
+        return AppStrings.waitingForPayment;
+      case 'pending':
+        return AppStrings.waitingForApproval;
+      case 'cancelled':
+        return AppStrings.cancelled;
+      case 'rejected':
+        return AppStrings.rejected;
+      case 'paid':
+        return AppStrings.paid;
+      case 'existing':
+        return AppStrings.throughNursery;
+      case 'expired':
+        return AppStrings.expired;
+      default:
+        return AppStrings.unknown;
+    }
+  }
+
+  RxString selectedStatus = "all".obs;
+
+  TextEditingController arabic = TextEditingController();
+  DateTime focusedDay = DateTime.now();
+  DateTime? selectedDay;
+  final List<DateTime> selectedDays = [];
+  TextEditingController day = TextEditingController();
+  TextEditingController fromHour = TextEditingController();
+  TimeOfDay? startTime;
+
+  Future<TimeOfDay?> pickTime(BuildContext context) async {
+    return await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+  }
+
+  // --- Form & pagination ---
+  GlobalKey<FormState> notificationFormKey = GlobalKey<FormState>();
+  int currentPageNotification = 1;
+  int rowsPerPageNotification = 10;
+
+  // --- Per-row UI state ---
+  List<bool> checkedStatesNotification = [];
+  Map<int, ChildModel?> selectedChildrenPerParentNotification = {}; // parentIndex -> selected child (for UI only)
+  final ChildModel allChildrenModelNotification = ChildModel(id: -1, childName: 'كل الأطفال');
+
+  // --- NEW: parent ids selected (for API) ---
+  List<int> selectedParentIdsNotification = [];
+
+  CenterNotifyParentsResponseModel? centerNotifyParentsResponseModel;
+
+  RxBool isNotifying = false.obs;
+
+  String formatTime(TimeOfDay time) {
+    return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
+  }
+
+  Future<void> notifyParents() async {
+    CenterNotifyParentsRequestModel body = CenterNotifyParentsRequestModel(
+        parentIds: getSelectedParentIdsForApi(), date: day.text, title: arabic.text, time: formatTime(startTime ?? TimeOfDay.now()));
+    // change(false, status: RxStatus.loading());
+    isNotifying.value = true;
+    controlPanelRepository.notifyParents(body: body).then(
+      (value) async {
+        if (value.statusCode == 200 || value.statusCode == 201) {
+          centerNotifyParentsResponseModel = null;
+          centerNotifyParentsResponseModel = value.body;
+          customSnackBar(centerNotifyParentsResponseModel?.message ?? "", ColorCode.success600);
+          day.clear();
+          arabic.clear();
+          fromHour.clear();
+          startTime = null;
+          update();
+        }
+        // change(true, status: RxStatus.success());
+        isNotifying.value = false;
+      },
+    ).onError((error, stackTrace) {
+      print("Signup error: $error");
+      print("StackTrace: $stackTrace");
+      if (!error.toString().contains("Please renew your plan to continue.") &&
+          !error.toString().contains("_Map<String, dynamic>' is not a subtype of type 'List<dynamic>")) {
+        customSnackBar(error.toString(), ColorCode.danger600);
+      }
+      // change(true, status: RxStatus.success());
+      isNotifying.value = false;
+    });
+  }
+
+  // ----------------- API helper -----------------
+  /// Return the selected parent IDs (unique)
+  List<int> getSelectedParentIdsForApi() {
+    // make sure it's a unique list (it should already be)
+    return selectedParentIdsNotification.toSet().toList();
+  }
+
+  // ----------------- checkbox handlers -----------------
+  void onParentChecked(int index, bool? isChecked) {
+    // defensive checks
+    if (parents == null || index < 0 || index >= (parents?.length ?? 0)) {
+      return;
+    }
+
+    checkedStatesNotification[index] = isChecked ?? false;
+
+    final parent = parents![index];
+    final parentId = parent.id;
+
+    if (isChecked == true) {
+      // add parent id if not already present
+      if (parentId != null && !selectedParentIdsNotification.contains(parentId)) {
+        selectedParentIdsNotification.add(parentId);
+      }
+    } else {
+      // remove parent id
+      if (parentId != null) {
+        selectedParentIdsNotification.remove(parentId);
+      }
+    }
+
+    update();
+  }
+
+  // When user toggles select-all for visible page range
+  bool isSelectAllChecked = false;
+
+  void toggleSelectAll(bool? checked, int startIndex, int endIndex) {
+    // startIndex inclusive, endIndex exclusive (safeEndIndex computed by caller)
+    isSelectAllChecked = checked ?? false;
+
+    for (int i = startIndex; i < endIndex; i++) {
+      // guard index validity
+      if (i < 0 || parents == null || i >= parents!.length) continue;
+
+      checkedStatesNotification[i] = isSelectAllChecked;
+
+      final parent = parents![i];
+      final parentId = parent.id;
+
+      if (isSelectAllChecked) {
+        if (parentId != null && !selectedParentIdsNotification.contains(parentId)) {
+          selectedParentIdsNotification.add(parentId);
+        }
+      } else {
+        if (parentId != null) {
+          selectedParentIdsNotification.remove(parentId);
+        }
+      }
+    }
+
+    update();
+  }
+
+  // Selecting a child in the dropdown is for UI / informational use only now.
+  // It does NOT change which parent IDs are selected for API.
+  void onChildSelected(int parentIndex, ChildModel? child) {
+    // Update stored selection for the row (UI)
+    selectedChildrenPerParentNotification[parentIndex] = child ?? allChildrenModelNotification;
+
+    // NOTE: previously child selection added child ids to API payload.
+    // Now we only send parent ids. So we don't modify selectedParentIdsNotification here.
+    // If you want to change behavior (e.g., select parent automatically when a child is chosen), do it here.
+
+    update();
+  }
+
+  // ----------------- initialization helpers -----------------
+  void initNotificationData(List<ParentModel> parentsList) {
+    parents = parentsList;
+
+    // Initialize checkbox states
+    checkedStatesNotification = List.generate(parents!.length, (_) => false);
+
+    // Initialize selected children per parent (UI default to "all children" item)
+    selectedChildrenPerParentNotification.clear();
+    for (int i = 0; i < parents!.length; i++) {
+      selectedChildrenPerParentNotification[i] = allChildrenModelNotification;
+    }
+
+    // Clear selected parent ids
+    selectedParentIdsNotification.clear();
+
+    // reset pagination
+    currentPageNotification = 1;
+
+    update();
+  }
+
+  void ensureNotificationListsInitialized(int count) {
+    if (checkedStatesNotification.length != count) {
+      checkedStatesNotification = List.generate(count, (_) => false);
+    }
+
+    if (selectedChildrenPerParentNotification.length != count) {
+      selectedChildrenPerParentNotification.clear();
+      for (int i = 0; i < count; i++) {
+        selectedChildrenPerParentNotification[i] = allChildrenModelNotification;
+      }
+    }
+
+    // If selectedParentIdsNotification contains ids that are no longer valid (parents changed),
+    // we keep them until the caller calls initNotificationData. Optionally you can filter them:
+    if (parents != null) {
+      final validIds = parents!.map((p) => p.id).whereType<int>().toSet();
+      selectedParentIdsNotification = selectedParentIdsNotification.where((id) => validIds.contains(id)).toList();
+    }
+  }
 
   final arabicRegex = RegExp(r'^[\u0600-\u06FF\s]+$');
   RxString selectedSection = "parents".obs;
@@ -97,14 +323,16 @@ class ControlPanelController extends SuperController<dynamic> {
 
   Future<File?> pickImage() async {
     final picker = ImagePicker();
-    final XFile? pickedFile =
-        await picker.pickImage(source: ImageSource.gallery);
+    final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       return File(pickedFile.path);
     }
     return null; // User canceled the picker
   }
+
+  var expandedProgramIndex = (-1).obs;
+  RxMap<int, bool> expandedPricingIndex = <int, bool>{}.obs;
 
   resetMainSection() {
     centerNameController.clear();
@@ -159,20 +387,14 @@ class ControlPanelController extends SuperController<dynamic> {
 
   RxList<TeamMemberModel> members = [TeamMemberModel()].obs;
   RxList<TeamMemberModel> services = [TeamMemberModel()].obs;
-  RxList<TextEditingController> imageControllers =
-      [TextEditingController()].obs;
-  RxList<TextEditingController> professionControllers =
-      [TextEditingController()].obs;
+  RxList<TextEditingController> imageControllers = [TextEditingController()].obs;
+  RxList<TextEditingController> professionControllers = [TextEditingController()].obs;
   RxList<TextEditingController> nameControllers = [TextEditingController()].obs;
-  RxList<TextEditingController> imageServiceControllers =
-      [TextEditingController()].obs;
-  RxList<TextEditingController> descServiceControllers =
-      [TextEditingController()].obs;
-  RxList<TextEditingController> nameServiceControllers =
-      [TextEditingController()].obs;
+  RxList<TextEditingController> imageServiceControllers = [TextEditingController()].obs;
+  RxList<TextEditingController> descServiceControllers = [TextEditingController()].obs;
+  RxList<TextEditingController> nameServiceControllers = [TextEditingController()].obs;
 
-  RxList<TextEditingController> branchControllers =
-      [TextEditingController()].obs;
+  RxList<TextEditingController> branchControllers = [TextEditingController()].obs;
 
   RxList<dynamic> adImages = <dynamic>[null].obs; // can be File or String (URL)
 
@@ -277,8 +499,7 @@ class ControlPanelController extends SuperController<dynamic> {
   Future<File> urlToFile(String imageUrl) async {
     // Get temporary directory
     final tempDir = await getTemporaryDirectory();
-    final filePath =
-        '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.png';
+    final filePath = '${tempDir.path}/${DateTime.now().millisecondsSinceEpoch}.png';
 
     // Download image
     final response = await http.get(Uri.parse(imageUrl));
@@ -308,34 +529,33 @@ class ControlPanelController extends SuperController<dynamic> {
   }
 
   RxInt expandedIndex = (-1).obs;
-  List<Widget Function()> pageBuilders =
-      AuthService.to.userInfo?.user?.role == "center"
-          ? [
-              () => DashboardHome(key: UniqueKey()),
-              () => MyBranches(key: UniqueKey()),
-              () => ChildrensFiles(key: UniqueKey()),
-              () => Reservations(key: UniqueKey()),
-              () => CenterInfo(key: UniqueKey()),
-              () => DailyReportCenter(key: UniqueKey()),
-              // () => LocationEdit(key: UniqueKey()),
-              // () => BlogAsk(key: UniqueKey()),
-              () => Chat(key: UniqueKey()),
-              // () => Notifications(key: UniqueKey()),
-              () => WorkTeam(key: UniqueKey()),
-            ]
-          : [
-              // () => DashboardHome(key: UniqueKey()),
-              // () => MyBranches(key: UniqueKey()),
-              () => ChildrensFiles(key: UniqueKey()),
-              () => Reservations(key: UniqueKey()),
-              // () => CenterInfo(key: UniqueKey()),
-              () => DailyReportCenter(key: UniqueKey()),
-              // () => LocationEdit(key: UniqueKey()),
-              // () => BlogAsk(key: UniqueKey()),
-              () => Chat(key: UniqueKey()),
-              // () => Notifications(key: UniqueKey()),
-              () => WorkTeam(key: UniqueKey()),
-            ];
+  List<Widget Function()> pageBuilders = AuthService.to.userInfo?.user?.role == "center"
+      ? [
+          () => DashboardHome(key: UniqueKey()),
+          () => MyBranches(key: UniqueKey()),
+          () => ChildrensFiles(key: UniqueKey()),
+          () => Reservations(key: UniqueKey()),
+          () => CenterInfo(key: UniqueKey()),
+          () => DailyReportCenter(key: UniqueKey()),
+          // () => LocationEdit(key: UniqueKey()),
+          // () => BlogAsk(key: UniqueKey()),
+          () => Chat(key: UniqueKey()),
+          () => Notifications(key: UniqueKey()),
+          () => WorkTeam(key: UniqueKey()),
+        ]
+      : [
+          // () => DashboardHome(key: UniqueKey()),
+          // () => MyBranches(key: UniqueKey()),
+          () => ChildrensFiles(key: UniqueKey()),
+          () => Reservations(key: UniqueKey()),
+          // () => CenterInfo(key: UniqueKey()),
+          () => DailyReportCenter(key: UniqueKey()),
+          // () => LocationEdit(key: UniqueKey()),
+          // () => BlogAsk(key: UniqueKey()),
+          () => Chat(key: UniqueKey()),
+          // () => Notifications(key: UniqueKey()),
+          () => WorkTeam(key: UniqueKey()),
+        ];
 
   List<BranchModel>? branches;
   List<ParentModel>? parents;
@@ -383,8 +603,7 @@ class ControlPanelController extends SuperController<dynamic> {
       print("Signup error: $error");
       print("StackTrace: $stackTrace");
       if (!error.toString().contains("Please renew your plan to continue.") &&
-          !error.toString().contains(
-              "_Map<String, dynamic>' is not a subtype of type 'List<dynamic>")) {
+          !error.toString().contains("_Map<String, dynamic>' is not a subtype of type 'List<dynamic>")) {
         customSnackBar(error.toString(), ColorCode.danger600);
       }
       change(true, status: RxStatus.success());
@@ -418,8 +637,7 @@ class ControlPanelController extends SuperController<dynamic> {
 
   double? percentage;
 
-  double calculatePortfolioProgress(ShowPortfolioResponseModel model,
-      List<PortfolioPrice> portfolioPricesModel) {
+  double calculatePortfolioProgress(ShowPortfolioResponseModel model, List<PortfolioPrice> portfolioPricesModel) {
     if (model.portofilo == null) return 0.0;
     final data = model.portofilo!;
 
@@ -444,12 +662,9 @@ class ControlPanelController extends SuperController<dynamic> {
     // 3. PhilosophyMethodologyGoal
     if (data.philosophyMethodologyGoal != null) {
       final pmg = data.philosophyMethodologyGoal!;
-      if ((pmg.philosophy?.title?.isNotEmpty == true ||
-              pmg.philosophy?.content?.isNotEmpty == true) ||
-          (pmg.methodology?.title?.isNotEmpty == true ||
-              pmg.methodology?.content?.isNotEmpty == true) ||
-          (pmg.goals?.title?.isNotEmpty == true ||
-              pmg.goals?.content?.isNotEmpty == true)) {
+      if ((pmg.philosophy?.title?.isNotEmpty == true || pmg.philosophy?.content?.isNotEmpty == true) ||
+          (pmg.methodology?.title?.isNotEmpty == true || pmg.methodology?.content?.isNotEmpty == true) ||
+          (pmg.goals?.title?.isNotEmpty == true || pmg.goals?.content?.isNotEmpty == true)) {
         filledSections++;
       }
     }
@@ -515,59 +730,32 @@ class ControlPanelController extends SuperController<dynamic> {
           if (selectedBranch != null) {
             await showPortfolioPrices(selectedBranch?.id.toString() ?? "");
           }
-          percentage = calculatePortfolioProgress(
-              showPortfolioResponseModel ?? ShowPortfolioResponseModel(),
-              portfolioPricesModel ?? []);
-          centerNameController.text =
-              showPortfolioResponseModel?.portofilo?.heroSection?.titleOfHero ??
-                  "";
-          centerSloganController.text = showPortfolioResponseModel
-                  ?.portofilo?.heroSection?.subtitleOfHero ??
-              "";
-          centerdescController.text =
-              showPortfolioResponseModel?.portofilo?.heroSection?.description ??
-                  "";
-          centerimageController.text = showPortfolioResponseModel
-                  ?.portofilo?.heroSection?.backgroundImage
-                  ?.split("/")
-                  .last ??
-              "";
+          percentage = calculatePortfolioProgress(showPortfolioResponseModel ?? ShowPortfolioResponseModel(), portfolioPricesModel);
+          centerNameController.text = showPortfolioResponseModel?.portofilo?.heroSection?.titleOfHero ?? "";
+          centerSloganController.text = showPortfolioResponseModel?.portofilo?.heroSection?.subtitleOfHero ?? "";
+          centerdescController.text = showPortfolioResponseModel?.portofilo?.heroSection?.description ?? "";
+          centerimageController.text = showPortfolioResponseModel?.portofilo?.heroSection?.backgroundImage?.split("/").last ?? "";
 
-          ourPhilosophyController.text = showPortfolioResponseModel
-                  ?.portofilo?.philosophyMethodologyGoal?.philosophy?.content ??
-              "";
-          ourMethodologyController.text = showPortfolioResponseModel?.portofilo
-                  ?.philosophyMethodologyGoal?.methodology?.content ??
-              "";
-          ourGoalController.text = showPortfolioResponseModel
-                  ?.portofilo?.philosophyMethodologyGoal?.goals?.content ??
-              "";
+          ourPhilosophyController.text = showPortfolioResponseModel?.portofilo?.philosophyMethodologyGoal?.philosophy?.content ?? "";
+          ourMethodologyController.text = showPortfolioResponseModel?.portofilo?.philosophyMethodologyGoal?.methodology?.content ?? "";
+          ourGoalController.text = showPortfolioResponseModel?.portofilo?.philosophyMethodologyGoal?.goals?.content ?? "";
 
-          nurserySpaceController.text =
-              showPortfolioResponseModel?.portofilo?.nurseryState?.area ?? "";
-          numberOfClassesController.text =
-              showPortfolioResponseModel?.portofilo?.nurseryState?.classRooms ??
-                  "";
-          numberOfTeamMembersController.text = showPortfolioResponseModel
-                  ?.portofilo?.nurseryState?.teamMembers ??
-              "";
+          nurserySpaceController.text = showPortfolioResponseModel?.portofilo?.nurseryState?.area ?? "";
+          numberOfClassesController.text = showPortfolioResponseModel?.portofilo?.nurseryState?.classRooms ?? "";
+          numberOfTeamMembersController.text = showPortfolioResponseModel?.portofilo?.nurseryState?.teamMembers ?? "";
 
-          activitiesController.text =
-              showPortfolioResponseModel?.portofilo?.activitySectionTitle ?? "";
+          activitiesController.text = showPortfolioResponseModel?.portofilo?.activitySectionTitle ?? "";
           branchControllers.clear();
 
-          final branches =
-              showPortfolioResponseModel?.portofilo?.branches ?? [];
+          final branches = showPortfolioResponseModel?.portofilo?.branches ?? [];
 
           for (var branch in branches) {
-            branchControllers
-                .add(TextEditingController(text: branch.branchName ?? ""));
+            branchControllers.add(TextEditingController(text: branch.branchName ?? ""));
           }
 
           activities.clear();
 
-          final apiImages =
-              showPortfolioResponseModel?.portofilo?.imagesActivities ?? [];
+          final apiImages = showPortfolioResponseModel?.portofilo?.imagesActivities ?? [];
 
 // Keep API images as strings in the list
           for (var img in apiImages) {
@@ -591,24 +779,17 @@ class ControlPanelController extends SuperController<dynamic> {
           }
 
           members.clear();
-          final teamMembers =
-              showPortfolioResponseModel?.portofilo?.teams ?? [];
+          final teamMembers = showPortfolioResponseModel?.portofilo?.teams ?? [];
 
           for (var member in teamMembers) {
-            members.add(TeamMemberModel(
-                name: member.name ?? "",
-                profession: member.mission ?? "",
-                imageUrl: member.image ?? ""));
+            members.add(TeamMemberModel(name: member.name ?? "", profession: member.mission ?? "", imageUrl: member.image ?? ""));
           }
 
           services.clear();
           final service = showPortfolioResponseModel?.portofilo?.services ?? [];
 
           for (var service in service) {
-            services.add(TeamMemberModel(
-                name: service.title ?? "",
-                profession: service.description ?? "",
-                imageUrl: service.imageService ?? ""));
+            services.add(TeamMemberModel(name: service.title ?? "", profession: service.description ?? "", imageUrl: service.imageService ?? ""));
           }
           // After you've populated controllers/lists from API:
           centerInfoModel = CenterInfoModel(
@@ -617,10 +798,7 @@ class ControlPanelController extends SuperController<dynamic> {
             description: centerdescController.text,
             backgroundImage: null,
             // server image is URL; keep null for file baseline
-            branches: branchControllers
-                .map((c) => c.text)
-                .where((t) => t.isNotEmpty)
-                .toList(),
+            branches: branchControllers.map((c) => c.text).where((t) => t.isNotEmpty).toList(),
             adImages: List<dynamic>.from(adImages),
             // keep URL strings
             ourPhilosophy: ourPhilosophyController.text,
@@ -668,19 +846,22 @@ class ControlPanelController extends SuperController<dynamic> {
 
   bool get pricesChanged {
     final a = _pricesOriginal.map((e) => e.canonical()).toList();
-    final b = (portfolioPricesModel ?? []).map((e) => e.canonical()).toList();
+    final b = portfolioPricesModel.toList().map((e) => e.canonical()).toList();
     return !_deepEq.equals(a, b);
   }
 
   RxBool isShowingPrices = false.obs;
+  RxBool isSavingPrices = false.obs;
+
+  // per-item deleting state map
+  final RxMap<int, bool> isDeletingPriceById = <int, bool>{}.obs;
 
   Future<void> showPortfolioPrices(String branchId) async {
     isShowingPrices.value = true;
     try {
       final value = await controlPanelRepository.showPortfolioPrices(branchId);
       if (value.statusCode == 200 || value.statusCode == 201) {
-        final fetched =
-            (value.body ?? <PortfolioPrice>[]).map((e) => e.copy()).toList();
+        final fetched = (value.body ?? <PortfolioPrice>[]).map((e) => e.copy()).toList();
 
         // 2) Snapshot originals
         _pricesOriginal = fetched.map((e) => e.copy()).toList();
@@ -706,6 +887,311 @@ class ControlPanelController extends SuperController<dynamic> {
   void addProgram() => portfolioPricesModel.add(PortfolioPrice());
 
   void removeProgramAt(int index) => portfolioPricesModel.removeAt(index);
+
+  void togglePricingExpansion(int index) {
+    // Check if current item is already expanded
+    bool isCurrentlyExpanded = expandedPricingIndex[index] ?? false;
+
+    // Close all expanded items
+    expandedPricingIndex.clear();
+
+    // If the clicked item was not expanded, expand it
+    if (!isCurrentlyExpanded) {
+      expandedPricingIndex[index] = true;
+    }
+    // If it was expanded, it stays collapsed (due to clear above)
+  }
+
+  bool isPricingExpanded(int index) {
+    return expandedPricingIndex[index] ?? false;
+  }
+
+  void showEditPricingDialog(int index) {
+    // This will be implemented as a dialog for editing pricing programs
+    Get.dialog(
+      Dialog(
+        backgroundColor: ColorCode.white,
+        insetPadding: const EdgeInsets.symmetric(horizontal: 16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.r),
+        ),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CustomText(
+                AppStrings.editProgram,
+                textStyle: TextStyles.title24Medium.copyWith(color: ColorCode.primary600),
+              ),
+              Gaps.vGap16,
+              ProgramPriceRow(
+                ctrl: this,
+                program: portfolioPricesModel[index],
+                index: index,
+                enable: true,
+              ),
+              Gaps.vGap16,
+              Row(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () => Get.back(),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.r),
+                          border: Border.all(color: ColorCode.neutral400),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 10.5),
+                        child: CustomText(
+                          AppStrings.cancel,
+                          textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.neutral500),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Gaps.hGap16,
+                  Obx(() {
+                    return Visibility(
+                      visible: !isSavingPrices.value,
+                      replacement: const SpinKitCircle(
+                        color: ColorCode.primary600,
+                      ),
+                      child: Expanded(
+                        child: GestureDetector(
+                          onTap: () async {
+                            // For edit, we need to ensure the program has an ID for update
+                            final program = portfolioPricesModel[index];
+                            if (program.id == null) {
+                              customSnackBar('Cannot edit program without ID', ColorCode.danger600);
+                              return;
+                            }
+                            await savePricingChanges();
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.r),
+                              gradient: const LinearGradient(
+                                begin: Alignment.centerRight,
+                                end: Alignment.centerLeft,
+                                transform: GradientRotation(98.52 * (3.1415926535 / 180)),
+                                colors: [
+                                  Color(0xFF7A8CFD),
+                                  Color(0xFF404FB1),
+                                  Color(0xFF2B3990),
+                                ],
+                                stops: [0.1117, 0.6374, 0.9471],
+                              ),
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 10.5),
+                            child: CustomText(
+                              AppStrings.saveEdit,
+                              textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.white),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void showAddPricingDialog() {
+    // Clear previous selections
+    tempProgramsForAdd.clear();
+    selectedBranchesForAdd.clear();
+    // Add one empty program to start
+    tempProgramsForAdd.add(PortfolioPrice());
+
+    Get.dialog(
+      Dialog(
+        backgroundColor: ColorCode.white,
+        insetPadding: const EdgeInsets.symmetric(horizontal: 16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.r),
+        ),
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CustomText(
+                AppStrings.addProgram,
+                textStyle: TextStyles.title24Medium.copyWith(color: ColorCode.primary600),
+              ),
+              Gaps.vGap12,
+              // Multi-select branches
+              CustomText(
+                AppStrings.branch,
+                textStyle: TextStyles.body14Regular.copyWith(color: ColorCode.neutral500),
+              ),
+              Gaps.vGap4,
+              GetBuilder<ControlPanelController>(builder: (controller) {
+                return MultiSelectBranchesDropdown(
+                  selectedValues: selectedBranchesForAdd,
+                  onChanged: (branches) {
+                    selectedBranchesForAdd.assignAll(branches);
+                    controller.update();
+                  },
+                  branchesList: branches ?? [],
+                );
+              }),
+              Gaps.vGap16,
+              // Programs list
+              CustomText(
+                'Programs',
+                textStyle: TextStyles.body14Regular.copyWith(color: ColorCode.neutral500),
+              ),
+              Gaps.vGap8,
+              Obx(
+                () => Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        // List of programs
+                        ...List.generate(tempProgramsForAdd.length, (index) {
+                          return Container(
+                            margin: const EdgeInsets.only(bottom: 12),
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: ColorCode.neutral300),
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    CustomText(
+                                      '${AppStrings.program} ${index + 1}',
+                                      textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.primary600),
+                                    ),
+                                    if (tempProgramsForAdd.length > 1)
+                                      IconButton(
+                                        icon: const Icon(Icons.delete, color: Colors.red),
+                                        onPressed: () => tempProgramsForAdd.removeAt(index),
+                                      ),
+                                  ],
+                                ),
+                                ProgramPriceRow(
+                                  ctrl: this,
+                                  program: tempProgramsForAdd[index],
+                                  index: index,
+                                  enable: true,
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                        // Add program button
+                        TextButton.icon(
+                          onPressed: () => tempProgramsForAdd.add(PortfolioPrice()),
+                          icon: const Icon(Icons.add, color: ColorCode.primary600),
+                          label: CustomText(
+                            AppStrings.addProgram,
+                            textStyle: TextStyles.body14Medium.copyWith(color: ColorCode.primary600),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Gaps.vGap16,
+              Row(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        // Clear temp data
+                        tempProgramsForAdd.clear();
+                        selectedBranchesForAdd.clear();
+                        Get.back();
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.r),
+                          border: Border.all(color: ColorCode.neutral400),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 10.5),
+                        child: CustomText(
+                          AppStrings.cancel,
+                          textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.neutral500),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Gaps.hGap16,
+                  Obx(() {
+                    return Visibility(
+                      visible: !isSavingPrices.value,
+                      replacement: const SpinKitCircle(
+                        color: ColorCode.primary600,
+                      ),
+                      child: Expanded(
+                        child: GestureDetector(
+                          onTap: () async {
+                            if (selectedBranchesForAdd.isEmpty) {
+                              customSnackBar(AppStrings.pleaseSelectAtLeastOneBranch, ColorCode.danger600);
+                              return;
+                            }
+                            if (tempProgramsForAdd.isEmpty) {
+                              customSnackBar(AppStrings.pleaseAddAtLeastOneProgram, ColorCode.danger600);
+                              return;
+                            }
+
+                            // Add programs to main list
+                            portfolioPricesModel.addAll(tempProgramsForAdd);
+                            // Save with selected branches
+                            await savePricingChangesWithBranches(selectedBranchesForAdd.map((b) => b.id ?? 0).toList());
+
+                            // Clear temp data
+                            tempProgramsForAdd.clear();
+                            selectedBranchesForAdd.clear();
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.r),
+                              gradient: const LinearGradient(
+                                begin: Alignment.centerRight,
+                                end: Alignment.centerLeft,
+                                transform: GradientRotation(98.52 * (3.1415926535 / 180)),
+                                colors: [
+                                  Color(0xFF7A8CFD),
+                                  Color(0xFF404FB1),
+                                  Color(0xFF2B3990),
+                                ],
+                                stops: [0.1117, 0.6374, 0.9471],
+                              ),
+                            ),
+                            padding: const EdgeInsets.symmetric(vertical: 10.5),
+                            child: CustomText(
+                              AppStrings.add,
+                              textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.white),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   // createPortfolioPrices() async {
   //   isUpdating.value = true;
@@ -888,12 +1374,10 @@ class ControlPanelController extends SuperController<dynamic> {
     });
   }
 
-  List<FlSpot> buildRevenueSpots(
-      List<TotalRevenueForTheLates5Months> revenues) {
+  List<FlSpot> buildRevenueSpots(List<TotalRevenueForTheLates5Months> revenues) {
     return List.generate(revenues.length, (i) {
       final totalPaid = revenues[i].totalPaid;
-      final y =
-          (totalPaid != null && totalPaid >= 0) ? totalPaid.toDouble() : 0.0;
+      final y = (totalPaid != null && totalPaid >= 0) ? totalPaid.toDouble() : 0.0;
       return FlSpot(i + 1.0, y);
     });
   }
@@ -967,6 +1451,27 @@ class ControlPanelController extends SuperController<dynamic> {
     });
   }
 
+  RxBool isDeletingPrice = false.obs;
+
+  deletePrice(String priceId) async {
+    isDeletingPrice.value = true;
+    controlPanelRepository.deletePrice(priceId).then(
+      (value) async {
+        if (value.statusCode == 200 || value.statusCode == 201) {
+          customSnackBar(value.body ?? "", ColorCode.success600);
+
+          update();
+        }
+        isDeletingPrice.value = false;
+      },
+    ).onError((error, stackTrace) {
+      print("Signup error: $error");
+      print("StackTrace: $stackTrace");
+      customSnackBar(error.toString(), ColorCode.danger600);
+      isDeletingPrice.value = false;
+    });
+  }
+
   getBranchTeam(String branchId) async {
     isBranchesLoading.value = true;
     controlPanelRepository.getBranchTeam(branchId).then(
@@ -995,6 +1500,7 @@ class ControlPanelController extends SuperController<dynamic> {
         if (value.statusCode == 200 || value.statusCode == 201) {
           enrollments = null;
           enrollments = value.body?.data ?? [];
+          filteredEnrollments.addAll(enrollments ?? []);
           update();
         }
         isBranchesLoading.value = false;
@@ -1023,8 +1529,7 @@ class ControlPanelController extends SuperController<dynamic> {
       await getEnrollments();
       await getChats();
       await getParents();
-      await getBranchTeam(
-          (AuthService.to.userInfo?.user?.branchId ?? 0).toString());
+      await getBranchTeam((AuthService.to.userInfo?.user?.branchId ?? 0).toString());
       change(false, status: RxStatus.success());
     }
   }
@@ -1100,8 +1605,7 @@ class ControlPanelController extends SuperController<dynamic> {
 
   EnrollmentData? enrollmentData;
 
-  enrollmentRespond(
-      {required int enrollmentId, required String respond}) async {
+  enrollmentRespond({required int enrollmentId, required String respond}) async {
     if (respond == "rejected") {
       enrollments
           ?.firstWhere(
@@ -1118,14 +1622,12 @@ class ControlPanelController extends SuperController<dynamic> {
           .value = true;
     }
     // change(false, status: RxStatus.loading());
-    controlPanelRepository
-        .enrollmentRespond(
-            enrollmentId: enrollmentId.toString(), respond: respond)
-        .then(
+    controlPanelRepository.enrollmentRespond(enrollmentId: enrollmentId.toString(), respond: respond).then(
       (value) async {
         if (value.statusCode == 200 || value.statusCode == 201) {
           enrollmentData = null;
           enrollmentData = value.body;
+          await getEnrollments();
         }
         // change(true, status: RxStatus.success());
         if (respond == "rejected") {
@@ -1135,8 +1637,7 @@ class ControlPanelController extends SuperController<dynamic> {
               )
               .isRespondingReject
               .value = false;
-          customSnackBar(
-              AppStrings.reservationRejectedSuccessfully, ColorCode.success600);
+          customSnackBar(AppStrings.reservationRejectedSuccessfully, ColorCode.success600);
         } else {
           enrollments
               ?.firstWhere(
@@ -1144,8 +1645,74 @@ class ControlPanelController extends SuperController<dynamic> {
               )
               .isResponding
               .value = false;
-          customSnackBar(
-              AppStrings.reservationAcceptedSuccessfully, ColorCode.success600);
+          customSnackBar(AppStrings.reservationAcceptedSuccessfully, ColorCode.success600);
+        }
+        update();
+      },
+    ).onError((error, stackTrace) {
+      print("Signup error: $error");
+      print("StackTrace: $stackTrace");
+      customSnackBar(error.toString(), ColorCode.danger600);
+      // change(true, status: RxStatus.success());
+      if (respond == "rejected") {
+        enrollments
+            ?.firstWhere(
+              (element) => element.enrollmentId == enrollmentId,
+            )
+            .isRespondingReject
+            .value = false;
+      } else {
+        enrollments
+            ?.firstWhere(
+              (element) => element.enrollmentId == enrollmentId,
+            )
+            .isResponding
+            .value = false;
+      }
+    });
+  }
+
+  enrollmentPaidUpdate({required int enrollmentId, required String respond}) async {
+    if (respond == "rejected") {
+      enrollments
+          ?.firstWhere(
+            (element) => element.enrollmentId == enrollmentId,
+          )
+          .isRespondingReject
+          .value = true;
+    } else {
+      enrollments
+          ?.firstWhere(
+            (element) => element.enrollmentId == enrollmentId,
+          )
+          .isResponding
+          .value = true;
+    }
+    // change(false, status: RxStatus.loading());
+    controlPanelRepository.updateExistingToPaid(enrollmentId: enrollmentId.toString(), status: respond).then(
+      (value) async {
+        if (value.statusCode == 200 || value.statusCode == 201) {
+          enrollmentData = null;
+          enrollmentData = value.body;
+          await getEnrollments();
+        }
+        // change(true, status: RxStatus.success());
+        if (respond == "rejected") {
+          enrollments
+              ?.firstWhere(
+                (element) => element.enrollmentId == enrollmentId,
+              )
+              .isRespondingReject
+              .value = false;
+          customSnackBar(AppStrings.reservationRejectedSuccessfully, ColorCode.success600);
+        } else {
+          enrollments
+              ?.firstWhere(
+                (element) => element.enrollmentId == enrollmentId,
+              )
+              .isResponding
+              .value = false;
+          customSnackBar(AppStrings.reservationAcceptedSuccessfully, ColorCode.success600);
         }
         update();
       },
@@ -1173,18 +1740,10 @@ class ControlPanelController extends SuperController<dynamic> {
   }
 
   List<ParentModel> getParentsNotInChats() {
-    final Set<int> contactIdsInChats = chats
-            ?.where((chat) => chat.contactId != null)
-            .map((chat) => chat.contactId!)
-            .toSet() ??
-        <int>{};
+    final Set<int> contactIdsInChats = chats?.where((chat) => chat.contactId != null).map((chat) => chat.contactId!).toSet() ?? <int>{};
 
     // Filter parents whose IDs are not in the contactIdsInChats
-    return parents
-            ?.where((parent) =>
-                parent.id != null && !contactIdsInChats.contains(parent.id))
-            .toList() ??
-        [];
+    return parents?.where((parent) => parent.id != null && !contactIdsInChats.contains(parent.id)).toList() ?? [];
   }
 
   List<ParentModel> chatParents = [];
@@ -1314,6 +1873,7 @@ class ControlPanelController extends SuperController<dynamic> {
       await getChats();
       await showPortfolio();
       await loadThumb();
+      initNotificationData(parents ?? []);
       mainController = Get.find<MainController>();
     } else if (AuthService.to.userInfo?.user?.role == "branch_admin") {
       change(false, status: RxStatus.loading());
@@ -1321,8 +1881,7 @@ class ControlPanelController extends SuperController<dynamic> {
       await getEnrollments();
       await getChats();
       await getParents();
-      await getBranchTeam(
-          (AuthService.to.userInfo?.user?.branchId ?? 0).toString());
+      await getBranchTeam((AuthService.to.userInfo?.user?.branchId ?? 0).toString());
       mainController = Get.find<MainController>();
       change(false, status: RxStatus.success());
     }
@@ -1339,9 +1898,7 @@ class ControlPanelController extends SuperController<dynamic> {
         try {
           final parsed = jsonDecode(data) as Map<String, dynamic>;
           final contactsJson = parsed["contacts"] as List<dynamic>;
-          chats = contactsJson
-              .map((e) => Contacts.fromJson(e as Map<String, dynamic>))
-              .toList();
+          chats = contactsJson.map((e) => Contacts.fromJson(e as Map<String, dynamic>)).toList();
           update();
         } catch (e) {
           print("Error parsing chat-list-updated: $e");
@@ -1423,28 +1980,125 @@ class ControlPanelController extends SuperController<dynamic> {
   //   });
   // }
 
+  // Selected branches for pricing operations
+  final RxList<int> selectedBranchIdsForPricing = <int>[].obs;
+
+  // Temporary list for add dialog programs
+  final RxList<PortfolioPrice> tempProgramsForAdd = <PortfolioPrice>[].obs;
+
+  // Selected branches for add dialog
+  final RxList<BranchModel> selectedBranchesForAdd = <BranchModel>[].obs;
+
   Future<bool> createPortfolioPrices() async {
-    isUpdating.value = true;
+    isSavingPrices.value = true;
     try {
+      final branchIds =
+          selectedBranchIdsForPricing.isEmpty ? [int.tryParse(selectedBranch?.id.toString() ?? "0") ?? 0] : selectedBranchIdsForPricing.toList();
       final value = await controlPanelRepository.createPortfolioPrices(
-        branchId: selectedBranch?.id.toString() ?? "",
-        portfolioPrice: portfolioPricesModel ?? [],
+        branchIds: branchIds,
+        portfolioPrice: portfolioPricesModel.toList(),
       );
 
       if (value.statusCode == 200 || value.statusCode == 201) {
-        await getBranchDetails(selectedBranch?.id.toString() ?? "");
+        // Refetch prices for the selected branch to reflect changes
+        // Refresh current branch prices only
+        await showPortfolioPrices(selectedBranch?.id.toString() ?? "");
         update();
-        isUpdating.value = false;
+        isSavingPrices.value = false;
         return true; // ✅ Success
       }
-      isUpdating.value = false;
+      isSavingPrices.value = false;
       return false;
     } catch (error, stackTrace) {
       print("createPortfolioPrices error: $error");
       print("StackTrace: $stackTrace");
       customSnackBar(error.toString(), ColorCode.danger600);
-      isUpdating.value = false;
+      isSavingPrices.value = false;
       return false; // ❌ Failed
+    }
+  }
+
+  Future<void> savePricingChanges() async {
+    // Only handle pricing here; portfolio saving is separate
+    final changed = pricesChanged;
+    if (!changed) return;
+
+    final success = await createPortfolioPrices();
+    if (success) {
+      // Snapshot originals to the current list
+      _pricesOriginal = portfolioPricesModel.toList().map((e) => e.copy()).toList();
+      Get.back();
+      Get.dialog(Dialog(
+        backgroundColor: ColorCode.white,
+        insetPadding: const EdgeInsets.symmetric(horizontal: 16),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.r),
+        ),
+        child: const UpdatePortfolioSuccessDialog(),
+      ));
+    }
+  }
+
+  Future<void> savePricingChangesWithBranches(List<int> branchIds) async {
+    // Save pricing with specific branches
+    isSavingPrices.value = true;
+    try {
+      final value = await controlPanelRepository.createPortfolioPrices(
+        branchIds: branchIds,
+        portfolioPrice: portfolioPricesModel.toList(),
+      );
+
+      if (value.statusCode == 200 || value.statusCode == 201) {
+        // Refresh current branch prices only
+        await showPortfolioPrices(selectedBranchPricing?.id.toString() ?? "");
+        update();
+        isSavingPrices.value = false;
+        Get.back();
+        // Show success dialog
+        Get.dialog(Dialog(
+          backgroundColor: ColorCode.white,
+          insetPadding: const EdgeInsets.symmetric(horizontal: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.r),
+          ),
+          child: const UpdatePortfolioSuccessDialog(),
+        ));
+      } else {
+        isSavingPrices.value = false;
+        customSnackBar('Failed to save pricing', ColorCode.danger600);
+      }
+    } catch (error, stackTrace) {
+      print("savePricingChangesWithBranches error: $error");
+      print("StackTrace: $stackTrace");
+      customSnackBar(error.toString(), ColorCode.danger600);
+      isSavingPrices.value = false;
+    }
+  }
+
+  Future<void> deletePriceById(int priceId) async {
+    isDeletingPriceById[priceId] = true;
+    update();
+    try {
+      final res = await controlPanelRepository.deletePrice(priceId.toString());
+      if (res.statusCode == 200 || res.statusCode == 201) {
+        // refresh current branch prices
+        await showPortfolioPrices(selectedBranch?.id.toString() ?? "");
+        Get.dialog(Dialog(
+          backgroundColor: ColorCode.white,
+          insetPadding: const EdgeInsets.symmetric(horizontal: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.r),
+          ),
+          child: const UpdatePortfolioSuccessDialog(),
+        ));
+      } else {
+        customSnackBar('Failed to delete price', ColorCode.danger600);
+      }
+    } catch (e) {
+      customSnackBar(e.toString(), ColorCode.danger600);
+    } finally {
+      isDeletingPriceById.remove(priceId);
+      update();
     }
   }
 
@@ -1481,10 +2135,7 @@ class ControlPanelController extends SuperController<dynamic> {
       centerSlogan: centerSloganController.text,
       description: centerdescController.text,
       backgroundImage: centerBackgroundImage,
-      branches: branchControllers
-          .map((c) => c.text)
-          .where((t) => t.isNotEmpty)
-          .toList(),
+      branches: branchControllers.map((c) => c.text).where((t) => t.isNotEmpty).toList(),
       adImages: adImages,
       ourPhilosophy: ourPhilosophyController.text,
       ourMethodology: ourMethodologyController.text,
@@ -1500,35 +2151,19 @@ class ControlPanelController extends SuperController<dynamic> {
 
     final diffFormData = newCenterInfoModel.diffWith(centerInfoModel);
 
-    final shouldUpdatePrices = pricesChanged;
-
     final shouldForceUpdatePortfolio = (centerNameController.text.isNotEmpty) ||
         (centerSloganController.text.isNotEmpty) ||
         (centerdescController.text.isNotEmpty) ||
         (centerBackgroundImage != null);
 
-    if (!shouldUpdatePrices &&
-        diffFormData.fields.isEmpty &&
-        diffFormData.files.isEmpty &&
-        !shouldForceUpdatePortfolio) {
+    if (diffFormData.fields.isEmpty && diffFormData.files.isEmpty && !shouldForceUpdatePortfolio) {
       return;
     }
 
     bool success = false;
 
-    // Update prices
-    if (shouldUpdatePrices) {
-      final pricesResult = await createPortfolioPrices();
-      if (pricesResult) {
-        success = true;
-        _pricesOriginal =
-            (portfolioPricesModel?.value ?? []).map((e) => e.copy()).toList();
-      }
-    }
-
     // Update portfolio
-    if ((diffFormData.fields.isNotEmpty || diffFormData.files.isNotEmpty) &&
-        shouldForceUpdatePortfolio) {
+    if ((diffFormData.fields.isNotEmpty || diffFormData.files.isNotEmpty) && shouldForceUpdatePortfolio) {
       final portfolioResult = await updatePortfolio(diffFormData);
       if (portfolioResult) success = true;
     }
@@ -1597,5 +2232,44 @@ class ControlPanelController extends SuperController<dynamic> {
   @override
   void onHidden() {
     // TODO: implement onHidden
+  }
+
+  Future<void> sendNotificationExpired({required int enrollmentId}) async {
+    enrollments
+        ?.firstWhere(
+          (element) => element.enrollmentId == enrollmentId,
+        )
+        .isResponding
+        .value = true;
+    controlPanelRepository
+        .sendNotificationExpired(
+      enrollmentId: enrollmentId.toString(),
+    )
+        .then(
+      (value) async {
+        if (value.statusCode == 200 || value.statusCode == 201) {
+          // change(true, status: RxStatus.success());
+          enrollments
+              ?.firstWhere(
+                (element) => element.enrollmentId == enrollmentId,
+              )
+              .isResponding
+              .value = false;
+          customSnackBar(AppStrings.notificationAndEmailHasBeenSent, ColorCode.success600);
+          update();
+        }
+      },
+    ).onError((error, stackTrace) {
+      print("Signup error: $error");
+      print("StackTrace: $stackTrace");
+      customSnackBar(error.toString(), ColorCode.danger600);
+      // change(true, status: RxStatus.success());
+      enrollments
+          ?.firstWhere(
+            (element) => element.enrollmentId == enrollmentId,
+          )
+          .isResponding
+          .value = false;
+    });
   }
 }

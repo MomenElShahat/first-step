@@ -65,7 +65,7 @@ class BlogCard extends StatelessWidget {
                     : AuthService.to.language == "ar"
                         ? blog.description?.ar ?? ""
                         : blog.description?.en ?? "",
-                maxLines: 3,
+                maxLines: 2,
                 textAlign: TextAlign.start,
                 textStyle: TextStyles.body14Regular.copyWith(fontSize: 6.sp, color: ColorCode.neutral600, overflow: TextOverflow.ellipsis),
               ),

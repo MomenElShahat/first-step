@@ -32,7 +32,7 @@ class ParentDetailsScreenController extends SuperController<dynamic> {
           parentModel = null;
           parentModel = value.body;
           arabic.text = parentModel?.name ?? "";
-          mobileNumber.text = parentModel?.phone?.replaceAll("966", "") ?? "";
+          mobileNumber.text = parentModel?.phone?.replaceAll("+966", "") ?? "";
           email.text = parentModel?.email ?? "";
           nationalID.text = parentModel?.nationalNumber ?? "";
           update();

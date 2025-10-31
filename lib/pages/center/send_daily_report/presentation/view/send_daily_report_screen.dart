@@ -21,9 +21,7 @@ class SendDailyReportScreen extends GetView<SendDailyReportController> {
       extendBodyBehindAppBar: true,
       body: AnnotatedRegion(
         value: const SystemUiOverlayStyle(
-            statusBarColor: ColorCode.white,
-            statusBarBrightness: Brightness.dark,
-            statusBarIconBrightness: Brightness.dark),
+            statusBarColor: ColorCode.white, statusBarBrightness: Brightness.dark, statusBarIconBrightness: Brightness.dark),
         child: SafeArea(
           child: Column(
             children: [
@@ -69,8 +67,7 @@ class SendDailyReportScreen extends GetView<SendDailyReportController> {
                           children: [
                             CustomText(
                               AppStrings.dailyReport,
-                              textStyle: TextStyles.title24Bold
-                                  .copyWith(color: ColorCode.primary600),
+                              textStyle: TextStyles.title24Bold.copyWith(color: ColorCode.primary600),
                             ),
                           ],
                         ),
@@ -80,10 +77,7 @@ class SendDailyReportScreen extends GetView<SendDailyReportController> {
                           child: RichText(
                             text: TextSpan(
                               children: [
-                                TextSpan(
-                                    text: AppStrings.dailyActivities,
-                                    style: TextStyles.body14Medium
-                                        .copyWith(color: ColorCode.neutral500)),
+                                TextSpan(text: AppStrings.dailyActivities, style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
                               ],
                             ),
                           ),
@@ -106,10 +100,7 @@ class SendDailyReportScreen extends GetView<SendDailyReportController> {
                               },
                               controller: controller.dailyActivities,
                               validator: (val) {
-                                return (controller
-                                    .dailyActivities.text.isNotEmpty)
-                                    ? null
-                                    : AppStrings.emptyField;
+                                return (controller.dailyActivities.text.isNotEmpty) ? null : AppStrings.emptyField;
                               },
                               inputType: TextInputType.text,
                               label: ""),
@@ -121,9 +112,7 @@ class SendDailyReportScreen extends GetView<SendDailyReportController> {
                             text: TextSpan(
                               children: [
                                 TextSpan(
-                                    text: AppStrings.childBehaviorDuringTheDay,
-                                    style: TextStyles.body14Medium
-                                        .copyWith(color: ColorCode.neutral500)),
+                                    text: AppStrings.childBehaviorDuringTheDay, style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
                               ],
                             ),
                           ),
@@ -146,9 +135,7 @@ class SendDailyReportScreen extends GetView<SendDailyReportController> {
                               },
                               controller: controller.behavior,
                               validator: (val) {
-                                return (controller.behavior.text.isNotEmpty)
-                                    ? null
-                                    : AppStrings.emptyField;
+                                return (controller.behavior.text.isNotEmpty) ? null : AppStrings.emptyField;
                               },
                               inputType: TextInputType.text,
                               label: ""),
@@ -159,10 +146,7 @@ class SendDailyReportScreen extends GetView<SendDailyReportController> {
                           child: RichText(
                             text: TextSpan(
                               children: [
-                                TextSpan(
-                                    text: AppStrings.meals,
-                                    style: TextStyles.body14Medium
-                                        .copyWith(color: ColorCode.neutral500)),
+                                TextSpan(text: AppStrings.meals, style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
                               ],
                             ),
                           ),
@@ -185,9 +169,7 @@ class SendDailyReportScreen extends GetView<SendDailyReportController> {
                               },
                               controller: controller.meals,
                               validator: (val) {
-                                return (controller.meals.text.isNotEmpty)
-                                    ? null
-                                    : AppStrings.emptyField;
+                                return (controller.meals.text.isNotEmpty) ? null : AppStrings.emptyField;
                               },
                               inputType: TextInputType.text,
                               label: ""),
@@ -198,10 +180,7 @@ class SendDailyReportScreen extends GetView<SendDailyReportController> {
                           child: RichText(
                             text: TextSpan(
                               children: [
-                                TextSpan(
-                                    text: AppStrings.dailyNap,
-                                    style: TextStyles.body14Medium
-                                        .copyWith(color: ColorCode.neutral500)),
+                                TextSpan(text: AppStrings.dailyNap, style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
                               ],
                             ),
                           ),
@@ -224,9 +203,7 @@ class SendDailyReportScreen extends GetView<SendDailyReportController> {
                               },
                               controller: controller.dailyNap,
                               validator: (val) {
-                                return (controller.dailyNap.text.isNotEmpty)
-                                    ? null
-                                    : AppStrings.emptyField;
+                                return (controller.dailyNap.text.isNotEmpty) ? null : AppStrings.emptyField;
                               },
                               inputType: TextInputType.text,
                               label: ""),
@@ -237,10 +214,7 @@ class SendDailyReportScreen extends GetView<SendDailyReportController> {
                           child: RichText(
                             text: TextSpan(
                               children: [
-                                TextSpan(
-                                    text: AppStrings.additionalNotes,
-                                    style: TextStyles.body14Medium
-                                        .copyWith(color: ColorCode.neutral500)),
+                                TextSpan(text: AppStrings.additionalNotes, style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
                               ],
                             ),
                           ),
@@ -263,9 +237,7 @@ class SendDailyReportScreen extends GetView<SendDailyReportController> {
                               },
                               controller: controller.notes,
                               validator: (val) {
-                                return (controller.notes.text.isNotEmpty)
-                                    ? null
-                                    : AppStrings.emptyField;
+                                return (controller.notes.text.isNotEmpty) ? null : AppStrings.emptyField;
                               },
                               inputType: TextInputType.text,
                               label: ""),
@@ -282,9 +254,7 @@ class SendDailyReportScreen extends GetView<SendDailyReportController> {
                                     flex: 3,
                                     child: InkWell(
                                       onTap: () async {
-                                        if (controller.formKey.currentState
-                                            ?.validate() ??
-                                            false) {
+                                        if (controller.formKey.currentState?.validate() ?? false) {
                                           await controller.onSendReportClicked();
                                         }
                                       },
@@ -301,17 +271,13 @@ class SendDailyReportScreen extends GetView<SendDailyReportController> {
                                             ],
                                             stops: [0.1117, 0.6374, 0.9471],
                                           ),
-                                          borderRadius:
-                                          BorderRadius.circular(8.r),
+                                          borderRadius: BorderRadius.circular(8.r),
                                         ),
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 10.5),
+                                        padding: const EdgeInsets.symmetric(vertical: 10.5),
                                         child: Center(
                                           child: CustomText(
                                             AppStrings.writeAReport,
-                                            textStyle: TextStyles.body16Medium
-                                                .copyWith(
-                                                color: ColorCode.white),
+                                            textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.white),
                                           ),
                                         ),
                                       ),
@@ -334,19 +300,14 @@ class SendDailyReportScreen extends GetView<SendDailyReportController> {
                                   child: Container(
                                     decoration: BoxDecoration(
                                       color: ColorCode.white,
-                                      border: Border.all(
-                                          color: ColorCode.primary600),
-                                      borderRadius:
-                                      BorderRadius.circular(16.r),
+                                      border: Border.all(color: ColorCode.primary600),
+                                      borderRadius: BorderRadius.circular(8.r),
                                     ),
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 10.5),
+                                    padding: const EdgeInsets.symmetric(vertical: 10.5),
                                     child: Center(
                                       child: CustomText(
                                         AppStrings.cancel,
-                                        textStyle: TextStyles.body16Medium
-                                            .copyWith(
-                                            color: ColorCode.primary600),
+                                        textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.primary600),
                                       ),
                                     ),
                                   ),

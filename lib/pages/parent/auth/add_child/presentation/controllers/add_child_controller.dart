@@ -1,93 +1,61 @@
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
+import 'package:first_step/resources/assets_generated.dart';
+import 'package:first_step/routes/app_pages.dart';
+import 'package:first_step/services/auth_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../../../../../../consts/colors.dart';
+import '../../../../../../consts/text_styles.dart';
+import '../../../../../../resources/assets_svg_generated.dart';
 import '../../../../../../resources/strings_generated.dart';
-import '../../../../../../routes/app_pages.dart';
 import '../../../../../../widgets/custom_snackbar.dart';
-import '../../../signup_parent/models/signup_parent_request_model.dart'
-    as parent;
-import '../../../signup_parent/models/signup_parent_request_model.dart';
+import '../../../../../../widgets/custom_text.dart';
+import '../../../../../../widgets/gaps.dart';
+import '../../../../../auth/login/models/login_request.dart';
+import '../../../../../center/control_panel/models/child_model.dart' as child;
+import '../../../../home_parent/models/centers_model.dart';
 import '../../data/add_child_repository.dart';
+import '../../model/child_request_model.dart';
+import '../../model/child_response_model.dart';
+import '../../model/existing_enrollment_request_model.dart';
+import '../../model/existing_enrollment_response_model.dart';
+import '../widgets/request_success_dialog.dart';
+import '../widgets/sub_dialog_add_child.dart';
 
 class AddChildController extends SuperController<dynamic> {
   AddChildController({required this.addChildRepository});
 
   final IAddChildRepository addChildRepository;
 
-  RxInt index = 1.obs;
+  // controllers for a single child input (you can use repeated inputs or dynamic lists in UI)
   TextEditingController childName = TextEditingController();
   TextEditingController dateOfBirth = TextEditingController();
+  TextEditingController kinship = TextEditingController();
   TextEditingController fatherName = TextEditingController();
   TextEditingController motherName = TextEditingController();
-  TextEditingController chronicDiseaseName = TextEditingController();
-  TextEditingController nameOfTreatment = TextEditingController();
-  TextEditingController whatShouldBeDoneInCaseOfAnAllergicReaction =
-      TextEditingController();
-  TextEditingController typeOfAllergy = TextEditingController();
-  TextEditingController whatAreTheAllergensOrFoods = TextEditingController();
-  TextEditingController whatShouldBeDoneInCaseOfAnAllergicReactionAllergy =
-      TextEditingController();
-  TextEditingController describeYourChildIn3Words = TextEditingController();
-  TextEditingController thingsYourChildLikes = TextEditingController();
-  TextEditingController doYouHaveAnyRecommendationsForYourChild =
-      TextEditingController();
-  TextEditingController nameOfAuthorizedPerson = TextEditingController();
-  TextEditingController authorizedPersonIdNumber = TextEditingController();
-  TextEditingController doYouHaveAnyCommentsOrRemarks = TextEditingController();
-
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  GlobalKey<FormState> formKey2 = GlobalKey<FormState>();
-  GlobalKey<FormState> formKey3 = GlobalKey<FormState>();
-  GlobalKey<FormState> formKey4 = GlobalKey<FormState>();
-  GlobalKey<FormState> formKey5 = GlobalKey<FormState>();
+  TextEditingController nationalId = TextEditingController();
+  TextEditingController childImageController = TextEditingController();
 
   RxString selectedGender = AppStrings.boy.obs;
 
-  List<RxBool> isCheckedCenterType = List.generate(3, (index) => false.obs);
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  List<RxBool> isCheckedComuncationWays =
-      List.generate(2, (index) => false.obs);
-  List<RxBool> isCheckedAvailableServices =
-      List.generate(6, (index) => false.obs);
-  List<RxBool> isCheckedAges = List.generate(3, (index) => false.obs);
-  RxString selectedValue = ''.obs;
-  RxString selectedValue2 = ''.obs;
+  RxInt index = 1.obs;
 
-  var chronicDiseases = <DiseaseDetailModel>[
-    DiseaseDetailModel(),
-  ].obs;
+  // Maintain lists for multiple children
+  final RxList<ChildRequestModel> childrenList = <ChildRequestModel>[].obs;
 
-  void addChronicDisease() {
-    chronicDiseases.add(DiseaseDetailModel()); // Add new empty entry
-  }
+  // final RxList<File?> childrenImages = <File?>[].obs;
 
-  void removeChronicDisease(int index) {
-    chronicDiseases.removeAt(index); // Remove entry at index
-  }
+  RxBool isLoading = false.obs;
 
-  var allergySections = <parent.AllergyModel>[
-    parent.AllergyModel(),
-  ].obs; // List of allergy sections
-
-  void addAllergySection() {
-    allergySections.add(parent.AllergyModel()); // Add new section
-  }
-
-  void removeAllergySection(int index) {
-    allergySections.removeAt(index); // Remove specific section
-  }
-
-  var authorizedPersons = <AuthorizedPersonModel>[
-    AuthorizedPersonModel(),
-  ].obs; // List of allergy sections
-
-  void addAuthorizedPersons() {
-    authorizedPersons.add(AuthorizedPersonModel()); // Add new section
-  }
-
-  void removeAuthorizedPersons(int index) {
-    authorizedPersons.removeAt(index); // Remove specific section
+  Future<File?> pickFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    if (result != null) return File(result.files.single.path!);
+    return null;
   }
 
   Future<String?> pickDate(BuildContext context) async {
@@ -95,136 +63,230 @@ class AddChildController extends SuperController<dynamic> {
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(2000), // Set a minimum date
-      lastDate: DateTime.now(), // Set a maximum date
-    );
-
+      lastDate: DateTime.now(),
+    ); // Set a maximum date
     if (selectedDate != null) {
       return DateFormat('yyyy-MM-dd').format(selectedDate);
     }
-    return null; // If no date is selected
+    return null;
   }
 
-  onRegisterParentClicked(BuildContext context) async {
-    change(false, status: RxStatus.loading());
-    parent.SignupParentRequestModel signupParentRequestModel =
-        parent.SignupParentRequestModel(
-            name: name ?? "",
-            email: email ?? "",
-            password: password ?? "",
-            address: "jnjk",
-            nationalNumber: nationalNumber ?? "",
-            phone: "966${mobileNumber ?? ""}",
-            children: [
-          parent.ChildModel(
-            kinship: kinship ?? "",
-            childName: childName.text,
-            birthdayDate: dateOfBirth.text,
-            gender: selectedGender.value == AppStrings.boy ? "boy" : "girl",
-            disease: selectedValue.value == AppStrings.yes ? true : false,
-            description3Words: describeYourChildIn3Words.text.isEmpty
-                ? null
-                : describeYourChildIn3Words.text,
-            thingsChildLikes: thingsYourChildLikes.text.isEmpty
-                ? null
-                : thingsYourChildLikes.text,
-            notes: doYouHaveAnyCommentsOrRemarks.text.isEmpty
-                ? null
-                : doYouHaveAnyCommentsOrRemarks.text,
-            allergy: selectedValue2.value == AppStrings.yes ? true : false,
-            parentName: fatherName.text,
-            motherName: motherName.text,
-            recommendations:
-                doYouHaveAnyRecommendationsForYourChild.text.isEmpty
-                    ? null
-                    : doYouHaveAnyRecommendationsForYourChild.text,
-            authorizedPersons: authorizedPersons
-                .map(
-                  (model) => AuthorizedPersonModel(
-                    name: model.name,
-                    cin: model.cin,
-                  ),
-                )
-                .toList(),
-            allergies: selectedValue2.value == AppStrings.yes
-                ? allergySections
-                    .map(
-                      (model) => parent.AllergyModel(
-                        name: model.name,
-                        allergyCauses: model.allergyCauses,
-                        allergyEmergency: model.allergyEmergency,
-                      ),
-                    )
-                    .toList()
-                : null,
-            diseaseDetails: selectedValue.value == AppStrings.yes
-                ? chronicDiseases
-                    .map(
-                      (model) => parent.DiseaseDetailModel(
-                        diseaseName: model.diseaseName,
-                        emergency: model.emergency,
-                        medicament: model.medicament,
-                      ),
-                    )
-                    .toList()
-                : null,
-          ),
-        ]);
-    addChildRepository.signup(signupParentRequestModel).then(
+  File? childImage;
+
+  // Example: add the current form as a child entry
+  void addChildEntry({File? image}) {
+    final child = ChildRequestModel(
+        childName: childName.text.isNotEmpty ? childName.text : null,
+        birthdayDate: dateOfBirth.text.isNotEmpty ? dateOfBirth.text : null,
+        parentName: fatherName.text.isNotEmpty ? fatherName.text : null,
+        motherName: motherName.text.isNotEmpty ? motherName.text : null,
+        kinship: kinship.text.isNotEmpty ? kinship.text : null,
+        nationalNumber: nationalId.text.isNotEmpty ? nationalId.text : null,
+        gender: selectedGender.value == AppStrings.boy ? "boy" : "girl",
+        childImage: childImage);
+
+    childrenList.add(child);
+    // childrenImages.add(image); // allow null
+    // optional: clear form fields after adding
+    clearForm();
+  }
+
+  void removeChild(int index) {
+    childrenList.removeAt(index);
+  }
+
+  void clearForm() {
+    childName.clear();
+    fatherName.clear();
+    motherName.clear();
+    kinship.clear();
+    nationalId.clear();
+    dateOfBirth.clear();
+    childImageController.clear();
+    childImage = null;
+    selectedGender.value = AppStrings.boy;
+  }
+
+  ChildResponseModel? childResponseModel;
+
+  // Send all children at once
+  Future<void> submitChildren() async {
+    if (childrenList.isEmpty) {
+      customSnackBar(AppStrings.pleaseAddAChildAtLeast, ColorCode.danger600);
+      return;
+    }
+    isLoading.value = true;
+    try {
+      final response = await addChildRepository.addChildren(
+        childrenList.toList(),
+        // childrenImages.toList(),
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        // success
+        childResponseModel = null;
+        childResponseModel = response.body;
+        Get.dialog(
+          barrierDismissible: false,
+          SubDialogAddChild(),
+        );
+        // Get.offAllNamed(Routes.BOTTOM_NAVIGATION);
+      } else {
+        // use response.body?.message or generic error
+      }
+    } catch (e) {
+      print('Add children error: $e');
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  CentersModel? centersModel;
+
+  List<NurseryModel> centers = [];
+
+  RxBool isCentersLoading = false.obs;
+
+  Future<void> getCentersWithFilter({required String filter}) async {
+    // change(false, status: RxStatus.loading());
+    isCentersLoading.value = true;
+    addChildRepository
+        .getCentersWithFilter(filter: filter, selectedCityIds: []).then(
       (value) async {
         if (value.statusCode == 200 || value.statusCode == 201) {
-          customSnackBar(value.body?.message ?? "", ColorCode.success600);
-          Get.offNamed(Routes.LOGIN);
-        } else {
-          customSnackBar(value.body?.message ?? "", ColorCode.danger600);
+          centersModel = null;
+          centersModel = value.body;
+          if (filter == AppStrings.all) {
+            centers.clear();
+            centers.addAll(centersModel?.data ?? []);
+            filteredNurseries.addAll(centersModel?.data ?? []);
+          }
+          update();
         }
-        change(true, status: RxStatus.success());
+        // change(true, status: RxStatus.success());
+        isCentersLoading.value = false;
       },
     ).onError((error, stackTrace) {
       print("Signup error: $error");
       print("StackTrace: $stackTrace");
       customSnackBar(error.toString(), ColorCode.danger600);
-      change(true, status: RxStatus.success());
+      // change(true, status: RxStatus.success());
+      isCentersLoading.value = false;
     });
   }
 
-  String? name;
-  String? kinship;
-  String? mobileNumber;
-  String? email;
-  String? password;
-  String? nationalNumber;
+  List<child.ChildModel>? children;
+
+  List<int> selectedChildIds = [];
+
+  void toggleChildFilter(int childId) {
+    if (selectedChildIds.contains(childId)) {
+      selectedChildIds.remove(childId);
+    } else {
+      selectedChildIds.add(childId);
+    }
+    update();
+  }
+
+  bool isChildSelected(int childId) => selectedChildIds.contains(childId);
+
+  RxBool isChildrenLoading = false.obs;
+
+  Future<void> getChildren() async {
+    isChildrenLoading.value = true;
+    // change(false, status: RxStatus.loading());
+    addChildRepository.getChildren().then(
+      (value) async {
+        if (value.statusCode == 200 || value.statusCode == 201) {
+          children = null;
+          children = value.body;
+          update();
+        }
+        isChildrenLoading.value = false;
+        // change(true, status: RxStatus.success());
+      },
+    ).onError((error, stackTrace) {
+      print("Signup error: $error");
+      print("StackTrace: $stackTrace");
+      customSnackBar(error.toString(), ColorCode.danger600);
+      // change(true, status: RxStatus.success());
+      isChildrenLoading.value = false;
+    });
+  }
+
+  TextEditingController search = TextEditingController();
+
+  RxList<NurseryModel> filteredNurseries = <NurseryModel>[].obs;
+
+  NurseryModel? selectedCenter;
+
+  void filterNurseries() {
+    final query = search.text.toLowerCase();
+
+    filteredNurseries.value = centers.where((nursery) {
+      final matchesName =
+          (nursery.nurseryName ?? '').toLowerCase().contains(query);
+      return matchesName;
+    }).toList();
+    update();
+  }
+
+  RxBool isSubed = false.obs;
+
+  RxBool isCenterSelected = false.obs;
+
+  Branches? selectedBranch;
+
+  RxBool isBranchError = false.obs;
+
+  Pricing? selectedBranchPricing;
+
+  RxBool isSending = false.obs;
+  RxBool isSharing = false.obs;
+  ExistingEnrollmentResponseModel? existingEnrollmentResponseModel;
+
+  Future<void> sendRequest() async {
+    ExistingEnrollmentRequestModel existingEnrollmentRequestModel =
+        ExistingEnrollmentRequestModel(
+      branchPriceId: selectedBranchPricing?.id ?? 0,
+      centerBranchId: selectedBranch?.id ?? 0,
+      children: selectedChildIds,
+    );
+    isSending.value = true;
+    // change(false, status: RxStatus.loading());
+    addChildRepository.sendRequest(existingEnrollmentRequestModel).then(
+      (value) async {
+        if (value.statusCode == 200 || value.statusCode == 201) {
+          existingEnrollmentResponseModel = null;
+          existingEnrollmentResponseModel = value.body;
+          update();
+          Get.back();
+          Get.dialog(RequestSuccessDialog());
+        }
+        isSending.value = false;
+        // change(true, status: RxStatus.success());
+      },
+    ).onError((error, stackTrace) {
+      print("Signup error: $error");
+      print("StackTrace: $stackTrace");
+      customSnackBar(error.toString(), ColorCode.danger600);
+      // change(true, status: RxStatus.success());
+      isSending.value = false;
+    });
+  }
 
   @override
-  void onInit() async {
-    change(true, status: RxStatus.success());
-    var arguments = Get.arguments;
-    name = arguments["name"];
-    kinship = arguments["kinship"];
-    mobileNumber = arguments["mobileNumber"];
-    email = arguments["email"];
-    password = arguments["password"];
-    nationalNumber = arguments["national_number"];
+  void onInit() {
     super.onInit();
-    // Future.delayed(const Duration(seconds: 3)).then((value) {
-    //   final isLoggedIn = AuthService.to.isLoggedIn.value;
-    //   final isSelectedLanguage = AuthService.to.isSelectedLanguage.value;
-    //   AuthService.to.selectLanguage(AuthService.to.language ?? 'en');
-    //
-    //   if (AuthService.to.isFirstTime) {
-    //     Get.offNamed(Routes.BOARD);
-    //   } else {
-    //     if (isLoggedIn) {
-    //       Get.offNamed(Routes.HOME);
-    //     } else {
-    //       Get.offNamed(Routes.LOGIN);
-    //     }
-    //   }
-    // });
   }
 
   @override
   void onDetached() {
     // TODO: implement onDetached
+  }
+
+  @override
+  void onHidden() {
+    // TODO: implement onHidden
   }
 
   @override
@@ -240,23 +302,5 @@ class AddChildController extends SuperController<dynamic> {
   @override
   void onResumed() {
     // TODO: implement onResumed
-  }
-
-  @override
-  void onHidden() {
-    // TODO: implement onHidden
-  }
-
-  // void disposeAllergySections() {
-  //   for (var allergy in allergySections) {
-  //     allergy.typeOfAllergy.dispose();
-  //     allergy.allergensOrFoods.dispose();
-  //     allergy.allergicReactionSteps.dispose();
-  //   }
-  // }
-  @override
-  void dispose() {
-    // disposeAllergySections();
-    super.dispose();
   }
 }

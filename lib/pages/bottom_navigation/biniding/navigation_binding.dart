@@ -53,11 +53,11 @@ class NavigationBinding extends Bindings {
       Get.put(ControlPanelParentController(
           controlPanelParentRepository: Get.find()));
 
-      // Get.put<INotificationsParentProvider>(NotificationsParentProvider());
-      // Get.put<INotificationsParentRepository>(
-      //     NotificationsParentRepository(provider: Get.find()));
-      // Get.put(NotificationsParentScreenController(
-      //     notificationsParentRepository: Get.find()));
+      Get.put<INotificationsParentProvider>(NotificationsParentProvider());
+      Get.put<INotificationsParentRepository>(
+          NotificationsParentRepository(provider: Get.find()));
+      Get.put(NotificationsParentScreenController(
+          notificationsParentRepository: Get.find()));
 
       Get.put<IHomeParentProvider>(HomeParentProvider());
       Get.put<IHomeParentRepository>(
@@ -82,11 +82,11 @@ class NavigationBinding extends Bindings {
         fenix: true,
       );
 
-      // Get.put<INotificationsProvider>(NotificationsProvider());
-      // Get.put<INotificationsRepository>(
-      //     NotificationsRepository(provider: Get.find()));
-      // Get.put(
-      //     NotificationsScreenController(notificationsRepository: Get.find()));
+      Get.put<INotificationsProvider>(NotificationsProvider());
+      Get.put<INotificationsRepository>(
+          NotificationsRepository(provider: Get.find()));
+      Get.put(
+          NotificationsScreenController(notificationsRepository: Get.find()));
 
       Get.put<IHomeProvider>(HomeProvider());
       Get.put<IHomeRepository>(HomeRepository(provider: Get.find()));

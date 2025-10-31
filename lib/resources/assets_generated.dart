@@ -59,4 +59,9 @@ class AppAssets {
   static const AssetImage thumb = AssetImage("assets/images/thumb.png");
   static const AssetImage subExpired = AssetImage("assets/images/sub_expired.png");
   static const AssetImage warningIcon = AssetImage("assets/images/warning_icon.png");
+  static const AssetImage noPricing = AssetImage("assets/images/no_pricing.png");
+  static const AssetImage globeLocation = AssetImage("assets/images/globe_location.png");
+  static const AssetImage abstractSearch = AssetImage("assets/images/abstract_search.png");
+  static const AssetImage checkMarkPink = AssetImage("assets/images/check_mark_pink.png");
+  static const AssetImage addUsersBubble = AssetImage("assets/images/add_users_bubble.png");
 }

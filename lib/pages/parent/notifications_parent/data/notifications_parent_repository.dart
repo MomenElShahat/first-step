@@ -1,6 +1,7 @@
 import 'package:get/get_connect/http/src/response/response.dart';
 
 import '../../../../../base/base_repositroy.dart';
+import '../../child_reservations/model/cancel_response_model.dart';
 import '../model/parent_notifications_model.dart';
 import 'notifications_parent_api_provider.dart';
 
@@ -8,6 +9,7 @@ abstract class INotificationsParentRepository {
   Future<Response<List<ParentNotificationsModel>>> getParentNotifications();
   Future<Response<String>> readParentNotifications(String notificationId);
   Future<Response<String>> readAllParentNotifications();
+  Future<Response<CancelResponseModel>> enrollmentRespond(String enrollmentId);
 }
 
 class NotificationsParentRepository extends BaseRepository implements INotificationsParentRepository {
@@ -53,4 +55,16 @@ class NotificationsParentRepository extends BaseRepository implements INotificat
     }
   }
 
+  @override
+  Future<Response<CancelResponseModel>> enrollmentRespond(String enrollmentId) async {
+    final apiResponse = await provider.enrollmentRespond(enrollmentId);
+    print(apiResponse.bodyString);
+    if (apiResponse.isOk && apiResponse.body != null && (apiResponse.statusCode == 200) || apiResponse.statusCode == 201) {
+      return apiResponse;
+    } else {
+      print(apiResponse.bodyString);
+      print(apiResponse.statusCode);
+      throw (getErrorMessage(apiResponse.bodyString!));
+    }
+  }
 }

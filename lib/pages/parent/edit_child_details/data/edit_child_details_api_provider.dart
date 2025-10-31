@@ -23,8 +23,11 @@ class EditChildDetailsProvider extends BaseAuthProvider
   @override
   Future<Response<ChildModel>> getChildDetails(String childId) {
     return get<ChildModel>(
-      "${AuthService.to.userInfo?.user?.role == "parent" ? EndPoints.childrenParentList : EndPoints.childrenList}/$childId",
-      decoder: ChildModel.fromJson,
+      "${AuthService.to.userInfo?.user?.role == "parent" ? EndPoints.childrenOne : EndPoints.childrenList}/$childId",
+      decoder: (data) {
+        final json = data["data"] as Map<String,dynamic>;
+        return ChildModel.fromJson(json);
+      },
     );
   }
 
@@ -90,7 +93,7 @@ class EditChildDetailsProvider extends BaseAuthProvider
 
     // Use POST instead of PUT
     return post<EditChildResponseModel>(
-      "${EndPoints.childrenParentList}/$childId",
+      "${EndPoints.childrenParentEdit}/$childId",
       formData,
       decoder: EditChildResponseModel.fromJson,
     );

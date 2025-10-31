@@ -1,5 +1,7 @@
 import 'package:first_step/pages/center/auth/signup/models/signup_response_model.dart';
 
+import '../../../parent/home_parent/models/centers_model.dart';
+
 class DeleteBranchModel {
   int? centerId;
   String? nurseryName;

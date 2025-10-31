@@ -93,7 +93,7 @@ class CenterCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           CustomText(
-                            "${AppStrings.mainBranch}: ${AuthService.to.language == "ar" ? center.cityName?.ar ?? "" : center.cityName?.en ?? ""} - ${center.neighborhood ?? ""}",
+                            "${AppStrings.mainBranch}: ${AuthService.to.language == "ar" ? center.city?.name?.ar ?? "" : center.city?.name?.en ?? ""} - ${center.neighborhood ?? ""}",
                             textStyle: TextStyles.body14Regular.copyWith(
                               fontSize: 6.sp,
                               color: ColorCode.neutral500,

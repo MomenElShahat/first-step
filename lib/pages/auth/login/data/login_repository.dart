@@ -8,37 +8,42 @@ import 'login_api_provider.dart';
 
 abstract class ILoginRepository {
   Future<Response<LoginResponseModel>> login(LoginRequest loginRequest);
-  Future<Response<LoginResponseModel>> loginWithGoogle(
-      {required String token});
+
+  Future<Response<LoginResponseModel>> loginWithGoogle({required String token});
 }
 
 class LoginRepository extends BaseRepository implements ILoginRepository {
   LoginRepository({required this.provider});
+
   final ILoginProvider provider;
 
   @override
-  Future<Response<LoginResponseModel>> login(LoginRequest loginRequest)async {
-    final apiResponse =
-    await provider.login(loginRequest);
+  Future<Response<LoginResponseModel>> login(LoginRequest loginRequest) async {
+    final apiResponse = await provider.login(loginRequest);
     print(apiResponse.bodyString);
 
-    if (apiResponse.isOk && apiResponse.body != null&& apiResponse.statusCode==200) {
-      AuthService.to.login(apiResponse.body!);
+    final body = apiResponse.body;
+
+    // If backend sends status "401" inside body
+    if (body?.status == 401 || body?.user == null) {
+      throw body?.message ?? "Invalid email or password.";
+    }
+
+    // Otherwise, handle normal success
+    if (apiResponse.isOk && body != null && apiResponse.statusCode == 200) {
+      AuthService.to.login(body);
       return apiResponse;
     } else {
-      print(apiResponse.bodyString);
-      print(apiResponse.statusCode);
-      throw (getErrorMessage(apiResponse.bodyString!));
+      throw (getErrorMessage(apiResponse.bodyString ?? ""));
     }
   }
+
   @override
-  Future<Response<LoginResponseModel>> loginWithGoogle(
-      {required String token}) async {
-    final apiResponse =
-    await provider.loginWithGoogle(token: token);
+  Future<Response<LoginResponseModel>> loginWithGoogle({required String token}) async {
+    final apiResponse = await provider.loginWithGoogle(token: token);
     print(apiResponse.bodyString);
 
-    if (apiResponse.isOk && apiResponse.body != null&& apiResponse.statusCode==200) {
+    if (apiResponse.isOk && apiResponse.body != null && apiResponse.statusCode == 200) {
       AuthService.to.login(apiResponse.body!);
       return apiResponse;
     } else {
@@ -47,5 +52,4 @@ class LoginRepository extends BaseRepository implements ILoginRepository {
       throw (getErrorMessage(apiResponse.bodyString!));
     }
   }
-
 }

@@ -17,12 +17,13 @@ dependencies:
   fluttertoast: ^8.2.8
   get_storage: ^2.1.1
   mime: ^2.0.0
+  scroll_to_index:
   persistent_bottom_nav_bar: ^6.2.1
   shared_preferences: ^2.2.3
   shimmer: ^3.0.0
   validators: ^3.0.0
-  cloud_firestore: ^6.0.0
-  firebase_core: ^4.0.0
+  cloud_firestore:
+  firebase_core:
   intl: ^0.20.2
   flutter_searchable_dropdown: ^2.0.0
   geocoding: ^4.0.0
@@ -42,9 +43,10 @@ dependencies:
   country_code_picker: ^3.0.0
   the_apple_sign_in: ^1.1.1
   flutter_floating_bottom_bar: ^1.2.0
-  firebase_auth: ^6.0.1
+  firebase_auth: 
   google_sign_in: ^6.1.5
-  firebase_messaging: ^16.0.0
+  firebase_messaging: 
+  firebase_analytics: 
   flutter_local_notifications: ^19.4.0
   # flutter_login_facebook: ^2.0.1
   carousel_slider: ^5.1.1
@@ -111,4 +113,4 @@ flutter:
   uses-material-design: true
 name: first_step
 publish_to: none
-version: 1.0.4+4
+version: 1.0.7+7

@@ -218,7 +218,7 @@ class EditMemberScreen extends GetView<EditMemberScreenController> {
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(36.r),
+                                        borderRadius: BorderRadius.circular(8.r),
                                         gradient: const LinearGradient(
                                           begin: Alignment(-0.15, -1.0), // Approximate direction for 98.52 degrees
                                           end: Alignment(1.0, 0.15),
@@ -230,7 +230,7 @@ class EditMemberScreen extends GetView<EditMemberScreenController> {
                                           stops: [0.1117, 0.6374, 0.9471],
                                         ),
                                       ),
-                                      padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 14.5),
+                                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10.5),
                                       child: Center(
                                         child: CustomText(
                                           AppStrings.saveEdit,
@@ -246,10 +246,10 @@ class EditMemberScreen extends GetView<EditMemberScreenController> {
                               },
                               child: Container(
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(36.r),
+                                  borderRadius: BorderRadius.circular(8.r),
                                   border: Border.all(color: ColorCode.neutral400),
                                 ),
-                                padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 14.5),
+                                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10.5),
                                 child: Center(
                                   child: CustomText(
                                     AppStrings.cancel,

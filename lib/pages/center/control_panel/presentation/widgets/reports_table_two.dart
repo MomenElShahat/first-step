@@ -21,18 +21,11 @@ class ReportsTableTwo extends GetView<ControlPanelController> {
 
   @override
   Widget build(BuildContext context) {
-    final paginatedDailyReports = dailyReports
-        .skip((controller.currentPage - 1) * controller.rowsPerPage)
-        .take(controller.rowsPerPage)
-        .toList();
+    final paginatedDailyReports = dailyReports.skip((controller.currentPage - 1) * controller.rowsPerPage).take(controller.rowsPerPage).toList();
 
-    final start = dailyReports.isNotEmpty
-        ? ((controller.currentPage - 1) * controller.rowsPerPage + 1)
-        : 0;
+    final start = dailyReports.isNotEmpty ? ((controller.currentPage - 1) * controller.rowsPerPage + 1) : 0;
 
-    final end = dailyReports.isNotEmpty
-        ? (controller.currentPage * controller.rowsPerPage).clamp(1, dailyReports.length)
-        : 0;
+    final end = dailyReports.isNotEmpty ? (controller.currentPage * controller.rowsPerPage).clamp(1, dailyReports.length) : 0;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -42,30 +35,29 @@ class ReportsTableTwo extends GetView<ControlPanelController> {
           padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
           child: Row(
             children: [
-              Expanded(flex: 1,
-                  child: CustomText('------------',
-                    textStyle: TextStyles.body14Regular.copyWith(
-                        fontSize: 8.sp, color: ColorCode.white),)),
+              Expanded(
+                  flex: 1,
+                  child: CustomText(
+                    '------------',
+                    textStyle: TextStyles.body14Regular.copyWith(fontSize: 8.sp, color: ColorCode.white),
+                  )),
               Expanded(
                   flex: 3,
                   child: CustomText(
                     AppStrings.childName,
-                    textStyle: TextStyles.body16Medium
-                        .copyWith(color: ColorCode.white),
+                    textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.white),
                   )),
               Expanded(
                   flex: 3,
                   child: CustomText(
                     AppStrings.nursery,
-                    textStyle:
-                    TextStyles.button12.copyWith(color: ColorCode.white),
+                    textStyle: TextStyles.button12.copyWith(color: ColorCode.white),
                   )),
               Expanded(
                   flex: 3,
                   child: CustomText(
                     AppStrings.reportDate,
-                    textStyle:
-                    TextStyles.button12.copyWith(color: ColorCode.white),
+                    textStyle: TextStyles.button12.copyWith(color: ColorCode.white),
                   )),
             ],
           ),
@@ -82,25 +74,32 @@ class ReportsTableTwo extends GetView<ControlPanelController> {
             final nursery = report.center?.branch?.name ?? AppStrings.notFound;
             final date = report.createdAt ?? '${DateTime.now()}';
             return InkWell(
-              onTap: (){
-                Get.toNamed(Routes.DAILY_REPORT_DETAILS_SCREEN,arguments: report.id.toString());
+              onTap: () {
+                Get.toNamed(Routes.DAILY_REPORT_DETAILS_SCREEN, arguments: report.id.toString());
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Row(
                   children: [
-                    Expanded(flex: 1,
+                    Expanded(
+                        flex: 1,
                         child: CustomText(
-                          "${index + 1}", textStyle: TextStyles.body16Medium
-                            .copyWith(color: ColorCode.neutral600),)),
-                    Expanded(flex: 3,
+                          "${index + 1}",
+                          textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.neutral600),
+                        )),
+                    Expanded(flex: 3, child: CustomText(childName, textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.neutral600))),
+                    Expanded(
+                        flex: 3,
                         child: CustomText(
-                            childName, textStyle: TextStyles.body16Medium
-                            .copyWith(color: ColorCode.neutral600))),
-                    Expanded(flex: 3, child: CustomText(nursery, textStyle:
-                    TextStyles.button12.copyWith(color: ColorCode.neutral600),)),
-                    Expanded(flex: 3, child: CustomText(controller.formatDate(date), textStyle:
-                    TextStyles.button12.copyWith(color: ColorCode.neutral600),)),
+                          nursery,
+                          textStyle: TextStyles.button12.copyWith(color: ColorCode.neutral600),
+                        )),
+                    Expanded(
+                        flex: 3,
+                        child: CustomText(
+                          controller.formatDate(date),
+                          textStyle: TextStyles.button12.copyWith(color: ColorCode.neutral600),
+                        )),
                   ],
                 ),
               ),
@@ -116,8 +115,7 @@ class ReportsTableTwo extends GetView<ControlPanelController> {
                 DropdownButton2<int>(
                   underline: Container(),
                   customButton: Container(
-                    padding:
-                    const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+                    padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
                     // width: 44.w,
                     // height: 21.h,
                     decoration: BoxDecoration(
@@ -126,34 +124,19 @@ class ReportsTableTwo extends GetView<ControlPanelController> {
                     ),
                     child: Row(
                       children: [
-                        AppSVGAssets.getWidget(AppSVGAssets.down,
-                            color: ColorCode.primary600),
+                        AppSVGAssets.getWidget(AppSVGAssets.down, color: ColorCode.primary600),
                         Gaps.hGap4,
                         Padding(
                           padding: const EdgeInsets.only(top: 2),
                           child: CustomText(
                             controller.rowsPerPage.toString(),
-                            textStyle: TextStyles.body14Regular.copyWith(
-                                fontSize: 12.sp, color: ColorCode.primary600),
+                            textStyle: TextStyles.body14Regular.copyWith(fontSize: 12.sp, color: ColorCode.primary600),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  // buttonStyleData: ButtonStyleData(
-                  //   padding:
-                  //       const EdgeInsets.symmetric(vertical: 2, horizontal: 5),
-                  //   width: 44.w,
-                  //   height: 21.h,
-                  //   decoration: BoxDecoration(
-                  //     color: ColorCode.tableBg.withOpacity(.1),
-                  //     borderRadius: BorderRadius.circular(5.r),
-                  //   ),
-                  // ),
-                  menuItemStyleData: MenuItemStyleData(
-                      height: 30.h,
-                      padding: const EdgeInsetsDirectional.symmetric(
-                          horizontal: 10)),
+                  menuItemStyleData: MenuItemStyleData(height: 30.h, padding: const EdgeInsetsDirectional.symmetric(horizontal: 10)),
                   dropdownStyleData: DropdownStyleData(
                     decoration: BoxDecoration(
                       // color: ColorCode.tableBg.withOpacity(.1),
@@ -163,13 +146,12 @@ class ReportsTableTwo extends GetView<ControlPanelController> {
                   value: controller.rowsPerPage,
                   items: [10, 20, 30]
                       .map((e) => DropdownMenuItem(
-                    value: e,
-                    child: CustomText(
-                      "$e",
-                      textStyle: TextStyles.body14Regular.copyWith(
-                          fontSize: 12.sp, color: ColorCode.primary600),
-                    ),
-                  ))
+                            value: e,
+                            child: CustomText(
+                              "$e",
+                              textStyle: TextStyles.body14Regular.copyWith(fontSize: 12.sp, color: ColorCode.primary600),
+                            ),
+                          ))
                       .toList(),
                   onChanged: (value) {
                     controller.rowsPerPage = value!;
@@ -181,59 +163,48 @@ class ReportsTableTwo extends GetView<ControlPanelController> {
                 IconButton(
                   onPressed: controller.currentPage > 1
                       ? () {
-                    controller.currentPage = 1;
-                    controller.update();
-                  }
+                          controller.currentPage = 1;
+                          controller.update();
+                        }
                       : null,
                   icon: Icon(
-                    AuthService.to.language == "ar"
-                        ? Icons.first_page
-                        : Icons.last_page,
+                    AuthService.to.language == "ar" ? Icons.first_page : Icons.last_page,
                     color: ColorCode.primary600,
                   ),
                 ),
                 IconButton(
                   onPressed: controller.currentPage > 1
                       ? () {
-                    controller.currentPage--;
-                    controller.update();
-                  }
+                          controller.currentPage--;
+                          controller.update();
+                        }
                       : null,
                   icon: Icon(
-                    AuthService.to.language == "ar"
-                        ? Icons.chevron_left
-                        : Icons.chevron_right,
+                    AuthService.to.language == "ar" ? Icons.chevron_left : Icons.chevron_right,
                     color: ColorCode.primary600,
                   ),
                 ),
                 IconButton(
-                  onPressed: controller.currentPage <
-                      (dailyReports.length / controller.rowsPerPage).ceil()
+                  onPressed: controller.currentPage < (dailyReports.length / controller.rowsPerPage).ceil()
                       ? () {
-                    controller.currentPage++;
-                    controller.update();
-                  }
+                          controller.currentPage++;
+                          controller.update();
+                        }
                       : null,
                   icon: Icon(
-                    AuthService.to.language == "ar"
-                        ? Icons.chevron_right
-                        : Icons.chevron_left,
+                    AuthService.to.language == "ar" ? Icons.chevron_right : Icons.chevron_left,
                     color: ColorCode.primary600,
                   ),
                 ),
                 IconButton(
-                  onPressed: controller.currentPage <
-                      (dailyReports.length / controller.rowsPerPage).ceil()
+                  onPressed: controller.currentPage < (dailyReports.length / controller.rowsPerPage).ceil()
                       ? () {
-                    controller.currentPage =
-                        (dailyReports.length / controller.rowsPerPage).ceil();
-                    controller.update();
-                  }
+                          controller.currentPage = (dailyReports.length / controller.rowsPerPage).ceil();
+                          controller.update();
+                        }
                       : null,
                   icon: Icon(
-                    AuthService.to.language == "ar"
-                        ? Icons.last_page
-                        : Icons.first_page,
+                    AuthService.to.language == "ar" ? Icons.last_page : Icons.first_page,
                     color: ColorCode.primary600,
                   ),
                 ),

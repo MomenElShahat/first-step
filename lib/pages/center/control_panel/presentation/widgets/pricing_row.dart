@@ -15,11 +15,13 @@ class ProgramPriceRow extends StatefulWidget {
   final ControlPanelController ctrl;
   final PortfolioPrice program;
   final int index;
+  final bool enable;
   const ProgramPriceRow({
     super.key,
     required this.ctrl,
     required this.program,
     required this.index,
+    required this.enable,
   });
 
   @override
@@ -72,19 +74,20 @@ class _ProgramPriceRowState extends State<ProgramPriceRow> {
   Widget build(BuildContext context) {
     // Use the model's own values
     final start = (widget.program.startAge ?? 1).toDouble();
-    final end   = (widget.program.endAge ?? 5).toDouble();
+    final end = (widget.program.endAge ?? 5).toDouble();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Program Title
-        CustomText(AppStrings.programTitle,
-            textStyle: TextStyles.body14Regular.copyWith(color: ColorCode.neutral500)),
+        CustomText(AppStrings.programTitle, textStyle: TextStyles.body14Regular.copyWith(color: ColorCode.neutral500)),
         Gaps.vGap4,
         CustomTextFormField(
           controller: _title,
           hint: AppStrings.juniorProgram,
           inputType: TextInputType.text,
+          validator: (p0) => null,
+          enable: widget.enable,
           label: "",
           onChange: (_) => widget.program.title = _title.text,
           onSave: (_) => widget.program.title = _title.text,
@@ -92,8 +95,7 @@ class _ProgramPriceRowState extends State<ProgramPriceRow> {
         Gaps.vGap16,
 
         // Age Range Slider (per-row)
-        CustomText(AppStrings.ageGroup,
-            textStyle: TextStyles.body14Regular.copyWith(color: ColorCode.neutral500)),
+        CustomText(AppStrings.ageGroup, textStyle: TextStyles.body14Regular.copyWith(color: ColorCode.neutral500)),
         Gaps.vGap4,
         SliderTheme(
           data: SliderTheme.of(context).copyWith(
@@ -110,12 +112,14 @@ class _ProgramPriceRowState extends State<ProgramPriceRow> {
             min: 0,
             max: 100,
             onChanged: (v) {
-              setState(() {
-                widget.program.startAge = v.start.toInt();
-                widget.program.endAge = v.end.toInt();
-                _startAge.text = widget.program.startAge.toString();
-                _endAge.text = widget.program.endAge.toString();
-              });
+              if (widget.enable) {
+                setState(() {
+                  widget.program.startAge = v.start.toInt();
+                  widget.program.endAge = v.end.toInt();
+                  _startAge.text = widget.program.startAge.toString();
+                  _endAge.text = widget.program.endAge.toString();
+                });
+              }
             },
           ),
         ),
@@ -130,6 +134,7 @@ class _ProgramPriceRowState extends State<ProgramPriceRow> {
                 inputType: TextInputType.number,
                 label: "",
                 enable: false,
+                validator: (p0) => null,
                 // onChange: (_) => widget.program.count = int.tryParse(_count.text) ?? 0,
                 // onSave: (_) => widget.program.count = int.tryParse(_count.text) ?? 0,
               ),
@@ -141,6 +146,7 @@ class _ProgramPriceRowState extends State<ProgramPriceRow> {
                 hint: AppStrings.toTheAgeOf,
                 inputType: TextInputType.number,
                 label: "",
+                validator: (p0) => null,
                 enable: false,
                 // onChange: (_) => widget.program.count = int.tryParse(_count.text) ?? 0,
                 // onSave: (_) => widget.program.count = int.tryParse(_count.text) ?? 0,
@@ -150,58 +156,61 @@ class _ProgramPriceRowState extends State<ProgramPriceRow> {
         ),
         Gaps.vGap16,
         // Program Type (per-row)
-        CustomText(AppStrings.programType,
-            textStyle: TextStyles.body14Regular.copyWith(color: ColorCode.neutral500)),
+        CustomText(AppStrings.programType, textStyle: TextStyles.body14Regular.copyWith(color: ColorCode.neutral500)),
         Gaps.vGap4,
         PricingTypesDropdown(
           selectedValue: widget.program.enrollmentType, // bind to row
           isError: false,
           onChange: (val) {
-            setState(() {
-              widget.program.enrollmentType = val;
-            });
+            if (widget.enable) {
+              setState(() {
+                widget.program.enrollmentType = val;
+              });
+            }
           },
           typesList: widget.ctrl.programTypes,
         ),
         Gaps.vGap16,
         // Duration
-        CustomText(AppStrings.programDuration,
-            textStyle: TextStyles.body14Regular.copyWith(color: ColorCode.neutral500)),
+        CustomText(AppStrings.programDuration, textStyle: TextStyles.body14Regular.copyWith(color: ColorCode.neutral500)),
         Gaps.vGap4,
         CustomTextFormField(
           controller: _count,
           hint: AppStrings.eg1Hour,
           inputType: TextInputType.number,
+          enable: widget.enable,
           label: "",
+          validator: (p0) => null,
           onChange: (_) => widget.program.count = int.tryParse(_count.text) ?? 0,
           onSave: (_) => widget.program.count = int.tryParse(_count.text) ?? 0,
         ),
         Gaps.vGap16,
 
         // Pricing
-        CustomText(AppStrings.programPricing,
-            textStyle: TextStyles.body14Regular.copyWith(color: ColorCode.neutral500)),
+        CustomText(AppStrings.programPricing, textStyle: TextStyles.body14Regular.copyWith(color: ColorCode.neutral500)),
         Gaps.vGap4,
         CustomTextFormField(
           controller: _price,
           hint: AppStrings.egPrice,
           inputType: TextInputType.number,
           label: "",
+          enable: widget.enable,
+          validator: (p0) => null,
           onChange: (_) => widget.program.priceAmount = _price.text,
           onSave: (_) => widget.program.priceAmount = _price.text,
         ),
         Gaps.vGap16,
 
-        if ((widget.ctrl.portfolioPricesModel.length ?? 0) > 1)
-          Align(
-            alignment: AlignmentDirectional.centerEnd,
-            child: IconButton(
-              icon: const Icon(Icons.delete, color: Colors.red),
-              onPressed: () {
-                widget.ctrl.removeProgramAt(widget.index);
-              },
-            ),
-          ),
+        // if ((widget.ctrl.portfolioPricesModel.length) > 1)
+        //   Align(
+        //     alignment: AlignmentDirectional.centerEnd,
+        //     child: IconButton(
+        //       icon: const Icon(Icons.delete, color: Colors.red),
+        //       onPressed: () {
+        //         widget.ctrl.removeProgramAt(widget.index);
+        //       },
+        //     ),
+        //   ),
       ],
     );
   }

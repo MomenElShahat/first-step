@@ -33,14 +33,8 @@ class Step3 extends GetView<AddChildParentController> {
                   child: RichText(
                     text: TextSpan(
                       children: [
-                        TextSpan(
-                            text: AppStrings.describeYourChildIn3Words,
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.neutral500)),
-                        TextSpan(
-                            text: "*",
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.danger700)),
+                        TextSpan(text: AppStrings.describeYourChildIn3Words, style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
+                        TextSpan(text: "*", style: TextStyles.body14Medium.copyWith(color: ColorCode.danger700)),
                       ],
                     ),
                   ),
@@ -62,12 +56,9 @@ class Step3 extends GetView<AddChildParentController> {
                         // );
                       },
                       controller: controller.describeYourChildIn3Words,
-                      // validator: (val) {
-                      //   return (controller
-                      //           .describeYourChildIn3Words.text.isNotEmpty)
-                      //       ? null
-                      //       : AppStrings.emptyField;
-                      // },
+                      validator: (val) {
+                        return null;
+                      },
                       inputType: TextInputType.text,
                       label: ""),
                 ),
@@ -77,14 +68,8 @@ class Step3 extends GetView<AddChildParentController> {
                   child: RichText(
                     text: TextSpan(
                       children: [
-                        TextSpan(
-                            text: AppStrings.thingsYourChildLikes,
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.neutral500)),
-                        TextSpan(
-                            text: "*",
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.danger700)),
+                        TextSpan(text: AppStrings.thingsYourChildLikes, style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
+                        TextSpan(text: "*", style: TextStyles.body14Medium.copyWith(color: ColorCode.danger700)),
                       ],
                     ),
                   ),
@@ -93,8 +78,7 @@ class Step3 extends GetView<AddChildParentController> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: CustomTextFormField(
-                      hint: AppStrings
-                          .egPlayingTennisHisYellowDollWatchingCartoons,
+                      hint: AppStrings.egPlayingTennisHisYellowDollWatchingCartoons,
                       onSave: (String? val) {
                         controller.thingsYourChildLikes.text = val!;
                       },
@@ -107,11 +91,9 @@ class Step3 extends GetView<AddChildParentController> {
                         // );
                       },
                       controller: controller.thingsYourChildLikes,
-                      // validator: (val) {
-                      //   return (controller.thingsYourChildLikes.text.isNotEmpty)
-                      //       ? null
-                      //       : AppStrings.emptyField;
-                      // },
+                      validator: (val) {
+                        return null;
+                      },
                       inputType: TextInputType.text,
                       label: ""),
                 ),
@@ -122,10 +104,8 @@ class Step3 extends GetView<AddChildParentController> {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                            text:
-                                "${AppStrings.doYouHaveAnyRecommendationsForYourChild} ",
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.neutral500)),
+                            text: "${AppStrings.doYouHaveAnyRecommendationsForYourChild} ",
+                            style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
                       ],
                     ),
                   ),
@@ -136,28 +116,20 @@ class Step3 extends GetView<AddChildParentController> {
                   child: CustomTextFormField(
                       hint: AppStrings.writeHere,
                       onSave: (String? val) {
-                        controller.doYouHaveAnyRecommendationsForYourChild
-                            .text = val!;
+                        controller.doYouHaveAnyRecommendationsForYourChild.text = val!;
                       },
                       onChange: (String? val) {
-                        controller.doYouHaveAnyRecommendationsForYourChild
-                            .text = val!;
+                        controller.doYouHaveAnyRecommendationsForYourChild.text = val!;
                         // final englishText = convertArabicToEnglish(val ??"");
                         // controller.floorNumber.value  =controller.floorNumber.value.copyWith(
                         //   text: englishText,
                         //   selection: TextSelection.collapsed(offset: englishText.length),
                         // );
                       },
-                      controller:
-                          controller.doYouHaveAnyRecommendationsForYourChild,
-                      // validator: (val) {
-                      //   return (controller
-                      //           .doYouHaveAnyRecommendationsForYourChild
-                      //           .text
-                      //           .isNotEmpty)
-                      //       ? null
-                      //       : AppStrings.emptyField;
-                      // },
+                      controller: controller.doYouHaveAnyRecommendationsForYourChild,
+                      validator: (val) {
+                        return null;
+                      },
                       inputType: TextInputType.text,
                       label: ""),
                 ),
@@ -170,9 +142,7 @@ class Step3 extends GetView<AddChildParentController> {
                         child: CustomButton(
                             child: CustomText(
                               AppStrings.next,
-                              textStyle: TextStyles.body16Medium.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  color: ColorCode.white),
+                              textStyle: TextStyles.body16Medium.copyWith(fontWeight: FontWeight.w700, color: ColorCode.white),
                             ),
                             onPressed: () {
                               // if (controller.formKey4.currentState
@@ -184,24 +154,16 @@ class Step3 extends GetView<AddChildParentController> {
                       ),
                       Gaps.hGap(48),
                       Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            controller.index.value = 2;
-                          },
-                          child: Container(
+                        child: CustomButton(
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                border:
-                                    Border.all(color: ColorCode.neutral400)),
-                            padding: const EdgeInsets.symmetric(vertical: 14.5),
+                                borderRadius: BorderRadius.circular(8), color: Colors.white, border: Border.all(color: ColorCode.neutral400)),
                             child: CustomText(
                               AppStrings.previous,
-                              textStyle: TextStyles.body16Medium.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  color: ColorCode.neutral500),
+                              textStyle: TextStyles.body16Medium.copyWith(fontWeight: FontWeight.w700, color: ColorCode.neutral500),
                             ),
-                          ),
-                        ),
+                            onPressed: () {
+                              controller.index.value = 2;
+                            }),
                       ),
                     ],
                   ),
@@ -213,15 +175,12 @@ class Step3 extends GetView<AddChildParentController> {
                       children: [
                         TextSpan(
                           text: "${AppStrings.haveAnAccount} ",
-                          style: TextStyles.body16Medium
-                              .copyWith(color: ColorCode.neutral500),
+                          style: TextStyles.body16Medium.copyWith(color: ColorCode.neutral500),
                         ),
                         TextSpan(
                           text: AppStrings.login,
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () => Get.toNamed(Routes.LOGIN),
-                          style: TextStyles.body16Medium
-                              .copyWith(color: ColorCode.info600),
+                          recognizer: TapGestureRecognizer()..onTap = () => Get.toNamed(Routes.LOGIN),
+                          style: TextStyles.body16Medium.copyWith(color: ColorCode.info600),
                         ),
                       ],
                     ),
@@ -246,8 +205,7 @@ Widget buildCheckBoxRow(int? index1, int? index2, List<RxBool> isChecked) {
           index: index1,
         ),
       Gaps.hGap4,
-      if (index2 != null)
-        CheckBox(isChecked, label: AppStrings.textCommunication, index: index2),
+      if (index2 != null) CheckBox(isChecked, label: AppStrings.textCommunication, index: index2),
     ],
   );
 }

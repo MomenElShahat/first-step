@@ -14,12 +14,8 @@ class OnboardingWidget extends StatelessWidget {
       clipBehavior: Clip.none,
       fit: StackFit.passthrough,
       children: [
-        Image(image: AppAssets.layer1, width: Get.width * .85),
-        PositionedDirectional(
-            top: 40,
-            start: 15,
-            end: 17,
-            child: Image(image: AppAssets.layer2, width: Get.width * .85)),
+        Image(image: AppAssets.layer1),
+        PositionedDirectional(top: 37, start: 10, end: 10, child: Image(image: AppAssets.layer2)),
         PositionedDirectional(
             top: image == AppAssets.parentOnboarding1
                 ? 90
@@ -65,7 +61,9 @@ class BottomCurveClipper extends CustomClipper<Path> {
                 ? 50
                 : image == AppAssets.centerOnboarding2
                     ? 25
-                    : image == AppAssets.parentOnboarding1 ? 37 : 0)); // left
+                    : image == AppAssets.parentOnboarding1
+                        ? 37
+                        : 0)); // left
     path.quadraticBezierTo(
       size.width / 2,
       size.height,
@@ -75,7 +73,9 @@ class BottomCurveClipper extends CustomClipper<Path> {
               ? 55
               : image == AppAssets.centerOnboarding2
                   ? 20
-                  : image == AppAssets.parentOnboarding1 ? 36 : 0),
+                  : image == AppAssets.parentOnboarding1
+                      ? 36
+                      : 0),
     );
     path.lineTo(size.width, 0); // top-right
     path.close();

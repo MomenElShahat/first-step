@@ -7,6 +7,7 @@ import 'package:first_step/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -104,8 +105,42 @@ class ProfileParentScreen extends GetView<ProfileParentController> {
                         child: Column(
                           children: [
                             Gaps.vGap16,
+                            Container(
+                              decoration: BoxDecoration(
+                                color: ColorCode.neutral5,
+                                borderRadius: BorderRadius.circular(8.r),
+                              ),
+                              padding: const EdgeInsets.all(8),
+                              margin: const EdgeInsets.symmetric(horizontal: 16),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      AppSVGAssets.getWidget(AppSVGAssets.profileNotification),
+                                      Gaps.hGap8,
+                                      CustomText(
+                                        AppStrings.notifications,
+                                        textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.neutral600, fontWeight: FontWeight.w500),
+                                      )
+                                    ],
+                                  ),
+                                  Obx(() {
+                                    return Switch(
+                                      activeTrackColor: ColorCode.secondary10,
+                                      inactiveTrackColor: ColorCode.neutral400,
+                                      value: controller.isOpen.value,
+                                      onChanged: (value) async {
+                                        await controller.updateNotifications(value == true ? 1 : 0);
+                                      },
+                                    );
+                                  })
+                                ],
+                              ),
+                            ),
+                            Gaps.vGap8,
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 0),
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
@@ -117,10 +152,8 @@ class ProfileParentScreen extends GetView<ProfileParentController> {
                                       Gaps.hGap8,
                                       CustomText(
                                         AppStrings.chooseLanguage,
-                                        textStyle: TextStyles.body14Medium.copyWith(
-                                            fontSize: 16.sp,
-                                            fontWeight: FontWeight.w500,
-                                            color: ColorCode.neutral600),
+                                        textStyle: TextStyles.body14Medium
+                                            .copyWith(fontSize: 16.sp, fontWeight: FontWeight.w500, color: ColorCode.neutral600),
                                       ),
                                     ],
                                   ),
@@ -181,13 +214,46 @@ class ProfileParentScreen extends GetView<ProfileParentController> {
                             Gaps.vGap8,
                             InkWell(
                               onTap: () async {
-                                await AuthService.to.logout();
+                                final result = await SharePlus.instance.share(
+                                  ShareParams(
+                                    uri: Uri.parse(AuthService.to.googlePlayAppLink),
+                                  ),
+                                );
+                                if (result.status == ShareResultStatus.success) {
+                                  print('Thank you for sharing my app!');
+                                }
                               },
                               child: ProfileRow(
-                                title: AppStrings.logOut,
-                                icon: AppSVGAssets.logout,
+                                title: AppStrings.shareApp,
+                                icon: AppSVGAssets.share,
                               ),
                             ),
+                            Gaps.vGap8,
+                            Obx(() {
+                              return Visibility(
+                                visible: !controller.isLoggingOut.value,
+                                replacement: const Center(
+                                  child: SpinKitCircle(
+                                    color: ColorCode.primary600,
+                                  ),
+                                ),
+                                child: InkWell(
+                                  onTap: () async {
+                                    controller.isLoggingOut.value = true;
+                                    await AuthService.to.logout().then(
+                                      (value) {
+                                        controller.isLoggingOut.value = false;
+                                        Get.offAllNamed(Routes.LOGIN);
+                                      },
+                                    );
+                                  },
+                                  child: ProfileRow(
+                                    title: AppStrings.logOut,
+                                    icon: AppSVGAssets.logout,
+                                  ),
+                                ),
+                              );
+                            }),
                           ],
                         ),
                       ),
@@ -208,27 +274,9 @@ class ProfileParentScreen extends GetView<ProfileParentController> {
                         children: [
                           InkWell(
                             onTap: () {
-                              launchUrl(Uri.parse("https://www.tiktok.com/@firststepapp"));
+                              launchUrl(Uri.parse("https://www.youtube.com/@firststepapp"));
                             },
-                            child: AppSVGAssets.getWidget(AppSVGAssets.tiktok),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              launchUrl(Uri.parse("http://www.instagram.com/firststepapp.sa"));
-                            },
-                            child: AppSVGAssets.getWidget(AppSVGAssets.instagram),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              launchUrl(Uri.parse("https://www.snapchat.com/add/first_stepsa"));
-                            },
-                            child: AppSVGAssets.getWidget(AppSVGAssets.snapchat),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              launchUrl(Uri.parse("https://www.facebook.com/firststepapp"));
-                            },
-                            child: AppSVGAssets.getWidget(AppSVGAssets.facebook),
+                            child: AppSVGAssets.getWidget(AppSVGAssets.youtube),
                           ),
                           InkWell(
                             onTap: () {
@@ -238,9 +286,33 @@ class ProfileParentScreen extends GetView<ProfileParentController> {
                           ),
                           InkWell(
                             onTap: () {
+                              launchUrl(Uri.parse("https://www.tiktok.com/@firststepapp"));
+                            },
+                            child: AppSVGAssets.getWidget(AppSVGAssets.tiktok),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              launchUrl(Uri.parse("https://www.snapchat.com/add/first_stepsa"));
+                            },
+                            child: AppSVGAssets.getWidget(AppSVGAssets.snapchat),
+                          ),
+                          InkWell(
+                            onTap: () {
                               launchUrl(Uri.parse("https://x.com/firststepapp"));
                             },
                             child: AppSVGAssets.getWidget(AppSVGAssets.twitter),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              launchUrl(Uri.parse("http://www.instagram.com/firststepapp.sa"));
+                            },
+                            child: AppSVGAssets.getWidget(AppSVGAssets.instagram),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              launchUrl(Uri.parse("https://www.facebook.com/firststepapp"));
+                            },
+                            child: AppSVGAssets.getWidget(AppSVGAssets.facebook),
                           ),
                         ],
                       ),

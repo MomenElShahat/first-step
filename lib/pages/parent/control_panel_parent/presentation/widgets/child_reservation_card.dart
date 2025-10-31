@@ -83,7 +83,7 @@ class ChildReservationCard extends StatelessWidget {
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(36.r),
+                            borderRadius: BorderRadius.circular(8.r),
                             gradient: const LinearGradient(
                               begin: Alignment(-0.15, -1.0), // Approximate direction for 98.52 degrees
                               end: Alignment(1.0, 0.15),
@@ -96,7 +96,7 @@ class ChildReservationCard extends StatelessWidget {
                             ),
                           ),
                           padding: const EdgeInsets.symmetric(
-                              vertical: 14.5, horizontal: 24),
+                              vertical: 10.5, horizontal: 24),
                           child: Center(
                             child: CustomText(
                               AppStrings.viewTheChildFile,
@@ -116,11 +116,11 @@ class ChildReservationCard extends StatelessWidget {
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(36.r),
+                            borderRadius: BorderRadius.circular(8.r),
                             border: Border.all(color: ColorCode.primary600),
                           ),
                           padding: const EdgeInsets.symmetric(
-                              vertical: 14.5, horizontal: 24),
+                              vertical: 10.5, horizontal: 16),
                           child: Center(
                             child: CustomText(
                               AppStrings.viewReservations,

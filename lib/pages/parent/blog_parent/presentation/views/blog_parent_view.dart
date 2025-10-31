@@ -99,6 +99,10 @@ class BlogParentScreen extends GetView<BlogParentScreenController> {
                                     SizedBox(
                                       height: 55.h,
                                       child: CustomTextFormField(
+                                        onSave: (val){},
+                                        validator: (p0) {
+                                          return null;
+                                        },
                                         hint: AppStrings.findTheArticle,
                                         inputType: TextInputType.text,
                                         label: "",
@@ -228,17 +232,15 @@ class BlogParentScreen extends GetView<BlogParentScreenController> {
                                     ),
                                   )
                                 : Center(
-                                    child: Expanded(
-                                      child: RefreshIndicator(
-                                        onRefresh: controller.onRefresh,
-                                        child: SingleChildScrollView(
-                                          child: Column(
-                                            children: [
-                                              Gaps.vGap128,
-                                              CustomText(
-                                                  AppStrings.noBlogsFound),
-                                            ],
-                                          ),
+                                    child: RefreshIndicator(
+                                      onRefresh: controller.onRefresh,
+                                      child: SingleChildScrollView(
+                                        child: Column(
+                                          children: [
+                                            Gaps.vGap128,
+                                            CustomText(
+                                                AppStrings.noBlogsFound),
+                                          ],
                                         ),
                                       ),
                                     ),

@@ -9,7 +9,7 @@ class ExpandableSectionItem extends StatelessWidget {
   final String title;
   final bool isExpanded;
   final VoidCallback onEdit;
-  final VoidCallback onReset;
+  final VoidCallback? onReset;
   final Widget expandedContent;
 
   const ExpandableSectionItem({
@@ -17,7 +17,7 @@ class ExpandableSectionItem extends StatelessWidget {
     required this.title,
     required this.isExpanded,
     required this.onEdit,
-    required this.onReset,
+    this.onReset,
     required this.expandedContent,
   });
 
@@ -25,9 +25,7 @@ class ExpandableSectionItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
-      decoration: BoxDecoration(
-          border: Border.all(color: ColorCode.neutral400),
-          borderRadius: BorderRadiusDirectional.circular(8.r)),
+      decoration: BoxDecoration(border: Border.all(color: ColorCode.neutral400), borderRadius: BorderRadiusDirectional.circular(8.r)),
       child: Column(
         children: [
           ListTile(
@@ -35,8 +33,7 @@ class ExpandableSectionItem extends StatelessWidget {
             title: CustomText(
               title,
               textAlign: TextAlign.start,
-              textStyle: TextStyles.body16Medium.copyWith(
-                  color: ColorCode.primary600, fontWeight: FontWeight.w700),
+              textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.primary600, fontWeight: FontWeight.w700),
             ),
             trailing: isExpanded
                 ? InkWell(

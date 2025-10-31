@@ -9,6 +9,7 @@ import 'dart:io';
 import '../../../../../consts/colors.dart';
 import '../../../../../widgets/custom_snackbar.dart';
 import '../../../../center/auth/signup/models/cities_model.dart';
+import '../../../../center/auth/signup/models/cities_model.dart' as city;
 import '../../../home_parent/models/centers_model.dart';
 import '../../../home_parent/presentation/widgets/cities_dialog.dart';
 import '../../data/search_parent_repository.dart';
@@ -143,7 +144,7 @@ class SearchParentScreenController extends SuperController<dynamic> {
     await getLatestCentersResearches();
   }
 
-  List<City> cities = [];
+  List<city.City> cities = [];
 
   getCities() async {
     change(false, status: RxStatus.loading());

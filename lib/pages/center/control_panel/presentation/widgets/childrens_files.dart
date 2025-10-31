@@ -28,21 +28,17 @@ class ChildrensFiles extends GetView<ControlPanelController> {
         shrinkWrap: true,
         padding: const EdgeInsets.only(bottom: 16),
         children: [
-          if(AuthService.to.userInfo?.user?.role == "center")
-            ...[
-              ChildrenCapacityWidget(current: controller.statisticsModel?.totalChildren ?? 0, capacity: 1000),
-              Gaps.vGap40,
-              CustomText(
-                AppStrings.compareTheNumberOfChildren,
-                textStyle: TextStyles.body16Medium.copyWith(fontWeight: FontWeight.w700, color: ColorCode.primary600),
-              ),
-              Gaps.vGap16,
-              buildEnrollmentsList(
-                  controller.statisticsModel?.enrollmentsOverTime ??
-                      <String, dynamic>{},
-                  controller),
-              Gaps.vGap40,
-            ],
+          if (AuthService.to.userInfo?.user?.role == "center") ...[
+            ChildrenCapacityWidget(current: controller.statisticsModel?.totalChildren ?? 0, capacity: 1000),
+            Gaps.vGap40,
+            CustomText(
+              AppStrings.compareTheNumberOfChildren,
+              textStyle: TextStyles.body16Medium.copyWith(fontWeight: FontWeight.w700, color: ColorCode.primary600),
+            ),
+            Gaps.vGap16,
+            buildEnrollmentsList(controller.statisticsModel?.enrollmentsOverTime ?? <String, dynamic>{}, controller),
+            Gaps.vGap40,
+          ],
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -54,10 +50,10 @@ class ChildrensFiles extends GetView<ControlPanelController> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(36.r),
+                      borderRadius: BorderRadius.circular(8.r),
                       border: Border.all(color: controller.selectedSection.value == "parents" ? ColorCode.primary600 : ColorCode.neutral400),
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 14.5),
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10.5),
                     child: Center(
                       child: CustomText(
                         AppStrings.parents,
@@ -76,10 +72,10 @@ class ChildrensFiles extends GetView<ControlPanelController> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(36.r),
+                      borderRadius: BorderRadius.circular(8.r),
                       border: Border.all(color: controller.selectedSection.value == "children" ? ColorCode.primary600 : ColorCode.neutral400),
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 14.5),
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10.5),
                     child: Center(
                       child: CustomText(
                         AppStrings.children,
@@ -108,35 +104,39 @@ class ChildrensFiles extends GetView<ControlPanelController> {
               child: controller.selectedSection.value == "parents"
                   ? Column(
                       children: [
-                        if(controller.parents?.isNotEmpty ?? false)
+                        if (controller.parents?.isNotEmpty ?? false)
                           ...List.generate(
                             controller.parents?.length ?? 0,
-                                (index) => ParentCard(
+                            (index) => ParentCard(
                               parentModel: controller.parents?[index] ?? ParentModel(),
                               // onTap: () {
                               //   controller.removeParent(index);
                               // },
                             ),
                           ),
-                        if(controller.parents?.isEmpty ?? false)
-                          ...[
-                            Gaps.vGap32,
-                            CustomText(AppStrings.noParentsFound,textStyle: TextStyles.body16Medium,)
-                          ],
+                        if (controller.parents?.isEmpty ?? false) ...[
+                          Gaps.vGap32,
+                          CustomText(
+                            AppStrings.noParentsFound,
+                            textStyle: TextStyles.body16Medium,
+                          )
+                        ],
                       ],
                     )
                   : Column(
                       children: [
-                        if(controller.children?.isNotEmpty ?? false)
+                        if (controller.children?.isNotEmpty ?? false)
                           ...List.generate(
                             controller.children?.length ?? 0,
-                                (index) => ChildCard(childModel: controller.children?[index] ?? ChildModel()),
+                            (index) => ChildCard(childModel: controller.children?[index] ?? ChildModel()),
                           ),
-                        if(controller.children?.isEmpty ?? false)
-                          ...[
-                            Gaps.vGap32,
-                            CustomText(AppStrings.noChildrenFound,textStyle: TextStyles.body16Medium,)
-                          ],
+                        if (controller.children?.isEmpty ?? false) ...[
+                          Gaps.vGap32,
+                          CustomText(
+                            AppStrings.noChildrenFound,
+                            textStyle: TextStyles.body16Medium,
+                          )
+                        ],
                       ],
                     )),
         ],

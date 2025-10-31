@@ -15,22 +15,103 @@ import '../controllers/control_panel_controller.dart';
 class CenterEnrollmentList extends GetView<ControlPanelController> {
   final List<CenterEnrollment> enrollments;
 
-  const CenterEnrollmentList({super.key, required this.enrollments});
+  const CenterEnrollmentList({
+    super.key,
+    required this.enrollments,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      shrinkWrap: true,
-      // physics: const NeverScrollableScrollPhysics(),
-      children: enrollments
-          .map(
-            (e) => EnrollmentCard(
-              enrollment: e,
+    return Obx(() {
+      return ListView(
+        shrinkWrap: true,
+        // physics: const NeverScrollableScrollPhysics(),
+        children: [
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                ...List.generate(
+                  controller.statuses.length,
+                  (index) => Obx(() {
+                    return InkWell(
+                      borderRadius: BorderRadius.circular(4.r),
+                      onTap: () {
+                        controller.selectedStatus.value =
+                            controller.statuses[index];
+                        if (controller.selectedStatus.value == "all") {
+                          controller.filteredEnrollments.value = enrollments;
+                        } else {
+                          controller.filteredEnrollments.value = enrollments
+                              .where(
+                                (element) =>
+                                    element.status ==
+                                    controller.selectedStatus.value,
+                              )
+                              .toList();
+                        }
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4.r),
+                            border: Border.all(
+                                color: controller.selectedStatus.value ==
+                                        controller.statuses[index]
+                                    ? Colors.transparent
+                                    : ColorCode.neutral400),
+                            color: controller.selectedStatus.value ==
+                                    controller.statuses[index]
+                                ? null
+                                : ColorCode.white,
+                            gradient: controller.selectedStatus.value ==
+                                    controller.statuses[index]
+                                ? const LinearGradient(
+                                    begin: Alignment(-0.15, -1.0),
+                                    // Approximate direction for 98.52 degrees
+                                    end: Alignment(1.0, 0.15),
+                                    colors: [
+                                      Color(0xFF7A8CFD),
+                                      Color(0xFF404FB1),
+                                      Color(0xFF2B3990),
+                                    ],
+                                    stops: [0.1117, 0.6374, 0.9471],
+                                  )
+                                : null),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 8),
+                        margin: const EdgeInsetsDirectional.only(end: 4),
+                        child: Center(
+                          child: CustomText(
+                            controller.statuses[index] == "all"
+                                ? AppStrings.all
+                                : controller
+                                    .getStatusText(controller.statuses[index]),
+                            textStyle: TextStyles.button12.copyWith(
+                                color: controller.selectedStatus.value ==
+                                        controller.statuses[index]
+                                    ? ColorCode.white
+                                    : ColorCode.neutral500),
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+                ),
+              ],
             ),
-          )
-          .toList()
-          .cast<Widget>(), // 👈 This fixes the type error
-    );
+          ),
+          Gaps.vGap(29),
+          ...controller.filteredEnrollments
+              .map(
+                (e) => EnrollmentCard(
+                  enrollment: e,
+                ),
+              )
+              .toList()
+              .cast<Widget>()
+        ], // 👈 This fixes the type error
+      );
+    });
   }
 }
 
@@ -47,13 +128,17 @@ class EnrollmentCard extends StatelessWidget {
       case 'accepted':
         return ColorCode.warning600;
       case 'pending':
-        return ColorCode.neutral400;
+        return ColorCode.purple;
       case 'cancelled':
         return ColorCode.danger600;
       case 'rejected':
         return ColorCode.danger600;
       case 'paid':
         return ColorCode.success600;
+      case 'existing':
+        return ColorCode.info600;
+      case 'expired':
+        return ColorCode.neutral400;
       default:
         return ColorCode.neutral400;
     }
@@ -71,6 +156,10 @@ class EnrollmentCard extends StatelessWidget {
         return AppStrings.rejected;
       case 'paid':
         return AppStrings.paid;
+      case 'existing':
+        return AppStrings.throughNursery;
+      case 'expired':
+        return AppStrings.expired;
       default:
         return AppStrings.unknown;
     }
@@ -137,7 +226,7 @@ class EnrollmentCard extends StatelessWidget {
                       textStyle: TextStyles.body16Medium.copyWith(
                           color: ColorCode.primary600,
                           fontWeight: FontWeight.w500)),
-                  CustomText(enrollment.startingDate ?? "السبت 20 / 5 / 2025",
+                  CustomText(enrollment.startingDate ?? AppStrings.notFound,
                       textStyle: TextStyles.body16Medium.copyWith(
                           color: ColorCode.neutral500,
                           fontWeight: FontWeight.w500)),
@@ -151,7 +240,7 @@ class EnrollmentCard extends StatelessWidget {
                       textStyle: TextStyles.body16Medium.copyWith(
                           color: ColorCode.primary600,
                           fontWeight: FontWeight.w500)),
-                  CustomText(enrollment.endingDate ?? "الخميس 26 / 5 / 2025",
+                  CustomText(enrollment.endingDate ?? AppStrings.notFound,
                       textStyle: TextStyles.body16Medium.copyWith(
                           color: ColorCode.neutral500,
                           fontWeight: FontWeight.w500)),
@@ -166,7 +255,7 @@ class EnrollmentCard extends StatelessWidget {
                       textStyle: TextStyles.body16Medium.copyWith(
                           color: ColorCode.primary600,
                           fontWeight: FontWeight.w500)),
-                  CustomText(enrollment.dayString ?? "السبت 20 / 5 / 2025",
+                  CustomText(enrollment.dayString ?? AppStrings.notFound,
                       textStyle: TextStyles.body16Medium.copyWith(
                           color: ColorCode.neutral500,
                           fontWeight: FontWeight.w500)),
@@ -180,7 +269,7 @@ class EnrollmentCard extends StatelessWidget {
                       textStyle: TextStyles.body16Medium.copyWith(
                           color: ColorCode.primary600,
                           fontWeight: FontWeight.w500)),
-                  CustomText(enrollment.startingTime ?? "السبت 20 / 5 / 2025",
+                  CustomText(enrollment.startingTime ?? AppStrings.notFound,
                       textStyle: TextStyles.body16Medium.copyWith(
                           color: ColorCode.neutral500,
                           fontWeight: FontWeight.w500)),
@@ -194,7 +283,7 @@ class EnrollmentCard extends StatelessWidget {
                       textStyle: TextStyles.body16Medium.copyWith(
                           color: ColorCode.primary600,
                           fontWeight: FontWeight.w500)),
-                  CustomText(enrollment.endingTime ?? "الخميس 26 / 5 / 2025",
+                  CustomText(enrollment.endingTime ?? AppStrings.notFound,
                       textStyle: TextStyles.body16Medium.copyWith(
                           color: ColorCode.neutral500,
                           fontWeight: FontWeight.w500)),
@@ -211,7 +300,7 @@ class EnrollmentCard extends StatelessWidget {
                         fontWeight: FontWeight.w500)),
                 ...List.generate(
                   enrollment.children?.take(1).length ?? 0,
-                      (index) => CustomText(
+                  (index) => CustomText(
                       (enrollment.children?.length ?? 0) > 1
                           ? "${enrollment.children?[index].childName ?? ""},.."
                           : enrollment.children?[index].childName ?? "",
@@ -261,14 +350,14 @@ class EnrollmentCard extends StatelessWidget {
                     enrollment.enrollmentType == "hour"
                         ? AppStrings.flexibleHourly
                         : enrollment.enrollmentType == "day"
-                        ? AppStrings.daily
-                        : enrollment.enrollmentType == "week"
-                        ? AppStrings.weekly
-                        : enrollment.enrollmentType == "month"
-                        ? AppStrings.monthly
-                        : enrollment.enrollmentType == "year"
-                        ? AppStrings.yearly
-                        : "",
+                            ? AppStrings.daily
+                            : enrollment.enrollmentType == "week"
+                                ? AppStrings.weekly
+                                : enrollment.enrollmentType == "month"
+                                    ? AppStrings.monthly
+                                    : enrollment.enrollmentType == "year"
+                                        ? AppStrings.yearly
+                                        : "",
                     textStyle: TextStyles.body16Medium.copyWith(
                         color: ColorCode.neutral500,
                         fontWeight: FontWeight.w500)),
@@ -426,41 +515,161 @@ class EnrollmentCard extends StatelessWidget {
                   }),
                 ],
               )
+            else if (enrollment.status == 'existing')
+              Column(
+                children: [
+                  Obx(() {
+                    return Visibility(
+                      visible: enrollment.isResponding.value == false,
+                      replacement: const Center(
+                        child: SpinKitCircle(
+                          color: ColorCode.primary600,
+                        ),
+                      ),
+                      child: InkWell(
+                        onTap: () {
+                          // await controller.enrollmentPaidUpdate(enrollmentId: enrollment.enrollmentId ?? 0, respond: "paid");
+                          Get.toNamed(Routes.REVIEW_RESERVATION_SCREEN,
+                              arguments: enrollment);
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              begin: Alignment(-0.15, -1.0),
+                              // Approximate direction for 98.52 degrees
+                              end: Alignment(1.0, 0.15),
+                              colors: [
+                                Color(0xFF7A8CFD),
+                                Color(0xFF404FB1),
+                                Color(0xFF2B3990),
+                              ],
+                              stops: [0.1117, 0.6374, 0.9471],
+                            ),
+                            borderRadius: BorderRadius.circular(16.r),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 10.5),
+                          child: Center(
+                            child: CustomText(
+                              AppStrings.reviewReservation,
+                              textStyle: TextStyles.body16Medium
+                                  .copyWith(color: ColorCode.white),
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+                  Gaps.vGap8,
+                  Obx(() {
+                    return Visibility(
+                      visible: enrollment.isRespondingReject.value == false,
+                      replacement: const Center(
+                        child: SpinKitCircle(
+                          color: ColorCode.primary600,
+                        ),
+                      ),
+                      child: InkWell(
+                        onTap: () async {
+                          await controller.enrollmentPaidUpdate(
+                              enrollmentId: enrollment.enrollmentId ?? 0,
+                              respond: "rejected");
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: ColorCode.white,
+                            border: Border.all(color: ColorCode.danger600),
+                            borderRadius: BorderRadius.circular(16.r),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 10.5),
+                          child: Center(
+                            child: CustomText(
+                              AppStrings.rejectReservation,
+                              textStyle: TextStyles.body16Medium
+                                  .copyWith(color: ColorCode.danger600),
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+                ],
+              )
+            else if (enrollment.status == 'expired')
+              Obx(() {
+                return Visibility(
+                  visible: enrollment.isResponding.value == false,
+                  replacement: const Center(
+                    child: SpinKitCircle(
+                      color: ColorCode.primary600,
+                    ),
+                  ),
+                  child: InkWell(
+                    onTap: () async {
+                      await controller.sendNotificationExpired(
+                          enrollmentId: enrollment.enrollmentId ?? 0);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          begin: Alignment(-0.15, -1.0),
+                          // Approximate direction for 98.52 degrees
+                          end: Alignment(1.0, 0.15),
+                          colors: [
+                            Color(0xFF7A8CFD),
+                            Color(0xFF404FB1),
+                            Color(0xFF2B3990),
+                          ],
+                          stops: [0.1117, 0.6374, 0.9471],
+                        ),
+                        borderRadius: BorderRadius.circular(16.r),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 10.5),
+                      child: Center(
+                        child: CustomText(
+                          AppStrings.sendAlertToParent,
+                          textStyle: TextStyles.body16Medium
+                              .copyWith(color: ColorCode.white),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              })
             else
-              InkWell(
-                onTap: () async {
-                  Get.toNamed(Routes.BOOKING_DETAILS_SCREEN, arguments: {
-                    "selectedBranch": controller.branches?.firstWhere(
-                      (element) => element.id == enrollment.branchId,
-                    ),
-                    "enrollmentId": enrollment.enrollmentId.toString(),
-                  });
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      begin: Alignment(-0.15, -1.0),
-                      // Approximate direction for 98.52 degrees
-                      end: Alignment(1.0, 0.15),
-                      colors: [
-                        Color(0xFF7A8CFD),
-                        Color(0xFF404FB1),
-                        Color(0xFF2B3990),
-                      ],
-                      stops: [0.1117, 0.6374, 0.9471],
-                    ),
-                    borderRadius: BorderRadius.circular(16.r),
-                  ),
-                  padding: const EdgeInsets.symmetric(vertical: 10.5),
-                  child: Center(
-                    child: CustomText(
-                      AppStrings.viewBookingDetails,
-                      textStyle: TextStyles.body16Medium
-                          .copyWith(color: ColorCode.white),
-                    ),
-                  ),
-                ),
-              ),
+              SizedBox(),
+            // InkWell(
+            //   onTap: () async {
+            //     Get.toNamed(Routes.BOOKING_DETAILS_SCREEN, arguments: {
+            //       "selectedBranch": controller.branches?.firstWhere(
+            //         (element) => element.id == enrollment.branchId,
+            //       ),
+            //       "enrollmentId": enrollment.enrollmentId.toString(),
+            //     });
+            //   },
+            //   child: Container(
+            //     decoration: BoxDecoration(
+            //       gradient: const LinearGradient(
+            //         begin: Alignment(-0.15, -1.0),
+            //         // Approximate direction for 98.52 degrees
+            //         end: Alignment(1.0, 0.15),
+            //         colors: [
+            //           Color(0xFF7A8CFD),
+            //           Color(0xFF404FB1),
+            //           Color(0xFF2B3990),
+            //         ],
+            //         stops: [0.1117, 0.6374, 0.9471],
+            //       ),
+            //       borderRadius: BorderRadius.circular(16.r),
+            //     ),
+            //     padding: const EdgeInsets.symmetric(vertical: 10.5),
+            //     child: Center(
+            //       child: CustomText(
+            //         AppStrings.viewBookingDetails,
+            //         textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.white),
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

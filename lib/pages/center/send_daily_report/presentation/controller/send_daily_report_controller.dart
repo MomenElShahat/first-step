@@ -22,9 +22,8 @@ class SendDailyReportController extends SuperController<bool> {
   List<int>? childIds;
 
   RxBool isSending = false.obs;
-  onSendReportClicked() async {
+  Future<void> onSendReportClicked() async {
     isSending.value = true;
-    // change(false, status: RxStatus.loading());
     SendReportRequestModel sendReportRequestModel = SendReportRequestModel(
       childIds: childIds ?? [],
       activities: dailyActivities.text,
@@ -38,17 +37,13 @@ class SendDailyReportController extends SuperController<bool> {
         if (value.statusCode == 200 || value.statusCode == 201) {
           customSnackBar(value.body?.message ?? "", ColorCode.success600);
           Get.back();
-        } else {
-          customSnackBar(value.body?.message ?? "", ColorCode.danger600);
         }
-        // change(true, status: RxStatus.success());
         isSending.value = false;
       },
     ).onError((error, stackTrace) {
       print("Signup error: $error");
       print("StackTrace: $stackTrace");
       customSnackBar(error.toString(), ColorCode.danger600);
-      // change(true, status: RxStatus.success());
       isSending.value = false;
     });
   }

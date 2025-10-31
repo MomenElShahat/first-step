@@ -63,8 +63,8 @@ class CenterInfoModel {
       'background_image': backgroundImage?.path,
       'branches': branches
           .map((branch) => {
-        'branch_name': branch,
-      })
+                'branch_name': branch,
+              })
           .toList(),
       'ads_images': adImages.where((image) => image != null).map((image) => image!.path).toList(),
       'Philosophy_Methodology_Goal[philosophy][content]': ourPhilosophy,
@@ -77,17 +77,17 @@ class CenterInfoModel {
       'images_activities': activityImages.where((image) => image != null).map((image) => image!.path).toList(),
       'teams': teamMembers
           .map((member) => {
-        'name': member.name,
-        'mission': member.profession,
-        'image': member.imageUrl?.path,
-      })
+                'name': member.name,
+                'mission': member.profession,
+                'image': member.imageUrl?.path,
+              })
           .toList(),
       'services': services
           .map((member) => {
-        'title': member.name,
-        'description': member.profession,
-        'image_service': member.imageUrl?.path,
-      })
+                'title': member.name,
+                'description': member.profession,
+                'image_service': member.imageUrl?.path,
+              })
           .toList(),
     };
   }
@@ -111,17 +111,17 @@ class CenterInfoModel {
       activityImages: (json['images_activities'] as List<dynamic>? ?? []).map((path) => path != null ? File(path) : null).toList(),
       teamMembers: (json['teams'] as List<dynamic>? ?? [])
           .map((member) => TeamMemberModel(
-        name: member['name'] ?? '',
-        profession: member['mission'] ?? '',
-        imageUrl: member['image'] != null ? File(member['image']) : null,
-      ))
+                name: member['name'] ?? '',
+                profession: member['mission'] ?? '',
+                imageUrl: member['image'] != null ? File(member['image']) : null,
+              ))
           .toList(),
       services: (json['services'] as List<dynamic>? ?? [])
           .map((member) => TeamMemberModel(
-        name: member['title'] ?? '',
-        profession: member['description'] ?? '',
-        imageUrl: member['image_service'] != null ? File(member['image_service']) : null,
-      ))
+                name: member['title'] ?? '',
+                profession: member['description'] ?? '',
+                imageUrl: member['image_service'] != null ? File(member['image_service']) : null,
+              ))
           .toList(),
     );
   }

@@ -100,7 +100,7 @@ class BottomNavigationWidget extends GetView<MainController> {
         return Padding(
           padding: const EdgeInsetsDirectional.only(start: 16, end: 16, bottom: 16),
           child: Container(
-            height: 75.h,
+            // height: 75.h,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(48),
               gradient: const LinearGradient(
@@ -117,7 +117,7 @@ class BottomNavigationWidget extends GetView<MainController> {
               ],
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 9),
+              padding: const EdgeInsets.only(top: 9,right: 9,left: 9),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(48),
                 child: BottomNavigationBar(
@@ -180,21 +180,21 @@ class BottomNavigationWidget extends GetView<MainController> {
                       ),
                       label: AppStrings.home,
                     ),
-                    // BottomNavigationBarItem(
-                    //   icon: Padding(
-                    //     padding: const EdgeInsets.only(bottom: 2),
-                    //     child: AppSVGAssets.getWidget(
-                    //         AppSVGAssets.notificationLight),
-                    //   ),
-                    //   activeIcon: Padding(
-                    //     padding: const EdgeInsets.only(bottom: 2),
-                    //     child: AppSVGAssets.getWidget(
-                    //       AppSVGAssets.notificationLight,
-                    //       color: ColorCode.primary600,
-                    //     ),
-                    //   ),
-                    //   label: AppStrings.notifications,
-                    // ),
+                    BottomNavigationBarItem(
+                      icon: Padding(
+                        padding: const EdgeInsets.only(bottom: 2),
+                        child: AppSVGAssets.getWidget(
+                            AppSVGAssets.notificationLight),
+                      ),
+                      activeIcon: Padding(
+                        padding: const EdgeInsets.only(bottom: 2),
+                        child: AppSVGAssets.getWidget(
+                          AppSVGAssets.notificationLight,
+                          color: ColorCode.primary600,
+                        ),
+                      ),
+                      label: AppStrings.notifications,
+                    ),
                     BottomNavigationBarItem(
                       icon: Padding(
                         padding: const EdgeInsets.only(bottom: 2),

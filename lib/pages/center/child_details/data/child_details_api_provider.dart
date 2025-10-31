@@ -14,7 +14,7 @@ class ChildDetailsProvider extends BaseAuthProvider implements IChildDetailsProv
   @override
   Future<Response<ChildModel>> getChildDetails(String childId) {
     return get<ChildModel>(
-      "${AuthService.to.userInfo?.user?.role == "parent" ? EndPoints.childrenParentList : EndPoints.childrenList}/$childId",
+      "${AuthService.to.userInfo?.user?.role == "parent" ? EndPoints.childrenOne : EndPoints.childrenList}/$childId",
       decoder: ChildModel.fromJson,
     );
   }

@@ -23,7 +23,7 @@ class DailyReports extends GetView<ControlPanelParentController> {
                 padding: const EdgeInsets.only(bottom: 16),
                 children: [
                   SizedBox(
-                    height: 220.h,
+                    height: 230.h,
                     child: ListView.builder(
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,

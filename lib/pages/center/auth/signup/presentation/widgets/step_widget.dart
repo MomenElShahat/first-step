@@ -6,6 +6,7 @@ import '../../../../../../consts/text_styles.dart';
 import '../../../../../../resources/assets_svg_generated.dart';
 import '../../../../../../resources/strings_generated.dart';
 import '../../../../../../widgets/custom_text.dart';
+import '../../../../../../widgets/gaps.dart';
 
 class ResponsiveStepper extends StatelessWidget {
   final int currentIndex;
@@ -17,7 +18,8 @@ class ResponsiveStepper extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           StepItem(
             svg: AppSVGAssets.firstStep,
@@ -29,25 +31,25 @@ class ResponsiveStepper extends StatelessWidget {
             svg: currentIndex >= 2
                 ? AppSVGAssets.secondStepFill
                 : AppSVGAssets.secondStep,
-            label: AppStrings.acceptableAgesAndWorkingHours,
+            label: AppStrings.requiredStatements,
             isActive: currentIndex >= 2,
           ),
-          Connector(isActive: currentIndex > 2),
-          StepItem(
-            svg: currentIndex >= 3
-                ? AppSVGAssets.thirdStepFill
-                : AppSVGAssets.thirdStep,
-            label: AppStrings.communicatingWithParentsAndProvidingFood,
-            isActive: currentIndex >= 3,
-          ),
-          Connector(isActive: currentIndex > 3),
-          StepItem(
-            svg: currentIndex == 4
-                ? AppSVGAssets.fourthStepFill
-                : AppSVGAssets.fourthStep,
-            label: AppStrings.requiredStatements,
-            isActive: currentIndex == 4,
-          ),
+          // Connector(isActive: currentIndex > 2),
+          // StepItem(
+          //   svg: currentIndex >= 3
+          //       ? AppSVGAssets.thirdStepFill
+          //       : AppSVGAssets.thirdStep,
+          //   label: AppStrings.communicatingWithParentsAndProvidingFood,
+          //   isActive: currentIndex >= 3,
+          // ),
+          // Connector(isActive: currentIndex > 3),
+          // StepItem(
+          //   svg: currentIndex == 4
+          //       ? AppSVGAssets.fourthStepFill
+          //       : AppSVGAssets.fourthStep,
+          //   label: AppStrings.requiredStatements,
+          //   isActive: currentIndex == 4,
+          // ),
         ],
       ),
     );
@@ -68,23 +70,23 @@ class StepItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 80.w,
-      child: Column(
-        children: [
-          AppSVGAssets.getWidget(svg),
-          SizedBox(height: 6.h),
-          CustomText(
-            label,
-            maxLines: 3,
-            textStyle: TextStyles.button12.copyWith(
-                fontSize: 8.sp,
-                color: isActive
-                    ? ColorCode.primary600
-                    : ColorCode.black),
-          )
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AppSVGAssets.getWidget(svg),
+        Gaps.vGap8,
+        CustomText(
+          label,
+          maxLines: 3,
+          textAlign: TextAlign.start,
+          textStyle: TextStyles.button12.copyWith(
+              fontSize: 8.sp,
+              color: isActive
+                  ? ColorCode.primary600
+                  : ColorCode.black),
+        )
+      ],
     );
   }
 }
@@ -96,9 +98,12 @@ class Connector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppSVGAssets.getWidget(AppSVGAssets.stepper,
-        color: isActive
-            ? ColorCode.primary600
-            : null);
+    return Padding(
+      padding: const EdgeInsetsDirectional.only(top: 20,end: 5),
+      child: AppSVGAssets.getWidget(AppSVGAssets.stepper,
+          color: isActive
+              ? ColorCode.primary600
+              : null),
+    );
   }
 }

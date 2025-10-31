@@ -34,15 +34,16 @@ class MyBranches extends GetView<ControlPanelController> {
                   ),
                 ),
                 InkWell(
+                  borderRadius: BorderRadius.circular(8.r),
                   onTap: () {
                     Get.toNamed(Routes.BRANCH_ADD_SCREEN);
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(36.r),
+                      borderRadius: BorderRadius.circular(8.r),
                       border: Border.all(color: ColorCode.primary600),
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 36, vertical: 14.5),
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10.5),
                     child: Center(
                       child: CustomText(
                         AppStrings.addBranch,

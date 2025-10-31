@@ -31,14 +31,8 @@ class BranchEditStep4 extends GetView<BranchEditScreenController> {
             child: RichText(
               text: TextSpan(
                 children: [
-                  TextSpan(
-                      text: AppStrings.practiceLicense,
-                      style: TextStyles.body14Medium
-                          .copyWith(color: ColorCode.neutral500)),
-                  TextSpan(
-                      text: "*",
-                      style: TextStyles.body14Medium
-                          .copyWith(color: ColorCode.danger700)),
+                  TextSpan(text: AppStrings.practiceLicense, style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
+                  TextSpan(text: "*", style: TextStyles.body14Medium.copyWith(color: ColorCode.danger700)),
                 ],
               ),
             ),
@@ -49,8 +43,7 @@ class BranchEditStep4 extends GetView<BranchEditScreenController> {
             child: InkWell(
               onTap: () async {
                 controller.practiceLicenceFile = await controller.pickFile();
-                controller.practiceLicence.text =
-                    controller.practiceLicenceFile?.path.split('/').last ?? "";
+                controller.practiceLicence.text = controller.practiceLicenceFile?.path.split('/').last ?? "";
               },
               child: CustomTextFormField(
                   hint: AppStrings.selectAFile,
@@ -60,14 +53,10 @@ class BranchEditStep4 extends GetView<BranchEditScreenController> {
                   readOnly: true,
                   enable: false,
                   onTap: () async {
-                    controller.practiceLicenceFile =
-                        await controller.pickFile();
-                    controller.practiceLicence.text =
-                        controller.practiceLicenceFile?.path.split('/').last ??
-                            "";
+                    controller.practiceLicenceFile = await controller.pickFile();
+                    controller.practiceLicence.text = controller.practiceLicenceFile?.path.split('/').last ?? "";
                   },
-                  suffixIcon: AppSVGAssets.getWidget(AppSVGAssets.attachLine,
-                      width: 16, height: 16, color: ColorCode.neutral400),
+                  suffixIcon: AppSVGAssets.getWidget(AppSVGAssets.attachLine, width: 16, height: 16, color: ColorCode.neutral400),
                   onChange: (String? val) {
                     controller.practiceLicence.text = val!;
                     // final englishText = convertArabicToEnglish(val ??"");
@@ -78,9 +67,7 @@ class BranchEditStep4 extends GetView<BranchEditScreenController> {
                   },
                   controller: controller.practiceLicence,
                   validator: (val) {
-                    return (controller.practiceLicence.text.isNotEmpty)
-                        ? null
-                        : AppStrings.emptyField;
+                    return (controller.practiceLicence.text.isNotEmpty) ? null : AppStrings.emptyField;
                   },
                   inputType: TextInputType.text,
                   label: ""),
@@ -92,14 +79,8 @@ class BranchEditStep4 extends GetView<BranchEditScreenController> {
             child: RichText(
               text: TextSpan(
                 children: [
-                  TextSpan(
-                      text: AppStrings.commercialRegister,
-                      style: TextStyles.body14Medium
-                          .copyWith(color: ColorCode.neutral500)),
-                  TextSpan(
-                      text: "*",
-                      style: TextStyles.body14Medium
-                          .copyWith(color: ColorCode.danger700)),
+                  TextSpan(text: AppStrings.commercialRegister, style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
+                  TextSpan(text: "*", style: TextStyles.body14Medium.copyWith(color: ColorCode.danger700)),
                 ],
               ),
             ),
@@ -110,9 +91,7 @@ class BranchEditStep4 extends GetView<BranchEditScreenController> {
             child: InkWell(
               onTap: () async {
                 controller.commercialRegisterFile = await controller.pickFile();
-                controller.commercialRegister.text =
-                    controller.commercialRegisterFile?.path.split('/').last ??
-                        "";
+                controller.commercialRegister.text = controller.commercialRegisterFile?.path.split('/').last ?? "";
               },
               child: CustomTextFormField(
                   hint: AppStrings.selectAFile,
@@ -122,16 +101,10 @@ class BranchEditStep4 extends GetView<BranchEditScreenController> {
                   readOnly: true,
                   enable: false,
                   onTap: () async {
-                    controller.commercialRegisterFile =
-                        await controller.pickFile();
-                    controller.commercialRegister.text = controller
-                            .commercialRegisterFile?.path
-                            .split('/')
-                            .last ??
-                        "";
+                    controller.commercialRegisterFile = await controller.pickFile();
+                    controller.commercialRegister.text = controller.commercialRegisterFile?.path.split('/').last ?? "";
                   },
-                  suffixIcon: AppSVGAssets.getWidget(AppSVGAssets.attachLine,
-                      width: 16, height: 16, color: ColorCode.neutral400),
+                  suffixIcon: AppSVGAssets.getWidget(AppSVGAssets.attachLine, width: 16, height: 16, color: ColorCode.neutral400),
                   onChange: (String? val) {
                     controller.commercialRegister.text = val!;
                     // final englishText = convertArabicToEnglish(val ??"");
@@ -142,9 +115,7 @@ class BranchEditStep4 extends GetView<BranchEditScreenController> {
                   },
                   controller: controller.commercialRegister,
                   validator: (val) {
-                    return (controller.commercialRegister.text.isNotEmpty)
-                        ? null
-                        : AppStrings.emptyField;
+                    return (controller.commercialRegister.text.isNotEmpty) ? null : AppStrings.emptyField;
                   },
                   inputType: TextInputType.text,
                   label: ""),
@@ -193,14 +164,8 @@ class BranchEditStep4 extends GetView<BranchEditScreenController> {
             child: RichText(
               text: TextSpan(
                 children: [
-                  TextSpan(
-                      text: AppStrings.email,
-                      style: TextStyles.body14Medium
-                          .copyWith(color: ColorCode.neutral500)),
-                  TextSpan(
-                      text: "*",
-                      style: TextStyles.body14Medium
-                          .copyWith(color: ColorCode.danger700)),
+                  TextSpan(text: AppStrings.email, style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
+                  TextSpan(text: "*", style: TextStyles.body14Medium.copyWith(color: ColorCode.danger700)),
                 ],
               ),
             ),
@@ -223,9 +188,7 @@ class BranchEditStep4 extends GetView<BranchEditScreenController> {
                 },
                 controller: controller.email,
                 validator: (val) {
-                  return isValidEmail(controller.email.text)
-                      ? null
-                      : AppStrings.validateMail;
+                  return isValidEmail(controller.email.text) ? null : AppStrings.validateMail;
                 },
                 inputType: TextInputType.text,
                 label: ""),
@@ -236,51 +199,36 @@ class BranchEditStep4 extends GetView<BranchEditScreenController> {
             child: RichText(
               text: TextSpan(
                 children: [
-                  TextSpan(
-                      text: AppStrings.createPassword,
-                      style: TextStyles.body14Medium
-                          .copyWith(color: ColorCode.neutral500)),
-                  TextSpan(
-                      text: "*",
-                      style: TextStyles.body14Medium
-                          .copyWith(color: ColorCode.danger700)),
+                  TextSpan(text: AppStrings.createPassword, style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
+                  TextSpan(text: "*", style: TextStyles.body14Medium.copyWith(color: ColorCode.danger700)),
                 ],
               ),
             ),
           ),
           Gaps.vGap8,
           Obx(() {
+            final isHidden = controller.isHidden.value;
+
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: CustomTextFormField(
-                  isHiddenPassword: controller.password.text.contains("*")
-                      ? false
-                      : controller.isHidden.value,
-                  onTapShowHidePassword: () {
-                    controller.isHidden.value = !controller.isHidden.value;
-                  },
-                  hint: AppStrings.pleaseWriteAStrongPassword,
-                  onSave: (String? val) {
-                    controller.password.text = val!;
-                  },
-                  obscureText:
-                      controller.password.text.contains("*") ? false : true,
-                  onChange: (String? val) {
-                    controller.password.text = val!;
-                    // final englishText = convertArabicToEnglish(val ??"");
-                    // controller.floorNumber.value  =controller.floorNumber.value.copyWith(
-                    //   text: englishText,
-                    //   selection: TextSelection.collapsed(offset: englishText.length),
-                    // );
-                  },
-                  controller: controller.password,
-                  validator: (val) {
-                    return (controller.password.text.length >= 8)
-                        ? null
-                        : AppStrings.passwordValidation;
-                  },
-                  inputType: TextInputType.text,
-                  label: ""),
+                controller: controller.password,
+                hint: AppStrings.pleaseWriteAStrongPassword,
+                obscureText: isHidden,
+                isHiddenPassword: isHidden,
+                onTapShowHidePassword: () {
+                  controller.isHidden.value = !isHidden;
+                },
+                onChange: (val) {
+                  controller.onPasswordChanged(val!);
+                },
+                validator: (val) {
+                  if (controller.isPlaceholderPassword) return null; // ignore validation if placeholder
+                  return controller.password.text.length >= 8 ? null : AppStrings.passwordValidation;
+                },
+                inputType: TextInputType.text,
+                label: "",
+              ),
             );
           }),
           Gaps.vGap8,
@@ -289,14 +237,8 @@ class BranchEditStep4 extends GetView<BranchEditScreenController> {
             child: RichText(
               text: TextSpan(
                 children: [
-                  TextSpan(
-                      text: AppStrings.confirmPassword,
-                      style: TextStyles.body14Medium
-                          .copyWith(color: ColorCode.neutral500)),
-                  TextSpan(
-                      text: "*",
-                      style: TextStyles.body14Medium
-                          .copyWith(color: ColorCode.danger700)),
+                  TextSpan(text: AppStrings.confirmPassword, style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
+                  TextSpan(text: "*", style: TextStyles.body14Medium.copyWith(color: ColorCode.danger700)),
                 ],
               ),
             ),
@@ -306,40 +248,23 @@ class BranchEditStep4 extends GetView<BranchEditScreenController> {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: CustomTextFormField(
-                  controller: controller.confirmPassword,
-                  hint: AppStrings.pleaseWriteAStrongPassword,
-                  onSave: (String? val) {
-                    // controller.neighborhood.text = val!;
-                  },
-                  isHiddenPassword:
-                      controller.confirmPassword.text.contains("*")
-                          ? false
-                          : controller.isHiddenConfirm.value,
-                  onTapShowHidePassword: () {
-                    controller.isHiddenConfirm.value =
-                        !controller.isHiddenConfirm.value;
-                  },
-                  obscureText: controller.confirmPassword.text.contains("*")
-                      ? false
-                      : true,
-                  onChange: (String? val) {
-                    controller.confirmPassword.text = val!;
-                    // controller.neighborhood.text = val!;
-                    // final englishText = convertArabicToEnglish(val ??"");
-                    // controller.floorNumber.value  =controller.floorNumber.value.copyWith(
-                    //   text: englishText,
-                    //   selection: TextSelection.collapsed(offset: englishText.length),
-                    // );
-                  },
-                  // controller: controller.neighborhood,
-                  validator: (val) {
-                    return (controller.password.text ==
-                            controller.confirmPassword.text)
-                        ? null
-                        : AppStrings.passwordDoesNotMatch;
-                  },
-                  inputType: TextInputType.text,
-                  label: ""),
+                controller: controller.confirmPassword,
+                hint: AppStrings.pleaseWriteAStrongPassword,
+                obscureText: controller.isHiddenConfirm.value,
+                isHiddenPassword: controller.isHiddenConfirm.value,
+                onTapShowHidePassword: () {
+                  controller.isHiddenConfirm.value = !controller.isHiddenConfirm.value;
+                },
+                onChange: (val) {
+                  controller.onConfirmPasswordChanged(val!);
+                },
+                validator: (val) {
+                  if (controller.isPlaceholderPassword) return null;
+                  return controller.password.text == controller.confirmPassword.text ? null : AppStrings.passwordDoesNotMatch;
+                },
+                inputType: TextInputType.text,
+                label: "",
+              ),
             );
           }),
           Gaps.vGap16,

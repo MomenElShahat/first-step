@@ -15,12 +15,12 @@ class EditProfileParentController extends SuperController<bool> {
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   GlobalKey<FormState> passwordFormKey = GlobalKey<FormState>();
-
   TextEditingController arabic = TextEditingController();
   TextEditingController mobileNumber = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController nationalNumber = TextEditingController();
   TextEditingController confirmPassword = TextEditingController();
+  RxString phone = "".obs;
 
   final arabicFocus = FocusNode();
   final mobileFocus = FocusNode();
@@ -85,7 +85,7 @@ class EditProfileParentController extends SuperController<bool> {
     final EditProfileParentRequestModel editProfileParentRequestModel =
         EditProfileParentRequestModel(
       email: email.text == showParentDataModel?.data?.email ? null : email.text,
-      phone: mobileNumber.text == showParentDataModel?.data?.phone ? null : mobileNumber.text,
+      phone: mobileNumber.text == showParentDataModel?.data?.phone ? null : "+966${mobileNumber.text}",
       name: arabic.text == showParentDataModel?.data?.name ? null : arabic.text,
       nationalNumber:
           nationalNumber.text == showParentDataModel?.data?.nationalNumber ? null : nationalNumber.text,
@@ -115,7 +115,8 @@ class EditProfileParentController extends SuperController<bool> {
 
   getData(ShowParentDataModel showParentDataModel) {
     arabic.text = showParentDataModel.data?.name ?? "";
-    mobileNumber.text = showParentDataModel.data?.phone ?? "";
+    mobileNumber.text = showParentDataModel.data?.phone?.replaceAll("+966", "") ?? "";
+    phone.value = showParentDataModel.data?.phone?.replaceAll("+966", "") ?? "";
     email.text = showParentDataModel.data?.email ?? "";
     nationalNumber.text = showParentDataModel.data?.nationalNumber ?? "";
     update();

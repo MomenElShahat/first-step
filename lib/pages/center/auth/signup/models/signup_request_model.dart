@@ -1,72 +1,74 @@
 import '../../../control_panel/models/branch_model.dart';
 
 class SignupRequestModel {
-  final String name;
+   String? name;
   String? email;
-  final String? password;
-  final String? address;
-  final String phone;
+   String? password;
+   String? address;
+   String? phone;
+   String? notes;
 
-  final List<String> nurseryType;
-  final String additionalService;
-  final String workDaysFrom;
-  final String workDaysTo;
+   List<String?>? nurseryType;
+   String? additionalService;
+   String? workDaysFrom;
+   String? workDaysTo;
 
-  final String workHoursFrom;
-  final String workHoursTo;
-  final String timeOfFirstPeriod;
-  final String timeOfSecondPeriod;
+  String? workHoursFrom;
+  String? workHoursTo;
+   String? timeOfFirstPeriod;
+   String? timeOfSecondPeriod;
 
   List<FirstMeals>? firstMeals;
   List<FirstMeals>? secondMeals;
 
-  final bool emergencyContact;
-  final bool specialNeeds;
+   bool? emergencyContact;
+   bool? specialNeeds;
 
-  final String nurseryName;
-  final String location;
-  final String cityID;
-  final String neighborhood;
+   String? nurseryName;
+   String? location;
+   String? cityID;
+   String? neighborhood;
 
-  final List<String> services;
-  final List<String> communicationMethods;
+   List<String?>? services;
+   List<String?>? communicationMethods;
 
-  final bool providesFood;
-  final List<String> acceptedAges;
+   bool? providesFood;
+   List<String?>? acceptedAges;
 
-  final List<PricingModel>? pricing;
+   List<PricingModel>? pricing;
 
 
   SignupRequestModel({
-    required this.name,
+    this.name,
     this.email,
     this.password,
     this.address,
-    required this.phone,
-    required this.nurseryType,
-    required this.additionalService,
-    required this.workDaysFrom,
-    required this.workDaysTo,
-    required this.workHoursFrom,
-    required this.workHoursTo,
-    required this.timeOfFirstPeriod,
-    required this.timeOfSecondPeriod,
+    this.phone,
+     this.nurseryType,
+     this.additionalService,
+     this.workDaysFrom,
+     this.workDaysTo,
+     this.workHoursFrom,
+     this.workHoursTo,
+     this.timeOfFirstPeriod,
+     this.timeOfSecondPeriod,
     this.firstMeals,
     this.secondMeals,
-    required this.emergencyContact,
-    required this.specialNeeds,
-    required this.nurseryName,
-    required this.location,
-    required this.cityID,
-    required this.neighborhood,
-    required this.services,
-    required this.communicationMethods,
-    required this.providesFood,
-    required this.acceptedAges,
+     this.emergencyContact,
+     this.specialNeeds,
+     this.nurseryName,
+     this.location,
+     this.cityID,
+     this.neighborhood,
+     this.services,
+     this.communicationMethods,
+     this.providesFood,
+     this.acceptedAges,
+     this.notes,
     this.pricing,
   });
 
-  Map<String, dynamic> toJson() => {
+  Map<String?, dynamic> toJson() => {
         'name': name,
         'email': email,
         'password': password,
@@ -92,22 +94,23 @@ class SignupRequestModel {
         'communication_methods': communicationMethods,
         'provides_food': providesFood,
         'accepted_ages': acceptedAges,
+        'notes': notes,
         'pricing': pricing?.map((e) => e.toJson()).toList() ?? [],
       };
 }
 
 class MealModel {
-  final String mealName;
-  final String juice;
-  final String components;
+   String? mealName;
+   String? juice;
+   String? components;
 
   MealModel({
-    required this.mealName,
-    required this.juice,
-    required this.components,
+     this.mealName,
+     this.juice,
+     this.components,
   });
 
-  Map<String, dynamic> toJson() => {
+  Map<String?, dynamic> toJson() => {
         'meal_name': mealName,
         'juice': juice,
         'components': components,
@@ -115,17 +118,17 @@ class MealModel {
 }
 
 class PricingModel {
-  final String enrollmentType;
-  final String responseSpeed;
-  final int priceAmount;
+   String? enrollmentType;
+   String? responseSpeed;
+   int? priceAmount;
 
   PricingModel({
-    required this.enrollmentType,
-    required this.responseSpeed,
-    required this.priceAmount,
+     this.enrollmentType,
+     this.responseSpeed,
+     this.priceAmount,
   });
 
-  Map<String, dynamic> toJson() => {
+  Map<String?, dynamic> toJson() => {
         'enrollment_type': enrollmentType,
         'response_speed': responseSpeed,
         'price_amount': priceAmount,

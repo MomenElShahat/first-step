@@ -36,27 +36,27 @@ class SearchParentScreen extends GetView<SearchParentScreenController> {
                   // height: 200.h,
                   width: double.infinity,
                   decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment(-0.15, -1.0),
-                      // Approximate direction for 98.52 degrees
-                      end: Alignment(1.0, 0.15),
-                      colors: [
-                        Color(0xFF7A8CFD),
-                        Color(0xFF404FB1),
-                        Color(0xFF2B3990),
-                      ],
-                      stops: [0.1117, 0.6374, 0.9471],
-                    ),
+                    // gradient: LinearGradient(
+                    //   begin: Alignment(-0.15, -1.0),
+                    //   // Approximate direction for 98.52 degrees
+                    //   end: Alignment(1.0, 0.15),
+                    //   colors: [
+                    //     Color(0xFF7A8CFD),
+                    //     Color(0xFF404FB1),
+                    //     Color(0xFF2B3990),
+                    //   ],
+                    //   stops: [0.1117, 0.6374, 0.9471],
+                    // ),
                   ),
                   child: Stack(
                     children: [
-                      const Positioned.fill(
-                        bottom: 50,
-                        child: Image(
-                          image: AppAssets.clouds,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                      // const Positioned.fill(
+                      //   bottom: 50,
+                      //   child: Image(
+                      //     image: AppAssets.clouds,
+                      //     fit: BoxFit.cover,
+                      //   ),
+                      // ),
                       SafeArea(
                         child: Padding(
                           padding: EdgeInsets.symmetric(
@@ -98,6 +98,7 @@ class SearchParentScreen extends GetView<SearchParentScreenController> {
                                     onChange: (value) {
                                       controller.filterNurseries();
                                     },
+                                    validator: (p0) => null,
                                     controller: controller.search,
                                     prefixIcon: AppSVGAssets.getWidget(
                                         AppSVGAssets.searchUnselected),

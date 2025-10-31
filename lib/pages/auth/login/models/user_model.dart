@@ -1,9 +1,10 @@
 class LoginResponseModel {
   String? message;
   String? token;
+  int? status;
   User? user;
 
-  LoginResponseModel({this.message, this.token, this.user});
+  LoginResponseModel({this.message, this.token, this.user, this.status});
 
   LoginResponseModel.fromJson(json) {
     message = json['message'];
@@ -15,6 +16,7 @@ class LoginResponseModel {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['message'] = message;
     data['token'] = token;
+    data['status'] = status;
     if (this.user != null) {
       data['user'] = user!.toJson();
     }
@@ -47,6 +49,7 @@ class User {
   int? branchId;
   int? isOnline;
   int? cityId;
+  int? receiveNotifications;
 
   User(
       {this.id,
@@ -72,6 +75,7 @@ class User {
       this.nationalNumber,
       this.subscriptionStatus,
       this.nurseryName,
+      this.receiveNotifications,
       this.centerId});
 
   User.fromJson(Map<String, dynamic> json) {
@@ -99,12 +103,14 @@ class User {
     subscriptionEndDate = json["subscription_end_date"];
     subscriptionStatus = json["subscription_status"];
     subscriptionType = json["type_of_duration"];
+    receiveNotifications = json["receive_notifications"];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = this.id;
     data['name'] = this.name;
+    data['receive_notifications'] = this.receiveNotifications;
     data['email'] = this.email;
     data['google_id'] = this.googleId;
     data['address'] = this.address;

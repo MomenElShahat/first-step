@@ -33,8 +33,7 @@ class Step2 extends GetView<AddChildParentController> {
             Center(
               child: CustomText(
                 AppStrings.doesYourChildSufferFromChronicDiseases,
-                textStyle: TextStyles.body16Medium
-                    .copyWith(color: ColorCode.primary600),
+                textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.primary600),
               ),
             ),
             Gaps.vGap8,
@@ -64,14 +63,11 @@ class Step2 extends GetView<AddChildParentController> {
                       Obx(() => Form(
                             key: controller.formKey2,
                             child: Column(
-                              children: List.generate(
-                                  controller.chronicDiseases.length, (index) {
+                              children: List.generate(controller.chronicDiseases.length, (index) {
                                 return ChronicDiseaseSection(
                                   index: index,
-                                  diseaseModel:
-                                      controller.chronicDiseases[index],
-                                  onRemove: () =>
-                                      controller.removeChronicDisease(index),
+                                  diseaseModel: controller.chronicDiseases[index],
+                                  onRemove: () => controller.removeChronicDisease(index),
                                 );
                               }),
                             ),
@@ -83,10 +79,7 @@ class Step2 extends GetView<AddChildParentController> {
                           child: InkWell(
                             onTap: controller.addChronicDisease,
                             child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(36),
-                                  border:
-                                      Border.all(color: ColorCode.primary600)),
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(36), border: Border.all(color: ColorCode.primary600)),
                               padding: const EdgeInsets.symmetric(vertical: 12),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -95,9 +88,7 @@ class Step2 extends GetView<AddChildParentController> {
                                   Gaps.hGap16,
                                   CustomText(
                                     AppStrings.addAChronicDisease,
-                                    textStyle: TextStyles.body16Medium.copyWith(
-                                        fontWeight: FontWeight.w700,
-                                        color: ColorCode.primary600),
+                                    textStyle: TextStyles.body16Medium.copyWith(fontWeight: FontWeight.w700, color: ColorCode.primary600),
                                   ),
                                 ],
                               ),
@@ -113,16 +104,14 @@ class Step2 extends GetView<AddChildParentController> {
             Center(
               child: CustomText(
                 AppStrings.doesYourChildSufferFromAnyTypeOfAllergy,
-                textStyle: TextStyles.body16Medium
-                    .copyWith(color: ColorCode.primary600),
+                textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.primary600),
               ),
             ),
             Gaps.vGap8,
             Center(
               child: CustomText(
                 AppStrings.suchAsFoodAllergiesMedicationsOrOtherSubstances,
-                textStyle: TextStyles.body14Medium
-                    .copyWith(color: ColorCode.neutral400),
+                textStyle: TextStyles.body14Medium.copyWith(color: ColorCode.neutral400),
               ),
             ),
             Gaps.vGap8,
@@ -153,13 +142,11 @@ class Step2 extends GetView<AddChildParentController> {
                         key: controller.formKey3,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: List.generate(
-                              controller.allergySections.length, (index) {
+                          children: List.generate(controller.allergySections.length, (index) {
                             return AllergySection(
                               index: index,
                               allergyModel: controller.allergySections[index],
-                              onRemove: () =>
-                                  controller.removeAllergySection(index),
+                              onRemove: () => controller.removeAllergySection(index),
                             );
                           }),
                         ),
@@ -171,10 +158,7 @@ class Step2 extends GetView<AddChildParentController> {
                           child: InkWell(
                             onTap: controller.addAllergySection,
                             child: Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(36),
-                                  border:
-                                      Border.all(color: ColorCode.primary600)),
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(36), border: Border.all(color: ColorCode.primary600)),
                               padding: const EdgeInsets.symmetric(vertical: 12),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -183,9 +167,7 @@ class Step2 extends GetView<AddChildParentController> {
                                   Gaps.hGap16,
                                   CustomText(
                                     AppStrings.addSensitivityType,
-                                    textStyle: TextStyles.body16Medium.copyWith(
-                                        fontWeight: FontWeight.w700,
-                                        color: ColorCode.primary600),
+                                    textStyle: TextStyles.body16Medium.copyWith(fontWeight: FontWeight.w700, color: ColorCode.primary600),
                                   ),
                                 ],
                               ),
@@ -205,68 +187,40 @@ class Step2 extends GetView<AddChildParentController> {
                     child: CustomButton(
                         child: CustomText(
                           AppStrings.next,
-                          textStyle: TextStyles.body16Medium.copyWith(
-                              fontWeight: FontWeight.w700,
-                              color: ColorCode.white),
+                          textStyle: TextStyles.body16Medium.copyWith(fontWeight: FontWeight.w700, color: ColorCode.white),
                         ),
                         onPressed: () {
-                          if (controller.selectedValue.value ==
-                                  AppStrings.yes &&
-                              controller.selectedValue2.value ==
-                                  AppStrings.no) {
-                            if ((controller.formKey2.currentState?.validate() ??
-                                false)) {
+                          if (controller.selectedValue.value == AppStrings.yes && controller.selectedValue2.value == AppStrings.no) {
+                            if ((controller.formKey2.currentState?.validate() ?? false)) {
                               controller.index.value = 3;
                             }
-                          } else if (controller.selectedValue.value ==
-                                  AppStrings.no &&
-                              controller.selectedValue2.value ==
-                                  AppStrings.yes) {
-                            if ((controller.formKey3.currentState?.validate() ??
-                                false)) {
+                          } else if (controller.selectedValue.value == AppStrings.no && controller.selectedValue2.value == AppStrings.yes) {
+                            if ((controller.formKey3.currentState?.validate() ?? false)) {
                               controller.index.value = 3;
                             }
-                          } else if (controller.selectedValue.value ==
-                                  AppStrings.yes &&
-                              controller.selectedValue2.value ==
-                                  AppStrings.yes) {
-                            if ((controller.formKey2.currentState?.validate() ??
-                                    false) &&
-                                (controller.formKey3.currentState?.validate() ??
-                                    false)) {
+                          } else if (controller.selectedValue.value == AppStrings.yes && controller.selectedValue2.value == AppStrings.yes) {
+                            if ((controller.formKey2.currentState?.validate() ?? false) && (controller.formKey3.currentState?.validate() ?? false)) {
                               controller.index.value = 3;
                             }
-                          } else if (controller.selectedValue.value ==
-                                  AppStrings.no &&
-                              controller.selectedValue2.value ==
-                                  AppStrings.no) {
+                          } else if (controller.selectedValue.value == AppStrings.no && controller.selectedValue2.value == AppStrings.no) {
                             controller.index.value = 3;
-                          } else if (controller.selectedValue.value.isEmpty ||
-                              controller.selectedValue2.value.isEmpty) {
-                            customSnackBar(AppStrings.pleaseSelectAnAnswer,
-                                ColorCode.danger600);
+                          } else if (controller.selectedValue.value.isEmpty || controller.selectedValue2.value.isEmpty) {
+                            customSnackBar(AppStrings.pleaseSelectAnAnswer, ColorCode.danger600);
                           }
                         }),
                   ),
                   Gaps.hGap(48),
                   Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        controller.index.value = 1;
-                      },
-                      child: Container(
+                    child: CustomButton(
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: ColorCode.neutral400)),
-                        padding: const EdgeInsets.symmetric(vertical: 14.5),
+                            borderRadius: BorderRadius.circular(8), color: Colors.white, border: Border.all(color: ColorCode.neutral400)),
                         child: CustomText(
                           AppStrings.previous,
-                          textStyle: TextStyles.body16Medium.copyWith(
-                              fontWeight: FontWeight.w700,
-                              color: ColorCode.neutral500),
+                          textStyle: TextStyles.body16Medium.copyWith(fontWeight: FontWeight.w700, color: ColorCode.neutral500),
                         ),
-                      ),
-                    ),
+                        onPressed: () {
+                          controller.index.value = 1;
+                        }),
                   ),
                 ],
               ),

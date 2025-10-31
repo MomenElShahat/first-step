@@ -22,6 +22,8 @@ import '../pages/bottom_navigation/biniding/navigation_binding.dart';
 import '../pages/bottom_navigation/bottom_navigation_widget.dart';
 import '../pages/center/add_member/bindings/add_member_binding.dart';
 import '../pages/center/add_member/presentation/views/add_member_view.dart';
+import '../pages/center/add_parents/bindings/add_parents_binding.dart';
+import '../pages/center/add_parents/presentation/view/add_parents_screen.dart';
 import '../pages/center/auth/signup/bindings/signup_binding.dart';
 import '../pages/center/auth/signup/presentation/views/signup_view.dart';
 import '../pages/center/billing_history/bindings/billing_history_binding.dart';
@@ -47,6 +49,8 @@ import '../pages/center/edit_profile/bindings/edit_profile_binding.dart';
 import '../pages/center/edit_profile/presentation/view/edit_profile_screen.dart';
 import '../pages/center/parent_details/bindings/parent_details_binding.dart';
 import '../pages/center/parent_details/presentation/views/parent_details_view.dart';
+import '../pages/center/review_reservation/bindings/review_reservation_binding.dart';
+import '../pages/center/review_reservation/presentation/view/review_reservation_screen.dart';
 import '../pages/center/search/bindings/search_binding.dart';
 import '../pages/center/search/presentation/views/search_view.dart';
 import '../pages/center/send_daily_report/bindings/send_daily_report_binding.dart';
@@ -135,5 +139,7 @@ class AppPages {
     GetPage(name: Routes.EDIT_PROFILE_SCREEN, page: () => const EditProfileScreen(), binding: EditProfileBinding()),
     GetPage(name: Routes.EDIT_PROFILE_PARENT_SCREEN, page: () => const EditProfileParentScreen(), binding: EditProfileParentBinding()),
     GetPage(name: Routes.BILLING_HISTORY_SCREEN, page: () => const BillingHistoryScreen(), binding: BillingHistoryBinding()),
+    GetPage(name: Routes.ADD_PARENTS_SCREEN, page: () => const AddParentsScreen(), binding: AddParentsBinding()),
+    GetPage(name: Routes.REVIEW_RESERVATION_SCREEN, page: () => const ReviewReservationScreen(), binding: ReviewReservationBinding()),
   ];
 }

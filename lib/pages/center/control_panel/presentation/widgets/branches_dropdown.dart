@@ -27,7 +27,7 @@ class BranchesDropdown extends StatelessWidget {
                 value: item,
                 child: CustomText(
                   item.name ?? '',
-                  textStyle: TextStyles.body16Medium.copyWith(fontSize: 14.sp, color: ColorCode.primary600),
+                  textStyle: TextStyles.body16Medium.copyWith(fontSize: 14.sp, color: ColorCode.info600),
                 ),
               ),
             )
@@ -41,7 +41,7 @@ class BranchesDropdown extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4.r),
             border: Border.all(
-              color: isError ? ColorCode.danger700 : isGrey != null ? ColorCode.neutral500 : ColorCode.primary600,
+              color: isError ? ColorCode.danger700 : isGrey != null ? ColorCode.info600 : ColorCode.primary600,
               width: isError ? 1 : .5,
             ),
             color: ColorCode.white,
@@ -49,7 +49,7 @@ class BranchesDropdown extends StatelessWidget {
           elevation: 0,
         ),
         iconStyleData: IconStyleData(
-          icon: AppSVGAssets.getWidget(AppSVGAssets.arrowDownLine, width: 12, height: 12, color: isGrey != null ? ColorCode.neutral500 : ColorCode.primary600),
+          icon: AppSVGAssets.getWidget(AppSVGAssets.arrowDownLine, width: 12, height: 12, color: isGrey != null ? ColorCode.info600 : ColorCode.primary600),
           iconSize: 16,
           iconEnabledColor: isGrey != null ? ColorCode.neutral500 : ColorCode.primary600,
           iconDisabledColor: Colors.black,

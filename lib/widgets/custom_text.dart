@@ -5,14 +5,14 @@ import '../consts/text_styles.dart';
 
 class CustomText extends StatelessWidget {
   final String text;
-  final int maxLines;
+  final int? maxLines;
   final TextStyle? textStyle;
   final TextAlign textAlign;
 
   const CustomText(this.text,
       {super.key,
       this.textStyle,
-      this.maxLines = 2,
+      this.maxLines,
       this.textAlign = TextAlign.center});
 
   @override
@@ -22,8 +22,10 @@ class CustomText extends StatelessWidget {
       style: textStyle ?? TextStyles.body16Medium,
       textAlign: textAlign,
       maxLines: maxLines,
-      overflow: TextOverflow.ellipsis,
-      softWrap: false,
+      overflow: maxLines == null
+          ? TextOverflow.visible // ✅ allow wrapping
+          : TextOverflow.ellipsis, // ✅ keep ellipsis only when maxLines is set
+      softWrap: true,
     );
   }
 }

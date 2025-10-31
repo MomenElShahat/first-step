@@ -140,47 +140,59 @@ class BranchEditStep1 extends GetView<BranchEditScreenController> {
             textDirection: TextDirection.ltr,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 12),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.grey.shade100,
-                    ),
-                    child: const Text(
-                      '+966 🇸🇦', // Saudi code with flag
-                      style: TextStyle(fontSize: 16),
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.grey.shade100,
+                        ),
+                        child: const Text(
+                          '+966 🇸🇦', // Saudi code with flag
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                      Gaps.hGap8,
+                      Expanded(
+                        child: CustomTextFormField(
+                          hint: AppStrings.egMobileNumber,
+                          onSave: (val) => controller.mobileNumber.text = val ?? '',
+                          onChange: (val) {
+                            controller.mobileNumber.text = val ?? '';
+                            controller.phone.value = controller.mobileNumber.text;
+                          },
+                          maxLength: 9,
+                          controller: controller.mobileNumber,
+                          // ✅ Don't use the internal validator
+                          validator: (_) => null,
+                          inputType: TextInputType.phone,
+                          label: "",
+                        ),
+                      ),
+                    ],
                   ),
-                  Gaps.hGap8,
-                  Expanded(
-                    child: CustomTextFormField(
-                        hint: AppStrings.egMobileNumber,
-                        onSave: (String? val) {
-                          controller.mobileNumber.text = val!;
-                        },
-                        onChange: (String? val) {
-                          controller.mobileNumber.text = val!;
-                          // final englishText = convertArabicToEnglish(val ??"");
-                          // controller.floorNumber.value  =controller.floorNumber.value.copyWith(
-                          //   text: englishText,
-                          //   selection: TextSelection.collapsed(offset: englishText.length),
-                          // );
-                        },
-                        maxLength: 9,
-                        controller: controller.mobileNumber,
-                        validator: (val) {
-                          return (isValidSaudiNumber(
-                              controller.mobileNumber.text))
-                              ? null
-                              : AppStrings.phoneValidation;
-                        },
-                        inputType: TextInputType.phone,
-                        label: ""),
-                  ),
+                  // ✅ Custom error text below (keeps field position stable)
+                  Obx(() {
+                    final isValid = isValidSaudiNumber(controller.phone.value);
+                    return isValid
+                        ? const SizedBox.shrink()
+                        : Padding(
+                      padding: const EdgeInsets.only(left: 72, top: 4),
+                      child: CustomText(
+                        AppStrings.phoneValidation,
+                        textAlign: TextAlign.start,
+                        textStyle: TextStyles.button12.copyWith(
+                            color: ColorCode.danger700,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    );
+                  }),
                 ],
               ),
             ),

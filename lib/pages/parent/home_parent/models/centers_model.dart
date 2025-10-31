@@ -1,5 +1,3 @@
-import '../../../center/auth/signup/models/cities_model.dart';
-
 class CentersModel {
   List<NurseryModel>? data;
 
@@ -28,9 +26,12 @@ class NurseryModel {
   String? nurseryName;
   String? location;
   int? cityId;
-  CityName? cityName;
+  City? city;
   String? neighborhood;
   String? phone;
+  String? email;
+  String? name;
+  String? address;
   int? userId;
   String? licensePath;
   String? logo;
@@ -56,80 +57,70 @@ class NurseryModel {
   List<Branches>? branches;
 
   NurseryModel(
-      {this.nurseryName,
-      this.id,
-      this.location,
-      this.cityId,
-      this.cityName,
-      this.neighborhood,
-      this.phone,
-      this.userId,
-      this.licensePath,
-      this.logo,
-      this.commercialRecordPath,
-      this.nurseryType,
-      this.services,
-      this.additionalService,
-      this.acceptedAges,
-      this.firstMeals,
-      this.secondMeals,
-      this.workDaysFrom,
-      this.workDaysTo,
-      this.workHoursFrom,
-      this.timeOfFirstPeriod,
-      this.timeOfSecondPeriod,
-      this.workHoursTo,
-      this.emergencyContact,
-      this.specialNeeds,
-      this.communicationMethods,
-      this.providesFood,
-      this.status,
-      this.ads,
-      this.branches});
+      {this.id,
+        this.nurseryName,
+        this.location,
+        this.cityId,
+        this.city,
+        this.neighborhood,
+        this.phone,
+        this.email,
+        this.name,
+        this.address,
+        this.userId,
+        this.licensePath,
+        this.logo,
+        this.commercialRecordPath,
+        this.nurseryType,
+        this.services,
+        this.additionalService,
+        this.acceptedAges,
+        this.firstMeals,
+        this.secondMeals,
+        this.workDaysFrom,
+        this.workDaysTo,
+        this.workHoursFrom,
+        this.timeOfFirstPeriod,
+        this.timeOfSecondPeriod,
+        this.workHoursTo,
+        this.emergencyContact,
+        this.specialNeeds,
+        this.communicationMethods,
+        this.providesFood,
+        this.status,
+        this.ads,
+        this.branches});
 
   NurseryModel.fromJson(json) {
     id = json['id'];
     nurseryName = json['nursery_name'];
     location = json['location'];
     cityId = json['city_id'];
-    cityName = json['city_name'] != null ? new CityName.fromJson(json['city_name']) : null;
+    city = json['city'] != null ? new City.fromJson(json['city']) : null;
     neighborhood = json['neighborhood'];
     phone = json['phone'];
+    email = json['email'];
+    name = json['name'];
+    address = json['address'];
     userId = json['user_id'];
     licensePath = json['license_path'];
     logo = json['logo'];
     commercialRecordPath = json['commercial_record_path'];
-    nurseryType = json['nursery_type'] is List
-        ? List<String>.from(json['nursery_type'])
-        : json['nursery_type'] != null
-            ? [json['nursery_type'].toString()]
-            : [];
-    services = json['services'] is List
-        ? List<String>.from(json['services'])
-        : json['services'] != null
-            ? [json['services'].toString()]
-            : [];
+    nurseryType = json['nursery_type'].cast<String>();
+    services = json['services'].cast<String>();
     additionalService = json['additional_service'];
-    acceptedAges = json['accepted_ages'] is List
-        ? List<String>.from(json['accepted_ages'])
-        : json['accepted_ages'] != null
-            ? [json['accepted_ages'].toString()]
-            : [];
-    if (json['first_meals'] != null && json['first_meals'] is List) {
-      firstMeals = [];
-      for (var v in json['first_meals']) {
-        if (v is Map<String, dynamic>) {
-          firstMeals!.add(FirstMeals.fromJson(v));
-        }
-      }
+    acceptedAges = json['accepted_ages'].cast<String>();
+    if (json['first_meals'] != null) {
+      firstMeals = <FirstMeals>[];
+      json['first_meals'].forEach((v) {
+        firstMeals!.add(new FirstMeals.fromJson(v));
+      });
     }
-    if (json['second_meals'] != null && json['second_meals'] is List) {
-      secondMeals = [];
-      for (var v in json['second_meals']) {
-        if (v is Map<String, dynamic>) {
-          secondMeals!.add(FirstMeals.fromJson(v));
-        }
-      }
+    if (json['second_meals'] != null) {
+      secondMeals = <FirstMeals>[];
+      json['second_meals'].forEach((v) {
+        secondMeals!.add(new FirstMeals.fromJson(v));
+      });
     }
     workDaysFrom = json['work_days_from'];
     workDaysTo = json['work_days_to'];
@@ -139,11 +130,7 @@ class NurseryModel {
     workHoursTo = json['work_hours_to'];
     emergencyContact = json['emergency_contact'];
     specialNeeds = json['special_needs'];
-    communicationMethods = json['communication_methods'] is List
-        ? List<String>.from(json['communication_methods'])
-        : json['communication_methods'] != null
-            ? [json['communication_methods'].toString()]
-            : [];
+    communicationMethods = json['communication_methods'].cast<String>();
     providesFood = json['provides_food'];
     status = json['status'];
     if (json['ads'] != null) {
@@ -166,11 +153,14 @@ class NurseryModel {
     data['nursery_name'] = this.nurseryName;
     data['location'] = this.location;
     data['city_id'] = this.cityId;
-    if (this.cityName != null) {
-      data['city_name'] = this.cityName!.toJson();
+    if (this.city != null) {
+      data['city'] = this.city!.toJson();
     }
     data['neighborhood'] = this.neighborhood;
     data['phone'] = this.phone;
+    data['email'] = this.email;
+    data['name'] = this.name;
+    data['address'] = this.address;
     data['user_id'] = this.userId;
     data['license_path'] = this.licensePath;
     data['logo'] = this.logo;
@@ -206,13 +196,34 @@ class NurseryModel {
   }
 }
 
-class CityName {
+class City {
+  int? id;
+  Name? name;
+
+  City({this.id, this.name});
+
+  City.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'] != null ? new Name.fromJson(json['name']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    if (this.name != null) {
+      data['name'] = this.name!.toJson();
+    }
+    return data;
+  }
+}
+
+class Name {
   String? en;
   String? ar;
 
-  CityName({this.en, this.ar});
+  Name({this.en, this.ar});
 
-  CityName.fromJson(Map<String, dynamic> json) {
+  Name.fromJson(Map<String, dynamic> json) {
     en = json['en'];
     ar = json['ar'];
   }
@@ -251,21 +262,32 @@ class Ads {
   int? id;
   int? centerId;
   int? branchId;
-  Title? title;
-  Title? description;
+  Name? title;
+  Name? description;
   String? image;
   String? publishDate;
   String? endDate;
   String? status;
 
-  Ads({this.id, this.centerId, this.branchId, this.title, this.description, this.image, this.publishDate, this.endDate, this.status});
+  Ads(
+      {this.id,
+        this.centerId,
+        this.branchId,
+        this.title,
+        this.description,
+        this.image,
+        this.publishDate,
+        this.endDate,
+        this.status});
 
   Ads.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     centerId = json['center_id'];
     branchId = json['branch_id'];
-    title = json['title'] != null ? new Title.fromJson(json['title']) : null;
-    description = json['description'] != null ? new Title.fromJson(json['description']) : null;
+    title = json['title'] != null ? new Name.fromJson(json['title']) : null;
+    description = json['description'] != null
+        ? new Name.fromJson(json['description'])
+        : null;
     image = json['image'];
     publishDate = json['publish_date'];
     endDate = json['end_date'];
@@ -291,41 +313,32 @@ class Ads {
   }
 }
 
-class Title {
-  String? en;
-  String? ar;
-
-  Title({this.en, this.ar});
-
-  Title.fromJson(Map<String, dynamic> json) {
-    en = json['en'];
-    ar = json['ar'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['en'] = this.en;
-    data['ar'] = this.ar;
-    return data;
-  }
-}
-
 class Branches {
   int? id;
   int? cityId;
   String? nurseryName;
   int? isMainBranch;
+  String? neighborhood;
   List<Teams>? teams;
   List<Pricing>? pricing;
   City? city;
 
-  Branches({this.id, this.cityId, this.nurseryName, this.isMainBranch, this.teams, this.pricing, this.city});
+  Branches(
+      {this.id,
+        this.cityId,
+        this.nurseryName,
+        this.isMainBranch,
+        this.neighborhood,
+        this.teams,
+        this.pricing,
+        this.city});
 
   Branches.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     cityId = json['city_id'];
     nurseryName = json['nursery_name'];
     isMainBranch = json['is_main_branch'];
+    neighborhood = json['neighborhood'];
     if (json['teams'] != null) {
       teams = <Teams>[];
       json['teams'].forEach((v) {
@@ -347,6 +360,7 @@ class Branches {
     data['city_id'] = this.cityId;
     data['nursery_name'] = this.nurseryName;
     data['is_main_branch'] = this.isMainBranch;
+    data['neighborhood'] = this.neighborhood;
     if (this.teams != null) {
       data['teams'] = this.teams!.map((v) => v.toJson()).toList();
     }

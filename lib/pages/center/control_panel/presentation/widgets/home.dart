@@ -11,6 +11,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 
 import '../../../../../consts/text_styles.dart';
+import '../../../../../resources/assets_generated.dart';
+import '../../../../../routes/app_pages.dart';
 import '../../../../../widgets/custom_text.dart';
 import '../../../../../widgets/gaps.dart';
 import 'chart.dart';
@@ -71,7 +73,47 @@ class DashboardHome extends GetView<ControlPanelController> {
                     ),
                   ],
                 ),
-                Gaps.vGap40,
+                Gaps.vGap8,
+                InkWell(
+                  borderRadius: BorderRadius.circular(8.r),
+                  onTap: () {
+                    Get.toNamed(Routes.ADD_PARENTS_SCREEN);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(color: ColorCode.secondary600),
+                        borderRadius: BorderRadius.circular(8.r)),
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      children: [
+                        Image(
+                          image: AppAssets.addUsersBubble,
+                          width: 48.w,
+                          height: 75.h,
+                        ),
+                        Gaps.hGap8,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CustomText(
+                              AppStrings.accountsForParents,
+                              textStyle: TextStyles.body16Medium.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: ColorCode.neutral600),
+                            ),
+                            Gaps.vGap8,
+                            CustomText(
+                              AppStrings.registerChildrenNow,
+                              textStyle: TextStyles.button12
+                                  .copyWith(color: ColorCode.neutral500),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Gaps.vGap24,
                 CustomText(
                   AppStrings.compareBookings,
                   textStyle: TextStyles.body16Medium.copyWith(
@@ -269,7 +311,7 @@ class DashboardHome extends GetView<ControlPanelController> {
                 Center(
                   child: ArabicTableExample(
                     data: controller.statisticsModel
-                        ?.branchesOrderingDependingOnTheNumberOfEnrollments ??
+                            ?.branchesOrderingDependingOnTheNumberOfEnrollments ??
                         [],
                   ),
                 ),
@@ -294,8 +336,8 @@ class DashboardHome extends GetView<ControlPanelController> {
   }
 }
 
-Widget buildEnrollmentsList(
-    Map<String, dynamic> enrollmentsOverTime, ControlPanelController controller) {
+Widget buildEnrollmentsList(Map<String, dynamic> enrollmentsOverTime,
+    ControlPanelController controller) {
   final sortedKeys = enrollmentsOverTime.keys.toList()..sort();
 
   final lastThreeKeys = sortedKeys.length > 3

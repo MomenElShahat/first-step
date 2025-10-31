@@ -23,44 +23,47 @@ class ChatDetailsProvider extends BaseAuthProvider implements IChatDetailsProvid
       "${EndPoints.messages}/$chatId",
       decoder: (data) {
         final jsonList = data as List<dynamic>;
-        return jsonList.map((e) => MessagesModel.fromJson(e)).toList();
+        return jsonList.map((e) => MessagesModel.fromJson(Map<String, dynamic>.from(e))).toList();
       },
     );
   }
 
   @override
-  Future<Response<MessagesResponseModel>> sendMessages({required String message,required String receiverId, File? videoUrl,
-    File? image,Progress? onUploadProgress}) {
-    final formData = FormData({});
-
-    void addField(String key, dynamic value) {
-      if (value != null) {
-        formData.fields.add(MapEntry(key, value.toString()));
-      }
-    }
-
-    addField('receiver_id', receiverId);
-    addField('message', message);
+  Future<Response<MessagesResponseModel>> sendMessages({
+    required String message,
+    required String receiverId,
+    File? videoUrl,
+    File? image,
+    Progress? onUploadProgress,
+  }) {
+    final formData = FormData({
+      'receiver_id': receiverId,
+      'message': message,
+    });
 
     if (videoUrl != null) {
-      formData.files.add(MapEntry(
-        'video_url',
-        MultipartFile(videoUrl, filename: videoUrl.path.split('/').last),
-      ));
+      formData.files.add(
+        MapEntry(
+          'video_url',
+          MultipartFile(videoUrl, filename: videoUrl.path.split(Platform.pathSeparator).last),
+        ),
+      );
     }
 
     if (image != null) {
-      formData.files.add(MapEntry(
-        'image',
-        MultipartFile(image, filename: image.path.split('/').last),
-      ));
+      formData.files.add(
+        MapEntry(
+          'image',
+          MultipartFile(image, filename: image.path.split(Platform.pathSeparator).last),
+        ),
+      );
     }
 
     return post<MessagesResponseModel>(
       EndPoints.messages,
       formData,
       uploadProgress: onUploadProgress,
-      decoder: MessagesResponseModel.fromJson,
+      decoder: (data) => MessagesResponseModel.fromJson(data),
     );
   }
 }

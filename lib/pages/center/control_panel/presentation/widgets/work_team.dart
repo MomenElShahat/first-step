@@ -28,27 +28,23 @@ class WorkTeam extends GetView<ControlPanelController> {
             children: [
               CustomText(
                 "${AppStrings.team} ${AppStrings.branch} ${AuthService.to.userInfo?.user?.role == "center" ? controller.branch?.name ?? "" : AuthService.to.userInfo?.user?.nurseryName ?? ""}",
-                textStyle: TextStyles.body16Medium
-                    .copyWith(color: ColorCode.primary600),
+                textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.primary600),
               ),
-              if(AuthService.to.userInfo?.user?.role == "center")
+              if (AuthService.to.userInfo?.user?.role == "center")
                 InkWell(
                   onTap: () {
-                    Get.toNamed(Routes.ADD_MEMBER_SCREEN,
-                        arguments: controller.branch?.id.toString());
+                    Get.toNamed(Routes.ADD_MEMBER_SCREEN, arguments: controller.branch?.id.toString());
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(36.r),
+                      borderRadius: BorderRadius.circular(8.r),
                       border: Border.all(color: ColorCode.primary600),
                     ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 36, vertical: 14.5),
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10.5),
                     child: Center(
                       child: CustomText(
                         AppStrings.addMember,
-                        textStyle: TextStyles.body16Regular
-                            .copyWith(color: ColorCode.primary600),
+                        textStyle: TextStyles.body16Regular.copyWith(color: ColorCode.primary600),
                       ),
                     ),
                   ),
@@ -72,9 +68,7 @@ class WorkTeam extends GetView<ControlPanelController> {
                       return SizedBox(
                         width: itemWidth,
                         child: MemberCard(
-                          teamMember:
-                              controller.branchTeamModel?.data?[index] ??
-                                  TeamMember(),
+                          teamMember: controller.branchTeamModel?.data?[index] ?? TeamMember(),
                         ),
                       );
                     },

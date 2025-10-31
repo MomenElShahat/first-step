@@ -25,13 +25,10 @@ class _ServicesSectionState extends State<ServicesSection> {
   final ImagePicker _picker = ImagePicker();
 
   void _initializeControllers() {
-    widget.controller.nameServiceControllers.value = widget.controller.services
-        .map((member) => TextEditingController(text: member.name))
-        .toList();
+    widget.controller.nameServiceControllers.value = widget.controller.services.map((member) => TextEditingController(text: member.name)).toList();
 
-    widget.controller.descServiceControllers.value = widget.controller.services
-        .map((member) => TextEditingController(text: member.profession))
-        .toList();
+    widget.controller.descServiceControllers.value =
+        widget.controller.services.map((member) => TextEditingController(text: member.profession)).toList();
 
     widget.controller.imageServiceControllers.value = widget.controller.services
         .map((member) => TextEditingController(
@@ -52,8 +49,7 @@ class _ServicesSectionState extends State<ServicesSection> {
       widget.controller.services[index].imageUrl = file;
       widget.controller.imageServiceControllers[index].value = TextEditingValue(
         text: path.basename(file.path),
-        selection:
-            TextSelection.collapsed(offset: path.basename(file.path).length),
+        selection: TextSelection.collapsed(offset: path.basename(file.path).length),
       );
       // setState(() {}); // Trigger UI refresh
     }
@@ -97,12 +93,9 @@ class _ServicesSectionState extends State<ServicesSection> {
                       onPressed: () {
                         setState(() {
                           widget.controller.services.removeAt(index);
-                          widget.controller.nameServiceControllers
-                              .removeAt(index);
-                          widget.controller.descServiceControllers
-                              .removeAt(index);
-                          widget.controller.imageServiceControllers
-                              .removeAt(index);
+                          widget.controller.nameServiceControllers.removeAt(index);
+                          widget.controller.descServiceControllers.removeAt(index);
+                          widget.controller.imageServiceControllers.removeAt(index);
                           _initializeControllers();
                         });
                       },
@@ -116,12 +109,9 @@ class _ServicesSectionState extends State<ServicesSection> {
           onPressed: () {
             setState(() {
               widget.controller.services.add(TeamMemberModel());
-              widget.controller.nameServiceControllers
-                  .add(TextEditingController());
-              widget.controller.descServiceControllers
-                  .add(TextEditingController());
-              widget.controller.imageServiceControllers
-                  .add(TextEditingController());
+              widget.controller.nameServiceControllers.add(TextEditingController());
+              widget.controller.descServiceControllers.add(TextEditingController());
+              widget.controller.imageServiceControllers.add(TextEditingController());
               _initializeControllers();
             });
           },
@@ -135,8 +125,7 @@ class _ServicesSectionState extends State<ServicesSection> {
               ),
             ),
           ),
-          label: AppSVGAssets.getWidget(AppSVGAssets.plusLine,
-              color: ColorCode.primary600, width: 16, height: 16),
+          label: AppSVGAssets.getWidget(AppSVGAssets.plusLine, color: ColorCode.primary600, width: 16, height: 16),
         ),
       ],
     );
@@ -153,8 +142,7 @@ class _ServicesSectionState extends State<ServicesSection> {
       children: [
         CustomText(
           label,
-          textStyle:
-              TextStyles.body14Regular.copyWith(color: ColorCode.neutral500),
+          textStyle: TextStyles.body14Regular.copyWith(color: ColorCode.neutral500),
         ),
         Gaps.vGap4,
         CustomTextFormField(
@@ -162,6 +150,7 @@ class _ServicesSectionState extends State<ServicesSection> {
           onChange: onChanged,
           controller: controller,
           inputType: TextInputType.text,
+          validator: (p0) => null,
           label: "",
         ),
       ],
@@ -174,8 +163,7 @@ class _ServicesSectionState extends State<ServicesSection> {
       children: [
         CustomText(
           AppStrings.serviceImage,
-          textStyle:
-              TextStyles.body14Regular.copyWith(color: ColorCode.neutral500),
+          textStyle: TextStyles.body14Regular.copyWith(color: ColorCode.neutral500),
         ),
         const SizedBox(height: 4),
         GestureDetector(
@@ -185,8 +173,8 @@ class _ServicesSectionState extends State<ServicesSection> {
               hint: "URL",
               enable: false,
               readOnly: true,
-              suffixIcon: AppSVGAssets.getWidget(AppSVGAssets.attachLine,
-                  color: ColorCode.neutral400),
+              validator: (p0) => null,
+              suffixIcon: AppSVGAssets.getWidget(AppSVGAssets.attachLine, color: ColorCode.neutral400),
               controller: widget.controller.imageServiceControllers.value[index],
               inputType: TextInputType.text,
               label: "",

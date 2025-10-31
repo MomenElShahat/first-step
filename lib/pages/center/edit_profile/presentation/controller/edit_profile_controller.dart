@@ -24,7 +24,7 @@ class EditProfileController extends SuperController<bool> {
   TextEditingController street = TextEditingController();
   TextEditingController locationLink = TextEditingController();
   TextEditingController confirmPassword = TextEditingController();
-
+  RxString phone = "".obs;
 
   final arabicFocus = FocusNode();
   final mobileFocus = FocusNode();
@@ -120,7 +120,7 @@ class EditProfileController extends SuperController<bool> {
       location: locationLink.text,
       neighborhood: neighborhood.text,
       nurseryName: arabic.text,
-      phone: mobileNumber.text,
+      phone: "+966${mobileNumber.text}",
       address: street.text,
       name: arabic.text,
     );
@@ -148,7 +148,8 @@ class EditProfileController extends SuperController<bool> {
 
   getData(center.ShowCenterDataModel showCenterDataModel) {
     arabic.text = showCenterDataModel.data?.name ?? "";
-    mobileNumber.text = showCenterDataModel.data?.phone ?? "";
+    mobileNumber.text = showCenterDataModel.data?.phone?.replaceAll("+966", "") ?? "";
+    phone.value = showCenterDataModel.data?.phone?.replaceAll("+966", "") ?? "";
     email.text = showCenterDataModel.data?.email ?? "";
     neighborhood.text = showCenterDataModel.data?.neighborhood ?? "";
     street.text = showCenterDataModel.data?.address ?? "";

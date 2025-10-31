@@ -77,9 +77,9 @@ class AddMemberScreenController extends SuperController<dynamic> {
     addMemberRepository.addMember(profession: memberProfession.text, branchId: branchId ?? "", name: memberName.text, image: pickedImage).then(
       (value) async {
         if (value.statusCode == 200 || value.statusCode == 201) {
-          customSnackBar("Data saved successfully", ColorCode.success600);
+          customSnackBar(AppStrings.dataSavedSuccessfully, ColorCode.success600);
         } else {
-          customSnackBar("Data has not been saved successfully", ColorCode.danger600);
+          customSnackBar(AppStrings.dataHasNotBeenUpdatedSuccessfully, ColorCode.danger600);
         }
         isSaving.value = false;
       },

@@ -30,13 +30,11 @@ class Step4 extends GetView<AddChildParentController> {
             Obx(() => Form(
                   key: controller.formKey5,
                   child: Column(
-                    children: List.generate(controller.authorizedPersons.length,
-                        (index) {
+                    children: List.generate(controller.authorizedPersons.length, (index) {
                       return AuthorizedSection(
                         index: index,
                         authorizedPerson: controller.authorizedPersons[index],
-                        onRemove: () =>
-                            controller.removeAuthorizedPersons(index),
+                        onRemove: () => controller.removeAuthorizedPersons(index),
                       );
                     }),
                   ),
@@ -47,10 +45,7 @@ class Step4 extends GetView<AddChildParentController> {
               child: RichText(
                 text: TextSpan(
                   children: [
-                    TextSpan(
-                        text: AppStrings.doYouHaveAnyCommentsOrRemarks,
-                        style: TextStyles.body14Medium
-                            .copyWith(color: ColorCode.neutral500)),
+                    TextSpan(text: AppStrings.doYouHaveAnyCommentsOrRemarks, style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
                   ],
                 ),
               ),
@@ -73,10 +68,7 @@ class Step4 extends GetView<AddChildParentController> {
                   },
                   controller: controller.doYouHaveAnyCommentsOrRemarks,
                   validator: (val) {
-                    return (controller
-                            .doYouHaveAnyCommentsOrRemarks.text.isNotEmpty)
-                        ? null
-                        : AppStrings.emptyField;
+                    return (controller.doYouHaveAnyCommentsOrRemarks.text.isNotEmpty) ? null : AppStrings.emptyField;
                   },
                   inputType: TextInputType.text,
                   label: ""),
@@ -88,9 +80,7 @@ class Step4 extends GetView<AddChildParentController> {
                 child: InkWell(
                   onTap: controller.addAuthorizedPersons,
                   child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(36),
-                        border: Border.all(color: ColorCode.primary600)),
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(36), border: Border.all(color: ColorCode.primary600)),
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -99,9 +89,7 @@ class Step4 extends GetView<AddChildParentController> {
                         Gaps.hGap16,
                         CustomText(
                           AppStrings.addAnAuthorizedPerson,
-                          textStyle: TextStyles.body16Medium.copyWith(
-                              fontWeight: FontWeight.w700,
-                              color: ColorCode.primary600),
+                          textStyle: TextStyles.body16Medium.copyWith(fontWeight: FontWeight.w700, color: ColorCode.primary600),
                         ),
                       ],
                     ),
@@ -119,22 +107,14 @@ class Step4 extends GetView<AddChildParentController> {
                             child: CustomButton(
                                 child: CustomText(
                                   AppStrings.addChild,
-                                  textStyle: TextStyles.body16Medium.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      color: ColorCode.white),
+                                  textStyle: TextStyles.body16Medium.copyWith(fontWeight: FontWeight.w700, color: ColorCode.white),
                                 ),
                                 onPressed: () {
-                                  if (controller.formKey5.currentState
-                                          ?.validate() ??
-                                      false) {
+                                  if (controller.formKey5.currentState?.validate() ?? false) {
                                     controller.onAddChildClicked(context);
-                                    for (int i = 0;
-                                        i < controller.authorizedPersons.length;
-                                        i++) {
-                                      debugPrint(
-                                          "authorizedPersons name ${controller.authorizedPersons[i].name}");
-                                      debugPrint(
-                                          "authorizedPersons cin ${controller.authorizedPersons[i].cin}");
+                                    for (int i = 0; i < controller.authorizedPersons.length; i++) {
+                                      debugPrint("authorizedPersons name ${controller.authorizedPersons[i].name}");
+                                      debugPrint("authorizedPersons cin ${controller.authorizedPersons[i].cin}");
                                     }
                                   }
                                 }),
@@ -144,23 +124,16 @@ class Step4 extends GetView<AddChildParentController> {
                       )),
                   Gaps.hGap(48),
                   Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        controller.index.value = 3;
-                      },
-                      child: Container(
+                    child: CustomButton(
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: ColorCode.neutral400)),
-                        padding: const EdgeInsets.symmetric(vertical: 14.5),
+                            borderRadius: BorderRadius.circular(8), color: Colors.white, border: Border.all(color: ColorCode.neutral400)),
                         child: CustomText(
                           AppStrings.previous,
-                          textStyle: TextStyles.body16Medium.copyWith(
-                              fontWeight: FontWeight.w700,
-                              color: ColorCode.neutral500),
+                          textStyle: TextStyles.body16Medium.copyWith(fontWeight: FontWeight.w700, color: ColorCode.neutral500),
                         ),
-                      ),
-                    ),
+                        onPressed: () {
+                          controller.index.value = 3;
+                        }),
                   ),
                 ],
               ),

@@ -1,14 +1,10 @@
 import 'package:first_step/consts/colors.dart';
 import 'package:first_step/consts/text_styles.dart';
-import 'package:first_step/pages/center/control_panel/presentation/widgets/reports_table_center.dart';
 import 'package:first_step/pages/center/control_panel/presentation/widgets/reports_table_two.dart';
-import 'package:first_step/pages/parent/control_panel_parent/presentation/controllers/control_panel_parent_controller.dart';
-import 'package:first_step/pages/parent/control_panel_parent/presentation/widgets/reports_table.dart';
 import 'package:first_step/resources/strings_generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
 import '../../../../../routes/app_pages.dart';
 import '../../../../../widgets/custom_text.dart';
 import '../../../../../widgets/gaps.dart';
@@ -26,8 +22,7 @@ class DailyReportCenter extends GetView<ControlPanelController> {
           CustomText(
             AppStrings.reports,
             textAlign: TextAlign.start,
-            textStyle:
-                TextStyles.title24Bold.copyWith(color: ColorCode.primary600),
+            textStyle: TextStyles.title24Bold.copyWith(color: ColorCode.primary600),
           ),
           Gaps.vGap8,
           ReportsTableTwo(
@@ -35,8 +30,8 @@ class DailyReportCenter extends GetView<ControlPanelController> {
           ),
           Gaps.vGap24,
           InkWell(
-            onTap: (){
-              Get.toNamed(Routes.CHOOSE_PARENTS_SCREEN,arguments: controller.parents);
+            onTap: () {
+              Get.toNamed(Routes.CHOOSE_PARENTS_SCREEN, arguments: controller.parents);
             },
             child: Container(
               decoration: BoxDecoration(
@@ -51,15 +46,14 @@ class DailyReportCenter extends GetView<ControlPanelController> {
                   ],
                   stops: [0.1117, 0.6374, 0.9471],
                 ),
-                borderRadius: BorderRadius.circular(16.r),
+                borderRadius: BorderRadius.circular(8.r),
               ),
               padding: const EdgeInsets.symmetric(vertical: 10.5),
               margin: const EdgeInsets.symmetric(horizontal: 50),
               child: Center(
                 child: CustomText(
                   AppStrings.writeAReport,
-                  textStyle:
-                      TextStyles.body16Medium.copyWith(color: ColorCode.white),
+                  textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.white),
                 ),
               ),
             ),

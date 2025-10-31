@@ -1968,6 +1968,7 @@ class AppStrings {
   static String get toTheAgeOf {
     return "to_the_age_of".tr;
   }
+
   static String get programType {
     return "program_type".tr;
   }
@@ -2048,7 +2049,6 @@ class AppStrings {
     return "choose_language".tr;
   }
 
-
   static String get currentSubscription {
     return "current_subscription".tr;
   }
@@ -2123,5 +2123,213 @@ class AppStrings {
 
   static String get sure {
     return "sure".tr;
+  }
+
+  static String get pleaseSelectAtLeastOneBranch {
+    return "please_select_at_least_one_branch".tr;
+  }
+
+  static String get pleaseAddAtLeastOneProgram {
+    return "please_add_at_least_one_program".tr;
+  }
+
+  static String get selected {
+    return "selected".tr;
+  }
+
+  static String get editProgram {
+    return "edit_program".tr;
+  }
+
+  static String get schedulingNotifications {
+    return "scheduling_notifications".tr;
+  }
+
+  static String get sendNotification {
+    return "send_notification".tr;
+  }
+
+  static String get writeTheNotification {
+    return "write_the_notification".tr;
+  }
+
+  static String get theHour {
+    return "the_hour".tr;
+  }
+
+  static String get sleepNotifications {
+    return "sleep_notifications".tr;
+  }
+
+  static String get acceptReservation {
+    return "accept_reservation".tr;
+  }
+
+  static String get confirmReservation {
+    return "confirm_reservation".tr;
+  }
+
+  static String get nameOfThePersonInChargeOfTheCenter {
+    return "name_of_the_person_in_charge_of_the_center".tr;
+  }
+
+  static String get nameOfThePersonInChargeOfTheCenterEg {
+    return "name_of_the_person_in_charge_of_the_center_eg".tr;
+  }
+
+  static String get childIdNumber {
+    return "child_id_number".tr;
+  }
+
+  static String get childImage {
+    return "child_image".tr;
+  }
+
+  static String get completeRegistration {
+    return "complete_registration".tr;
+  }
+
+  static String get pleaseUploadTheChildImage {
+    return "please_upload_the_child_image".tr;
+  }
+
+  static String get pleaseAddAChildAtLeast {
+    return "please_add_a_child_at_least".tr;
+  }
+
+  static String get yourAccountHasBeenCreatedSuccessfully {
+    return "your_account_has_been_created_successfully".tr;
+  }
+
+  static String get doYouHaveASubscription {
+    return "do_you_have_a_subscription".tr;
+  }
+
+  static String get findYourChildNurseryOrCenter {
+    return "find_your_child_nursery_or_center".tr;
+  }
+
+  static String get dontHaveASubscription {
+    return "dont_have_a_subscription".tr;
+  }
+
+  static String get findANurseryOrCenterThatSuitsYou {
+    return "find_a_nursery_or_center_that_suits_you".tr;
+  }
+
+  static String get searchByNameOrAddress {
+    return "search_by_name_or_address".tr;
+  }
+
+  static String get didntFindANurseryOrCenterForYourSon {
+    return "didnt_find_a_nursery_or_center_for_your_son".tr;
+  }
+
+  static String get inviteYourNurseryOrCenter {
+    return "invite_your_nursery_or_center".tr;
+  }
+
+  static String get submitARequest {
+    return "submit_a_request".tr;
+  }
+
+  static String get theRequestHasBeenSentSuccessfully {
+    return "the_request_has_been_sent_successfully".tr;
+  }
+
+  static String get goToTheControlPanel {
+    return "go_to_the_control_panel".tr;
+  }
+
+  static String get chooseABranch {
+    return "choose_a_branch".tr;
+  }
+
+  static String get chooseTheProgram {
+    return "choose_the_program".tr;
+  }
+
+  static String get perHour {
+    return "per_hour".tr;
+  }
+
+  static String get youDontHaveChildren {
+    return "you_dont_have_children".tr;
+  }
+
+  static String get paidReservation {
+    return "paid_reservation".tr;
+  }
+
+  static String get accountsForParents {
+    return "accounts_for_parents".tr;
+  }
+
+  static String get registerChildrenNow {
+    return "register_children_now".tr;
+  }
+
+  static String get createParentAccounts {
+    return "create_parent_accounts".tr;
+  }
+
+  static String get parentAndChildrenData {
+    return "parent_and_children_data".tr;
+  }
+
+  static String get parentData {
+    return "parent_data".tr;
+  }
+
+  static String get addAnotherParent {
+    return "add_another_parent".tr;
+  }
+
+  static String get confirmAccountCreation {
+    return "confirm_account_creation".tr;
+  }
+
+  static String get throughNursery {
+    return "through_nursery".tr;
+  }
+
+  static String get reviewReservation {
+    return "review_reservation".tr;
+  }
+
+  static String get sendAlertToParent {
+    return "send_alert_to_parent".tr;
+  }
+
+  static String get days {
+    return "days".tr;
+  }
+
+  static String get months {
+    return "months".tr;
+  }
+
+  static String get notificationAndEmailHasBeenSent {
+    return "notification_and_email_has_been_sent".tr;
+  }
+
+  static String get noNotificationsFound {
+    return "no_notifications_found".tr;
+  }
+
+  static String get renewTheSameReservationNow {
+    return "renew_the_same_reservation_now".tr;
+  }
+
+  static String get anotherReservation {
+    return "another_reservation".tr;
+  }
+
+  static String get video {
+    return "video".tr;
+  }
+
+  static String get image {
+    return "image".tr;
   }
 }

@@ -360,6 +360,7 @@ class ChatDetailsScreenController extends SuperController<dynamic> {
       onEvent: (data) {
         try {
           final parsed = jsonDecode(data);
+          print("parsedparsed ${parsed}");
           final newMessage = MessagesModel(
             senderId: parsed['sender_id'],
             message: parsed['message'],

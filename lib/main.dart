@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:first_step/pages/lifecycle/bindings/lifecycle_binding.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:first_step/firebase_options.dart';
+import 'package:first_step/notification/global_notification.dart';
 import 'package:first_step/pages/lifecycle/data/lifecycle_api_provider.dart';
 import 'package:first_step/pages/lifecycle/data/lifecycle_repository.dart';
 import 'package:first_step/pages/lifecycle/presentation/controller/lifecycle_controller.dart';
@@ -25,6 +27,9 @@ import 'consts/themes.dart';
 import 'lang/translation_service.dart';
 import 'package:app_links/app_links.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:flutter/foundation.dart';
+
+// ✅ Top-level function is already in GlobalNotification.dart
 
 class NativeBridge {
   static const _channel = MethodChannel('com.firststep.firststepapp/native');
@@ -38,43 +43,81 @@ class NativeBridge {
   }
 }
 
-void main() async {
-  await GetStorage.init('userData');
-  await GetStorage.init('appLanguage');
-  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    statusBarColor: ColorCode.primary600, // Change this to whatever color you want
-  ));
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  await Get.putAsync(() => PusherService().init());
-  await GetStorage.init(StorageKeys.boarding);
-  await GetStorage.init(StorageKeys.splashImages);
-  await ConfigReader.initialize();
-  // GlobalNotification().setupNotification();
-  final authService = Get.put(AuthService(), permanent: true);
-  await authService.onInit();
-  Get.put(InternetService(), permanent: true);
+void main() {
+  runZonedGuarded(
+        () async {
+      WidgetsFlutterBinding.ensureInitialized();
 
-  Get.put<ILifecycleProvider>(LifecycleProvider(), permanent: true);
-  Get.put<ILifecycleRepository>(
-    LifecycleRepository(provider: Get.find()),
-    permanent: true,
+      await GetStorage.init('userData');
+      await GetStorage.init('appLanguage');
+      await GetStorage.init(StorageKeys.boarding);
+      await GetStorage.init(StorageKeys.splashImages);
+
+      SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+        statusBarColor: ColorCode.primary600,
+      ));
+
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+
+      FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+      GlobalNotification().setupNotification();
+
+      await Get.putAsync(() => PusherService().init());
+
+      final authService = Get.put(AuthService(), permanent: true);
+      await authService.onInit();
+      Get.put(InternetService(), permanent: true);
+
+      Get.put<ILifecycleProvider>(LifecycleProvider(), permanent: true);
+      Get.put<ILifecycleRepository>(
+        LifecycleRepository(provider: Get.find()),
+        permanent: true,
+      );
+      Get.put<LifecycleController>(
+        LifecycleController(lifecycleRepository: Get.find()),
+        permanent: true,
+      );
+
+      await ConfigReader.initialize();
+
+      timeago.setLocaleMessages('ar', timeago.ArMessages());
+      timeago.setLocaleMessages('ar_short', timeago.ArShortMessages());
+
+      SystemChrome.setPreferredOrientations(
+        [
+          DeviceOrientation.portraitUp,
+          DeviceOrientation.portraitDown,
+        ],
+      );
+
+      // Disable prints in DEBUG MODE
+      if (kDebugMode) {
+        debugPrint = (String? message, {int? wrapWidth}) {};
+      }
+
+      runApp(const MyApp());
+    },
+        (error, stack) {
+      if (!kReleaseMode) {
+        debugPrint('Uncaught zone error: $error');
+        debugPrint(stack.toString());
+      }
+    },
+    zoneSpecification: ZoneSpecification(
+      print: (Zone self, ZoneDelegate parent, Zone zone, String line) {
+        // Suppress print() in RELEASE mode
+        if (!kReleaseMode) {
+          parent.print(zone, line);
+        }
+      },
+    ),
   );
-  Get.put<LifecycleController>(
-    LifecycleController(lifecycleRepository: Get.find()),
-    permanent: true,
-  );
-
-  timeago.setLocaleMessages('ar', timeago.ArMessages());
-  timeago.setLocaleMessages('ar_short', timeago.ArShortMessages());
-
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
-
   @override
   State<MyApp> createState() => _MyAppState();
 }
@@ -89,12 +132,10 @@ class _MyAppState extends State<MyApp> {
 
   void initDeepLinks() async {
     _appLinks = AppLinks();
-    // App started with a deep link
     final initialUri = await _appLinks?.getInitialLink();
     if (initialUri != null) {
       _handleUri(initialUri);
     }
-    // Listen for link changes while app is running
     _linkSub = _appLinks?.uriLinkStream.listen((uri) {
       if (uri != null) {
         _handleUri(uri);
@@ -103,14 +144,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _handleUri(Uri uri) {
-    // Example: https://firststep-app.com/profile/123
     print('Received deep link: $uri');
-
-    // if (uri.pathSegments.contains('profile')) {
-    //   final id = uri.pathSegments.last;
-    //   // Navigate to profile screen
-    //   Navigator.pushNamed(context, '/profile/$id');
-    // }
     Get.toNamed(Routes.BOTTOM_NAVIGATION);
   }
 
@@ -118,29 +152,25 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     initConnectivity();
     initDeepLinks();
-    _connectivitySubscription = _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
+    _connectivitySubscription =
+        _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);
     super.initState();
   }
 
   @override
   void dispose() {
-    super.dispose();
     _connectivitySubscription.cancel();
     _linkSub?.cancel();
+    super.dispose();
   }
 
   Future<void> initConnectivity() async {
     late List<ConnectivityResult> result;
-    // Platform messages may fail, so we use a try/catch PlatformException.
     try {
       result = await _connectivity.checkConnectivity();
     } on PlatformException {
       return;
     }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
     if (!mounted) return;
     return _updateConnectionStatus(result);
   }
@@ -175,14 +205,13 @@ class _MyAppState extends State<MyApp> {
             theme: Themes.light,
             themeMode: ThemeMode.light,
             getPages: AppPages.routes,
-            // initialBinding: SplashBinding(),
-            // unknownRoute: GetPage(name: '/splash', page: (){
-            //   return SplashView();
-            // }),
             initialRoute: Routes.SPLASH,
-            locale: Locale(AuthService.to.language != null ? AuthService.to.language ?? "en" : 'ar'),
+            locale: Locale(AuthService.to.language ?? 'ar'),
             fallbackLocale: TranslationService.fallbackLocale,
-            supportedLocales: const [Locale('en'), Locale('ar')],
+            supportedLocales: const [
+              Locale('en'),
+              Locale('ar'),
+            ],
             translations: TranslationService(),
             localizationsDelegates: const [
               GlobalMaterialLocalizations.delegate,

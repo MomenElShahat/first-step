@@ -25,7 +25,10 @@ class SearchParentProvider extends BaseAuthProvider implements ISearchParentProv
         query: {
           "search" : keyword
         },
-        decoder: NurseryModel.fromJson
+        decoder: (data) {
+          final json = data["data"] as Map<String,dynamic>;
+          return NurseryModel.fromJson(json);
+        },
     );
   }
   @override

@@ -1,9 +1,12 @@
 class EndPoints {
   static const String baseURl = "https://back.firststep-app.com/api/";
   // static const String baseURl = "https://development.firststep-app.com/api/";
-  static const String login = "login";
+  static const String loginV2 = "v2/login";
+  // static const String login = "login";
   static const String registerCenter = "register-center";
+  static const String registerCenterV2 = "v2/register-center-v2";
   static const String registerParent = "register-parent";
+  static const String registerParentV2 = "v2/register-v2";
   static const String blogsParent = "blogs";
   static const String servicesParent = "services";
   static const String centerFilterParent = "center-filter";
@@ -17,7 +20,10 @@ class EndPoints {
   static const String parentsList = "center/parents";
   static const String parent = "center/parent";
   static const String childrenList = "children";
-  static const String childrenParentList = "parent/children";
+  static const String childrenParentList = "children-all";
+  static const String childrenParentEdit = "parent/children";
+  static const String childrenOne = "children-one";
+  static const String addChildV2 = "v2/childs";
   static const String branchTeamMembers = "branch-team-members";
   static const String centerStatistics = "center/statistics";
   static const String branchStatistics = "branch/statistics";
@@ -47,7 +53,8 @@ class EndPoints {
   static const String portfoliosShow = "portfolios/show";
   static const String getPortfiloCenter = "get-portfilo-center";
   static const String branchesPricies = "branches-pricies";
-  static const String pricing = "pricing";
+  static const String deletePrice = "delete-price";
+  static const String createOrUpdateBranchPrice = "create-or-update-branch-price";
   static const String updateProfileCenter = "update-profile-center";
   static const String updateProfileParent = "parent/update-profile-parent";
   static const String getUser = "parent/get-user";
@@ -58,4 +65,10 @@ class EndPoints {
   static const String readAll = "read-all";
   static const String verifyPassword = "verify-password";
   static const String getHistoryPayment = "get-history-payment";
+  static const String notifyParents = "notify-parents";
+  static const String enrollmentExisting = "enrollment-existing";
+  static const String paid = "paid";
+  static const String registerParentByCenter = "register-parent-by-center";
+  static const String sendNotificationExpired = "send-notification-expired";
+  static const String updateReceiveNotification = "update-receive-notification";
 }

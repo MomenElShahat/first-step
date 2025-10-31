@@ -37,8 +37,7 @@ class CenterInfo extends GetView<ControlPanelController> {
             children: [
               CustomText(
                 AppStrings.nurseryProfile,
-                textStyle: TextStyles.title24Medium
-                    .copyWith(color: ColorCode.primary600),
+                textStyle: TextStyles.title24Medium.copyWith(color: ColorCode.primary600),
               ),
               Gaps.vGap16,
               Padding(
@@ -49,81 +48,63 @@ class CenterInfo extends GetView<ControlPanelController> {
               ),
               Gaps.vGap16,
               Obx(
-                    () =>
-                    _buildSection(0, AppStrings.mainSection,
-                        _mainSectionForm(controller), controller, () {
-                          controller.resetMainSection();
-                        }),
+                () => _buildSection(0, AppStrings.mainSection, _mainSectionForm(controller), controller, () {
+                  controller.resetMainSection();
+                }),
               ),
               Obx(
-                    () =>
-                    _buildSection(1, AppStrings.branches,
-                        _branchesForm(controller), controller, () {
-                          controller.resetBranchesSection();
-                        }),
+                () => _buildSection(1, AppStrings.branches, _branchesForm(controller), controller, () {
+                  controller.resetBranchesSection();
+                }),
               ),
               Obx(
-                    () =>
-                    _buildSection(2, AppStrings.yourAdvertisingSpace,
-                        _adsForm(controller), controller, () {
-                          controller.resetAdsSection();
-                        }),
+                () => _buildSection(2, AppStrings.yourAdvertisingSpace, _adsForm(controller), controller, () {
+                  controller.resetAdsSection();
+                }),
               ),
               Obx(
-                    () =>
-                    _buildSection(
-                        3,
-                        "${AppStrings.ourPhilosophy},${AppStrings
-                            .ourMethodology},${AppStrings.ourGoal}",
-                        _ourGoalsSectionForm(controller),
-                        controller, () {
-                      controller.resetGoalsSection();
-                    }),
+                () => _buildSection(
+                    3, "${AppStrings.ourPhilosophy},${AppStrings.ourMethodology},${AppStrings.ourGoal}", _ourGoalsSectionForm(controller), controller,
+                    () {
+                  controller.resetGoalsSection();
+                }),
               ),
               Obx(
-                    () =>
-                    _buildSection(4, AppStrings.ourPrograms,
-                        const PricingSection(), controller, () {
-                          controller.resetGoalsSection();
-                        }),
+                () => _buildSection(4, AppStrings.ourPrograms, const PricingSection(), controller, () {
+                  controller.resetGoalsSection();
+                }),
               ),
               Obx(
-                    () =>
-                    _buildSection(
-                        5,
-                        AppStrings.ourServices,
-                        ServicesSection(
-                          controller: controller,
-                        ),
-                        controller, () {
-                      controller.resetOurServicesSection();
-                    }),
+                () => _buildSection(
+                    5,
+                    AppStrings.ourServices,
+                    ServicesSection(
+                      controller: controller,
+                    ),
+                    controller, () {
+                  controller.resetOurServicesSection();
+                }),
               ),
               Obx(
-                    () =>
-                    _buildSection(6, AppStrings.centerInfo,
-                        _centerInfoSectionForm(controller), controller, () {
-                          controller.resetCenterInfoSection();
-                        }),
+                () => _buildSection(6, AppStrings.centerInfo, _centerInfoSectionForm(controller), controller, () {
+                  controller.resetCenterInfoSection();
+                }),
               ),
               Obx(
-                    () =>
-                    _buildSection(7, AppStrings.activities,
-                        _activitiesForm(controller), controller, () {
-                          controller.resetActivitiesSection();
-                        }),
+                () => _buildSection(7, AppStrings.activities, _activitiesForm(controller), controller, () {
+                  controller.resetActivitiesSection();
+                }),
               ),
               Obx(
-                    () =>
-                    _buildSection(
-                        8,
-                        AppStrings.ourTeam,
-                        TeamSection(
-                          controller: controller,
-                        ),
-                        controller, () {
-                      controller.resetOurTeamsSection();
-                    }),
+                () => _buildSection(
+                    8,
+                    AppStrings.ourTeam,
+                    TeamSection(
+                      controller: controller,
+                    ),
+                    controller, () {
+                  controller.resetOurTeamsSection();
+                }),
               ),
               Gaps.vGap16,
               Padding(
@@ -154,8 +135,7 @@ class CenterInfo extends GetView<ControlPanelController> {
                                     gradient: const LinearGradient(
                                       begin: Alignment.centerRight,
                                       end: Alignment.centerLeft,
-                                      transform: GradientRotation(
-                                          98.52 * (3.1415926535 / 180)),
+                                      transform: GradientRotation(98.52 * (3.1415926535 / 180)),
                                       // Convert degrees to radians
                                       colors: [
                                         Color(0xFF7A8CFD), // 11.17%
@@ -169,12 +149,10 @@ class CenterInfo extends GetView<ControlPanelController> {
                                       ],
                                     ),
                                   ),
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 10.5),
+                                  padding: const EdgeInsets.symmetric(vertical: 10.5),
                                   child: CustomText(
                                     AppStrings.confirm,
-                                    textStyle: TextStyles.body16Medium
-                                        .copyWith(color: ColorCode.white),
+                                    textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.white),
                                   ),
                                 ),
                               )),
@@ -191,8 +169,7 @@ class CenterInfo extends GetView<ControlPanelController> {
                             padding: const EdgeInsets.symmetric(vertical: 10.5),
                             child: CustomText(
                               AppStrings.cancel,
-                              textStyle: TextStyles.body16Medium
-                                  .copyWith(color: ColorCode.neutral500),
+                              textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.neutral500),
                             ),
                           )),
                     ],
@@ -208,14 +185,12 @@ class CenterInfo extends GetView<ControlPanelController> {
   }
 }
 
-Widget _buildSection(int index, String title, Widget expandedContent,
-    ControlPanelController controller, VoidCallback onReset) {
+Widget _buildSection(int index, String title, Widget expandedContent, ControlPanelController controller, VoidCallback onReset) {
   return ExpandableSectionItem(
     title: title,
     isExpanded: controller.expandedIndex.value == index,
     onEdit: () {
-      controller.expandedIndex.value =
-      (controller.expandedIndex.value == index ? -1 : index);
+      controller.expandedIndex.value = (controller.expandedIndex.value == index ? -1 : index);
     },
     onReset: onReset,
     expandedContent: Column(
@@ -231,25 +206,18 @@ Widget _mainSectionForm(ControlPanelController controller) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      _buildTextField(AppStrings.centerName, AppStrings.egHopeCenter,
-          controller.centerNameController),
-      _buildTextField(AppStrings.centerSlogan, AppStrings.egWeLiveByHope,
-          controller.centerSloganController),
-      _buildTextField(AppStrings.description, AppStrings.description,
-          controller.centerdescController),
+      _buildTextField(AppStrings.centerName, AppStrings.egHopeCenter, controller.centerNameController),
+      _buildTextField(AppStrings.centerSlogan, AppStrings.egWeLiveByHope, controller.centerSloganController),
+      _buildTextField(AppStrings.description, AppStrings.description, controller.centerdescController),
       CustomText(
         AppStrings.backgroundImage,
-        textStyle:
-        TextStyles.body14Regular.copyWith(color: ColorCode.neutral500),
+        textStyle: TextStyles.body14Regular.copyWith(color: ColorCode.neutral500),
       ),
       Gaps.vGap4,
       InkWell(
         onTap: () async {
           controller.centerBackgroundImage = await controller.pickImage();
-          controller.centerimageController.text =
-              controller.centerBackgroundImage?.path
-                  .split('/')
-                  .last ?? "";
+          controller.centerimageController.text = controller.centerBackgroundImage?.path.split('/').last ?? "";
         },
         child: CustomTextFormField(
             hint: AppStrings.selectAFile,
@@ -260,13 +228,9 @@ Widget _mainSectionForm(ControlPanelController controller) {
             enable: false,
             onTap: () async {
               controller.centerBackgroundImage = await controller.pickImage();
-              controller.centerimageController.text =
-                  controller.centerBackgroundImage?.path
-                      .split('/')
-                      .last ?? "";
+              controller.centerimageController.text = controller.centerBackgroundImage?.path.split('/').last ?? "";
             },
-            suffixIcon: AppSVGAssets.getWidget(AppSVGAssets.attachLine,
-                width: 16, height: 16, color: ColorCode.neutral400),
+            suffixIcon: AppSVGAssets.getWidget(AppSVGAssets.attachLine, width: 16, height: 16, color: ColorCode.neutral400),
             onChange: (String? val) {
               controller.centerimageController.text = val!;
               // final englishText = convertArabicToEnglish(val ??"");
@@ -276,6 +240,7 @@ Widget _mainSectionForm(ControlPanelController controller) {
               // );
             },
             controller: controller.centerimageController,
+            validator: (p0) => null,
             // validator: (val) {
             //   return (controller.centerimageController.text.isNotEmpty)
             //       ? null
@@ -294,10 +259,7 @@ Widget _branchesForm(ControlPanelController controlPanelController) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ...controlPanelController.branchControllers
-            .asMap()
-            .entries
-            .map((entry) {
+        ...controlPanelController.branchControllers.asMap().entries.map((entry) {
           final i = entry.key;
           final controller = entry.value;
           return Column(
@@ -305,9 +267,7 @@ Widget _branchesForm(ControlPanelController controlPanelController) {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: _buildTextField(
-                    AppStrings.branchName, AppStrings.egBranchNames,
-                    controller),
+                child: _buildTextField(AppStrings.branchName, AppStrings.egBranchNames, controller),
               ),
               if (i > 0)
                 IconButton(
@@ -330,8 +290,7 @@ Widget _branchesForm(ControlPanelController controlPanelController) {
                 ),
               ),
             ),
-            label: AppSVGAssets.getWidget(AppSVGAssets.plusLine,
-                color: ColorCode.primary600, width: 16, height: 16),
+            label: AppSVGAssets.getWidget(AppSVGAssets.plusLine, color: ColorCode.primary600, width: 16, height: 16),
           ),
         ),
       ],
@@ -343,10 +302,7 @@ Widget _adsForm(ControlPanelController controlPanelController) {
   return Obx(() {
     return Column(
       children: [
-        ...controlPanelController.adImages
-            .asMap()
-            .entries
-            .map((entry) {
+        ...controlPanelController.adImages.asMap().entries.map((entry) {
           final i = entry.key;
           final image = entry.value;
 
@@ -357,8 +313,7 @@ Widget _adsForm(ControlPanelController controlPanelController) {
                 children: [
                   CustomText(
                     AppStrings.backgroundImage,
-                    textStyle: TextStyles.body14Regular
-                        .copyWith(color: ColorCode.neutral500),
+                    textStyle: TextStyles.body14Regular.copyWith(color: ColorCode.neutral500),
                   ),
                   Gaps.vGap4,
                   Padding(
@@ -379,22 +334,14 @@ Widget _adsForm(ControlPanelController controlPanelController) {
                             Expanded(
                               child: Text(
                                 image is File?
-                                    ? image?.path
-                                    .split('/')
-                                    .last ??
-                                    AppStrings.selectAFile
-                                    : image
-                                    ?.split('/')
-                                    .last ??
-                                    AppStrings.selectAFile,
+                                    ? image?.path.split('/').last ?? AppStrings.selectAFile
+                                    : image?.split('/').last ?? AppStrings.selectAFile,
                                 style: TextStyle(
-                                  color:
-                                  image == null ? Colors.grey : Colors.black,
+                                  color: image == null ? Colors.grey : Colors.black,
                                 ),
                               ),
                             ),
-                            AppSVGAssets.getWidget(AppSVGAssets.attachLine,
-                                color: ColorCode.neutral400),
+                            AppSVGAssets.getWidget(AppSVGAssets.attachLine, color: ColorCode.neutral400),
                           ],
                         ),
                       ),
@@ -406,8 +353,7 @@ Widget _adsForm(ControlPanelController controlPanelController) {
                       children: [
                         IconButton(
                           icon: AppSVGAssets.getWidget(AppSVGAssets.delete),
-                          onPressed: () =>
-                              controlPanelController.removeAdImage(i),
+                          onPressed: () => controlPanelController.removeAdImage(i),
                         ),
                       ],
                     ),
@@ -426,8 +372,7 @@ Widget _adsForm(ControlPanelController controlPanelController) {
               ),
             ),
           ),
-          label: AppSVGAssets.getWidget(AppSVGAssets.plusLine,
-              color: ColorCode.primary600, width: 16, height: 16),
+          label: AppSVGAssets.getWidget(AppSVGAssets.plusLine, color: ColorCode.primary600, width: 16, height: 16),
         ),
       ],
     );
@@ -438,12 +383,9 @@ Widget _ourGoalsSectionForm(ControlPanelController controller) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      _buildTextField(AppStrings.ourPhilosophy, AppStrings.ourPhilosophy,
-          controller.ourPhilosophyController),
-      _buildTextField(AppStrings.ourMethodology, AppStrings.ourMethodology,
-          controller.ourMethodologyController),
-      _buildTextField(
-          AppStrings.ourGoal, AppStrings.ourGoal, controller.ourGoalController),
+      _buildTextField(AppStrings.ourPhilosophy, AppStrings.ourPhilosophy, controller.ourPhilosophyController),
+      _buildTextField(AppStrings.ourMethodology, AppStrings.ourMethodology, controller.ourMethodologyController),
+      _buildTextField(AppStrings.ourGoal, AppStrings.ourGoal, controller.ourGoalController),
     ],
   );
 }
@@ -452,14 +394,9 @@ Widget _centerInfoSectionForm(ControlPanelController controller) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      _buildTextField(AppStrings.nurserySpace, AppStrings.nurserySpace,
-          controller.nurserySpaceController),
-      _buildTextField(AppStrings.numberOfClasses, AppStrings.numberOfClasses,
-          controller.numberOfClassesController),
-      _buildTextField(
-          AppStrings.numberOfTeamMembers,
-          AppStrings.numberOfTeamMembers,
-          controller.numberOfTeamMembersController),
+      _buildTextField(AppStrings.nurserySpace, AppStrings.nurserySpace, controller.nurserySpaceController),
+      _buildTextField(AppStrings.numberOfClasses, AppStrings.numberOfClasses, controller.numberOfClassesController),
+      _buildTextField(AppStrings.numberOfTeamMembers, AppStrings.numberOfTeamMembers, controller.numberOfTeamMembersController),
     ],
   );
 }
@@ -468,15 +405,9 @@ Widget _activitiesForm(ControlPanelController controlPanelController) {
   return Obx(() {
     return Column(
       children: [
-        _buildTextField(
-            AppStrings.theActivitiesInTheCenter,
-            AppStrings.egCinemaCookingChessSwimming,
-            controlPanelController.activitiesController),
+        _buildTextField(AppStrings.theActivitiesInTheCenter, AppStrings.egCinemaCookingChessSwimming, controlPanelController.activitiesController),
         Gaps.vGap8,
-        ...controlPanelController.activities
-            .asMap()
-            .entries
-            .map((entry) {
+        ...controlPanelController.activities.asMap().entries.map((entry) {
           final i = entry.key;
           final image = entry.value;
 
@@ -487,15 +418,13 @@ Widget _activitiesForm(ControlPanelController controlPanelController) {
                 children: [
                   CustomText(
                     AppStrings.backgroundImage,
-                    textStyle: TextStyles.body14Regular
-                        .copyWith(color: ColorCode.neutral500),
+                    textStyle: TextStyles.body14Regular.copyWith(color: ColorCode.neutral500),
                   ),
                   Gaps.vGap4,
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 0),
                     child: InkWell(
-                      onTap: () =>
-                          controlPanelController.pickActivitiesImage(i),
+                      onTap: () => controlPanelController.pickActivitiesImage(i),
                       child: Container(
                         height: 52.h,
                         decoration: BoxDecoration(
@@ -510,22 +439,14 @@ Widget _activitiesForm(ControlPanelController controlPanelController) {
                             Expanded(
                               child: Text(
                                 image is File?
-                                    ? image?.path
-                                    .split('/')
-                                    .last ??
-                                    AppStrings.selectAFile
-                                    : image
-                                    ?.split('/')
-                                    .last ??
-                                    AppStrings.selectAFile,
+                                    ? image?.path.split('/').last ?? AppStrings.selectAFile
+                                    : image?.split('/').last ?? AppStrings.selectAFile,
                                 style: TextStyle(
-                                  color:
-                                  image == null ? Colors.grey : Colors.black,
+                                  color: image == null ? Colors.grey : Colors.black,
                                 ),
                               ),
                             ),
-                            AppSVGAssets.getWidget(AppSVGAssets.attachLine,
-                                color: ColorCode.neutral400),
+                            AppSVGAssets.getWidget(AppSVGAssets.attachLine, color: ColorCode.neutral400),
                           ],
                         ),
                       ),
@@ -537,8 +458,7 @@ Widget _activitiesForm(ControlPanelController controlPanelController) {
                       children: [
                         IconButton(
                           icon: AppSVGAssets.getWidget(AppSVGAssets.delete),
-                          onPressed: () =>
-                              controlPanelController.removeActivity(i),
+                          onPressed: () => controlPanelController.removeActivity(i),
                         ),
                       ],
                     ),
@@ -557,24 +477,20 @@ Widget _activitiesForm(ControlPanelController controlPanelController) {
               ),
             ),
           ),
-          label: AppSVGAssets.getWidget(AppSVGAssets.plusLine,
-              color: ColorCode.primary600, width: 16, height: 16),
+          label: AppSVGAssets.getWidget(AppSVGAssets.plusLine, color: ColorCode.primary600, width: 16, height: 16),
         ),
       ],
     );
   });
 }
 
-Widget _buildTextField(String label, String hint,
-    TextEditingController textEditingController,
-    {IconData? icon}) {
+Widget _buildTextField(String label, String hint, TextEditingController textEditingController, {IconData? icon}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       CustomText(
         label,
-        textStyle:
-        TextStyles.body14Regular.copyWith(color: ColorCode.neutral500),
+        textStyle: TextStyles.body14Regular.copyWith(color: ColorCode.neutral500),
       ),
       Gaps.vGap4,
       CustomTextFormField(
@@ -582,6 +498,7 @@ Widget _buildTextField(String label, String hint,
           onSave: (String? val) {
             textEditingController.text = val!;
           },
+          validator: (p0) => null,
           onChange: (String? val) {
             textEditingController.text = val!;
             // final englishText = convertArabicToEnglish(val ??"");

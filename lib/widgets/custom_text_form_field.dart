@@ -109,11 +109,12 @@ class CustomTextFormField extends StatelessWidget {
               fontWeight: FontWeight.w400,
               fontSize: 14.5,
             ),
-            // errorStyle: TextStyles.button12.copyWith(
-            //     color: ColorCode.danger700,
-            //     fontWeight: FontWeight.w400),
-            // errorText:
-            // validator != null ? null : validator!(controller?.text) ?? "",
+            errorStyle: TextStyles.button12.copyWith(
+                color: ColorCode.danger700,
+                fontWeight: FontWeight.w400),
+            errorText:
+            validator != null ? null : validator!(controller?.text) ?? "",
+            errorMaxLines: 3,
 
             // label: CustomText(
             //     label,

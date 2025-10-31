@@ -98,12 +98,13 @@ class BranchCard extends StatelessWidget {
           Row(
             children: [
               InkWell(
+                borderRadius: BorderRadius.circular(8.r),
                 onTap: () {
                   Get.toNamed(Routes.BRANCH_DETAILS_SCREEN, arguments: branchModel.id.toString());
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(36.r),
+                    borderRadius: BorderRadius.circular(8.r),
                     gradient: const LinearGradient(
                       begin: Alignment(-0.15, -1.0), // Approximate direction for 98.52 degrees
                       end: Alignment(1.0, 0.15),
@@ -115,7 +116,7 @@ class BranchCard extends StatelessWidget {
                       stops: [0.1117, 0.6374, 0.9471],
                     ),
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 14.5, horizontal: 24),
+                  padding: const EdgeInsets.symmetric(vertical: 10.5, horizontal: 24),
                   child: Center(
                     child: CustomText(
                       AppStrings.viewBranch,
@@ -126,15 +127,16 @@ class BranchCard extends StatelessWidget {
               ),
               Gaps.hGap16,
               InkWell(
+                borderRadius: BorderRadius.circular(8.r),
                 onTap: () {
                   Get.toNamed(Routes.BRANCH_EDIT_SCREEN, arguments: branchModel.id.toString());
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(36.r),
+                    borderRadius: BorderRadius.circular(8.r),
                     border: Border.all(color: ColorCode.primary600),
                   ),
-                  padding: const EdgeInsets.symmetric(vertical: 14.5, horizontal: 24),
+                  padding: const EdgeInsets.symmetric(vertical: 10.5, horizontal: 24),
                   child: Center(
                     child: CustomText(
                       AppStrings.editBranch,

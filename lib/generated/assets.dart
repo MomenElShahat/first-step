@@ -8,8 +8,10 @@ class Assets {
   static const String assetsLocaleEn = 'assets/locale_en.json';
   static const String docsFaqsContent = 'assets/docs/faqs_content.docx';
   static const String iconIcon = 'assets/icon/icon.png';
+  static const String imagesAbstractSearch = 'assets/images/abstract_search.png';
   static const String imagesActivity = 'assets/images/activity.png';
   static const String imagesActivityTall = 'assets/images/activity_tall.png';
+  static const String imagesAddUsersBubble = 'assets/images/add_users_bubble.png';
   static const String imagesAvatar = 'assets/images/avatar.png';
   static const String imagesBlogImage = 'assets/images/blog_image.png';
   static const String imagesBlogPage = 'assets/images/blog_page.png';
@@ -22,12 +24,14 @@ class Assets {
   static const String imagesCenterProfile = 'assets/images/center_profile.png';
   static const String imagesCenterServiceImage = 'assets/images/center_service_image.png';
   static const String imagesCheckMark = 'assets/images/check_mark.png';
+  static const String imagesCheckMarkPink = 'assets/images/check_mark_pink.png';
   static const String imagesClouds = 'assets/images/clouds.png';
   static const String imagesDaily = 'assets/images/daily.png';
   static const String imagesFamily = 'assets/images/family.png';
   static const String imagesGift = 'assets/images/gift.png';
   static const String imagesGirl = 'assets/images/girl.png';
   static const String imagesGirlFill = 'assets/images/girl_fill.png';
+  static const String imagesGlobeLocation = 'assets/images/globe_location.png';
   static const String imagesGoal = 'assets/images/goal.png';
   static const String imagesHomeImage = 'assets/images/home_image.png';
   static const String imagesHourly = 'assets/images/hourly.png';
@@ -43,6 +47,7 @@ class Assets {
   static const String imagesMember = 'assets/images/member.png';
   static const String imagesMethodology = 'assets/images/methodology.png';
   static const String imagesMonthly = 'assets/images/monthly.png';
+  static const String imagesNoPricing = 'assets/images/no_pricing.png';
   static const String imagesParentOnboarding1 = 'assets/images/parent_onboarding1.png';
   static const String imagesParentOnboarding2 = 'assets/images/parent_onboarding2.png';
   static const String imagesParents = 'assets/images/parents.png';
@@ -71,6 +76,7 @@ class Assets {
   static const String screenshots3 = 'assets/screenshots/3.png';
   static const String screenshots4 = 'assets/screenshots/4.png';
   static const String screenshots5 = 'assets/screenshots/5.png';
+  static const String svgIconsAbstractSearch = 'assets/svg_icons/abstract_search.svg';
   static const String svgIconsAddBoxFill = 'assets/svg_icons/add_box_fill.svg';
   static const String svgIconsAddBoxLine = 'assets/svg_icons/add_box_line.svg';
   static const String svgIconsAreaFill = 'assets/svg_icons/area_fill.svg';
@@ -111,13 +117,16 @@ class Assets {
   static const String svgIconsCalendar = 'assets/svg_icons/calendar.svg';
   static const String svgIconsCalendarFill = 'assets/svg_icons/calendar_fill.svg';
   static const String svgIconsCalendarLine = 'assets/svg_icons/calendar_line.svg';
+  static const String svgIconsCenterIcon = 'assets/svg_icons/center_icon.svg';
   static const String svgIconsCenterInfo = 'assets/svg_icons/center_info.svg';
   static const String svgIconsChat = 'assets/svg_icons/chat.svg';
   static const String svgIconsCheckFill = 'assets/svg_icons/check_fill.svg';
   static const String svgIconsCheckLine = 'assets/svg_icons/check_line.svg';
   static const String svgIconsCheckMark = 'assets/svg_icons/check_mark.svg';
+  static const String svgIconsCheckMarkPink = 'assets/svg_icons/check_mark_pink.svg';
   static const String svgIconsCheckbox = 'assets/svg_icons/checkbox.svg';
   static const String svgIconsCheckboxFill = 'assets/svg_icons/checkbox_fill.svg';
+  static const String svgIconsChildProgram = 'assets/svg_icons/child_program.svg';
   static const String svgIconsChildrenFiles = 'assets/svg_icons/children_files.svg';
   static const String svgIconsCircleDownFill = 'assets/svg_icons/circle_down_fill.svg';
   static const String svgIconsCircleDownLine = 'assets/svg_icons/circle_down_line.svg';
@@ -125,12 +134,14 @@ class Assets {
   static const String svgIconsCircleLeftLine = 'assets/svg_icons/circle_left_line.svg';
   static const String svgIconsCircleUpFill = 'assets/svg_icons/circle_up_fill.svg';
   static const String svgIconsCircleUpLine = 'assets/svg_icons/circle_up_line.svg';
+  static const String svgIconsCloseDialog = 'assets/svg_icons/close_dialog.svg';
   static const String svgIconsCloseFill = 'assets/svg_icons/close_fill.svg';
   static const String svgIconsCloseLine = 'assets/svg_icons/close_line.svg';
   static const String svgIconsControlPanelSelected = 'assets/svg_icons/control_panel_selected.svg';
   static const String svgIconsControlPanelUnselected = 'assets/svg_icons/control_panel_unselected.svg';
   static const String svgIconsCopyFill = 'assets/svg_icons/copy_fill.svg';
   static const String svgIconsCopyLine = 'assets/svg_icons/copy_line.svg';
+  static const String svgIconsCreditCardVisa = 'assets/svg_icons/credit_card_visa.svg';
   static const String svgIconsCumulativeChartFill = 'assets/svg_icons/cumulative_chart_fill.svg';
   static const String svgIconsCumulativeChartLine = 'assets/svg_icons/cumulative_chart_line.svg';
   static const String svgIconsCurve = 'assets/svg_icons/curve.svg';
@@ -174,6 +185,7 @@ class Assets {
   static const String svgIconsForbidLine = 'assets/svg_icons/forbid_line.svg';
   static const String svgIconsFourthStep = 'assets/svg_icons/fourth_step.svg';
   static const String svgIconsFourthStepFill = 'assets/svg_icons/fourth_step_fill.svg';
+  static const String svgIconsGlobeLocation = 'assets/svg_icons/globe_location.svg';
   static const String svgIconsGoEndFill = 'assets/svg_icons/go_end_fill.svg';
   static const String svgIconsGoEndLine = 'assets/svg_icons/go_end_line.svg';
   static const String svgIconsGoStartFill = 'assets/svg_icons/go_start_fill.svg';
@@ -226,6 +238,7 @@ class Assets {
   static const String svgIconsMoreLine = 'assets/svg_icons/more_line.svg';
   static const String svgIconsMoreVFill = 'assets/svg_icons/more_v_fill.svg';
   static const String svgIconsMoreVLine = 'assets/svg_icons/more_v_line.svg';
+  static const String svgIconsNoPricing = 'assets/svg_icons/no_pricing.svg';
   static const String svgIconsNotificationLight = 'assets/svg_icons/notification_light.svg';
   static const String svgIconsNotificationsDrawer = 'assets/svg_icons/notifications_drawer.svg';
   static const String svgIconsPVector = 'assets/svg_icons/p_vector.svg';
@@ -277,6 +290,7 @@ class Assets {
   static const String svgIconsStarFill = 'assets/svg_icons/star_fill.svg';
   static const String svgIconsStarLine = 'assets/svg_icons/star_line.svg';
   static const String svgIconsStepper = 'assets/svg_icons/stepper.svg';
+  static const String svgIconsSubLocation = 'assets/svg_icons/sub_location.svg';
   static const String svgIconsSuccessFill = 'assets/svg_icons/success_fill.svg';
   static const String svgIconsSuccessLine = 'assets/svg_icons/success_line.svg';
   static const String svgIconsTVector = 'assets/svg_icons/t_vector.svg';
@@ -303,4 +317,7 @@ class Assets {
   static const String svgIconsWarningLine = 'assets/svg_icons/warning_line.svg';
   static const String svgIconsWeb = 'assets/svg_icons/web.svg';
   static const String svgIconsWeekly = 'assets/svg_icons/weekly.svg';
+  static const String svgIconsX = 'assets/svg_icons/x.svg';
+  static const String svgIconsYoutube = 'assets/svg_icons/youtube.svg';
+
 }

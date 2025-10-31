@@ -41,14 +41,8 @@ class Step1 extends GetView<SignupController> {
                   child: RichText(
                     text: TextSpan(
                       children: [
-                        TextSpan(
-                            text: AppStrings.centerName,
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.neutral500)),
-                        TextSpan(
-                            text: "*",
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.danger700)),
+                        TextSpan(text: AppStrings.centerName, style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
+                        TextSpan(text: "*", style: TextStyles.body14Medium.copyWith(color: ColorCode.danger700)),
                       ],
                     ),
                   ),
@@ -59,21 +53,56 @@ class Step1 extends GetView<SignupController> {
                   child: CustomTextFormField(
                       hint: AppStrings.egWowNursery,
                       onSave: (String? val) {
-                        controller.arabic.text = val!;
+                        controller.name.text = val!;
                       },
                       onChange: (String? val) {
-                        controller.arabic.text = val!;
+                        controller.name.text = val!;
                         // final englishText = convertArabicToEnglish(val ??"");
                         // controller.floorNumber.value  =controller.floorNumber.value.copyWith(
                         //   text: englishText,
                         //   selection: TextSelection.collapsed(offset: englishText.length),
                         // );
                       },
-                      controller: controller.arabic,
+                      controller: controller.name,
                       validator: (val) {
-                        return (controller.arabic.text.isNotEmpty)
-                            ? null
-                            : AppStrings.emptyField;
+                        return (controller.name.text.isNotEmpty) ? null : AppStrings.emptyField;
+                      },
+                      inputType: TextInputType.text,
+                      label: ""),
+                ),
+                Gaps.vGap8,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                            text: AppStrings.nameOfThePersonInChargeOfTheCenter,
+                            style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
+                        TextSpan(text: "*", style: TextStyles.body14Medium.copyWith(color: ColorCode.danger700)),
+                      ],
+                    ),
+                  ),
+                ),
+                Gaps.vGap8,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: CustomTextFormField(
+                      hint: AppStrings.nameOfThePersonInChargeOfTheCenterEg,
+                      onSave: (String? val) {
+                        controller.nurseryName.text = val!;
+                      },
+                      onChange: (String? val) {
+                        controller.nurseryName.text = val!;
+                        // final englishText = convertArabicToEnglish(val ??"");
+                        // controller.floorNumber.value  =controller.floorNumber.value.copyWith(
+                        //   text: englishText,
+                        //   selection: TextSelection.collapsed(offset: englishText.length),
+                        // );
+                      },
+                      controller: controller.nurseryName,
+                      validator: (val) {
+                        return (controller.nurseryName.text.isNotEmpty) ? null : AppStrings.emptyField;
                       },
                       inputType: TextInputType.text,
                       label: ""),
@@ -127,14 +156,8 @@ class Step1 extends GetView<SignupController> {
                   child: RichText(
                     text: TextSpan(
                       children: [
-                        TextSpan(
-                            text: AppStrings.mobileNumber,
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.neutral500)),
-                        TextSpan(
-                            text: "*",
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.danger700)),
+                        TextSpan(text: AppStrings.mobileNumber, style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
+                        TextSpan(text: "*", style: TextStyles.body14Medium.copyWith(color: ColorCode.danger700)),
                       ],
                     ),
                   ),
@@ -144,47 +167,59 @@ class Step1 extends GetView<SignupController> {
                   textDirection: TextDirection.ltr,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Row(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 12),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(8),
-                            color: Colors.grey.shade100,
-                          ),
-                          child: const Text(
-                            '+966 🇸🇦', // Saudi code with flag
-                            style: TextStyle(fontSize: 16),
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey),
+                                borderRadius: BorderRadius.circular(8),
+                                color: Colors.grey.shade100,
+                              ),
+                              child: const Text(
+                                '+966 🇸🇦', // Saudi code with flag
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                            Gaps.hGap8,
+                            Expanded(
+                              child: CustomTextFormField(
+                                hint: AppStrings.egMobileNumber,
+                                onSave: (val) => controller.mobileNumber.text = val ?? '',
+                                onChange: (val) {
+                                  controller.mobileNumber.text = val ?? '';
+                                  controller.phone.value = controller.mobileNumber.text;
+                                },
+                                maxLength: 9,
+                                controller: controller.mobileNumber,
+                                // ✅ Don't use the internal validator
+                                validator: (_) => null,
+                                inputType: TextInputType.phone,
+                                label: "",
+                              ),
+                            ),
+                          ],
                         ),
-                        Gaps.hGap8,
-                        Expanded(
-                          child: CustomTextFormField(
-                              hint: AppStrings.egMobileNumber,
-                              onSave: (String? val) {
-                                controller.mobileNumber.text = val!;
-                              },
-                              onChange: (String? val) {
-                                controller.mobileNumber.text = val!;
-                                // final englishText = convertArabicToEnglish(val ??"");
-                                // controller.floorNumber.value  =controller.floorNumber.value.copyWith(
-                                //   text: englishText,
-                                //   selection: TextSelection.collapsed(offset: englishText.length),
-                                // );
-                              },
-                              maxLength: 9,
-                              controller: controller.mobileNumber,
-                              validator: (val) {
-                                return (isValidSaudiNumber(
-                                        controller.mobileNumber.text))
-                                    ? null
-                                    : AppStrings.phoneValidation;
-                              },
-                              inputType: TextInputType.phone,
-                              label: ""),
-                        ),
+                        // ✅ Custom error text below (keeps field position stable)
+                        Obx(() {
+                          final isValid = isValidSaudiNumber(controller.phone.value);
+                          return isValid
+                              ? const SizedBox.shrink()
+                              : Padding(
+                            padding: const EdgeInsets.only(left: 72, top: 4),
+                            child: CustomText(
+                              AppStrings.phoneValidation,
+                              textAlign: TextAlign.start,
+                              textStyle: TextStyles.button12.copyWith(
+                                  color: ColorCode.danger700,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          );
+                        }),
                       ],
                     ),
                   ),
@@ -195,14 +230,8 @@ class Step1 extends GetView<SignupController> {
                   child: RichText(
                     text: TextSpan(
                       children: [
-                        TextSpan(
-                            text: AppStrings.email,
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.neutral500)),
-                        TextSpan(
-                            text: "*",
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.danger700)),
+                        TextSpan(text: AppStrings.email, style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
+                        TextSpan(text: "*", style: TextStyles.body14Medium.copyWith(color: ColorCode.danger700)),
                       ],
                     ),
                   ),
@@ -225,9 +254,7 @@ class Step1 extends GetView<SignupController> {
                       },
                       controller: controller.email,
                       validator: (val) {
-                        return isValidEmail(controller.email.text)
-                            ? null
-                            : AppStrings.validateMail;
+                        return isValidEmail(controller.email.text) ? null : AppStrings.validateMail;
                       },
                       inputType: TextInputType.text,
                       label: ""),
@@ -238,14 +265,94 @@ class Step1 extends GetView<SignupController> {
                   child: RichText(
                     text: TextSpan(
                       children: [
-                        TextSpan(
-                            text: AppStrings.theCity,
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.neutral500)),
-                        TextSpan(
-                            text: "*",
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.danger700)),
+                        TextSpan(text: AppStrings.createPassword, style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
+                        TextSpan(text: "*", style: TextStyles.body14Medium.copyWith(color: ColorCode.danger700)),
+                      ],
+                    ),
+                  ),
+                ),
+                Gaps.vGap8,
+                Obx(() {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: CustomTextFormField(
+                        isHiddenPassword: controller.isHidden.value,
+                        onTapShowHidePassword: () {
+                          controller.isHidden.value = !controller.isHidden.value;
+                        },
+                        hint: AppStrings.pleaseWriteAStrongPassword,
+                        onSave: (String? val) {
+                          controller.password.text = val!;
+                        },
+                        obscureText: true,
+                        onChange: (String? val) {
+                          controller.password.text = val!;
+                          // final englishText = convertArabicToEnglish(val ??"");
+                          // controller.floorNumber.value  =controller.floorNumber.value.copyWith(
+                          //   text: englishText,
+                          //   selection: TextSelection.collapsed(offset: englishText.length),
+                          // );
+                        },
+                        controller: controller.password,
+                        validator: (val) {
+                          return (controller.password.text.length >= 8) ? null : AppStrings.passwordValidation;
+                        },
+                        inputType: TextInputType.text,
+                        label: ""),
+                  );
+                }),
+                Gaps.vGap8,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(text: AppStrings.confirmPassword, style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
+                        TextSpan(text: "*", style: TextStyles.body14Medium.copyWith(color: ColorCode.danger700)),
+                      ],
+                    ),
+                  ),
+                ),
+                Gaps.vGap8,
+                Obx(() {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: CustomTextFormField(
+                        controller: controller.confirmPassword,
+                        hint: AppStrings.pleaseWriteAStrongPassword,
+                        onSave: (String? val) {
+                          // controller.neighborhood.text = val!;
+                        },
+                        isHiddenPassword: controller.isHiddenConfirm.value,
+                        onTapShowHidePassword: () {
+                          controller.isHiddenConfirm.value = !controller.isHiddenConfirm.value;
+                        },
+                        obscureText: true,
+                        onChange: (String? val) {
+                          controller.confirmPassword.text = val!;
+                          // controller.neighborhood.text = val!;
+                          // final englishText = convertArabicToEnglish(val ??"");
+                          // controller.floorNumber.value  =controller.floorNumber.value.copyWith(
+                          //   text: englishText,
+                          //   selection: TextSelection.collapsed(offset: englishText.length),
+                          // );
+                        },
+                        // controller: controller.neighborhood,
+                        validator: (val) {
+                          return (controller.password.text == controller.confirmPassword.text) ? null : AppStrings.passwordDoesNotMatch;
+                        },
+                        inputType: TextInputType.text,
+                        label: ""),
+                  );
+                }),
+                Gaps.vGap8,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(text: AppStrings.theCity, style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
+                        TextSpan(text: "*", style: TextStyles.body14Medium.copyWith(color: ColorCode.danger700)),
                       ],
                     ),
                   ),
@@ -275,14 +382,8 @@ class Step1 extends GetView<SignupController> {
                   child: RichText(
                     text: TextSpan(
                       children: [
-                        TextSpan(
-                            text: AppStrings.theNeighborhood,
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.neutral500)),
-                        TextSpan(
-                            text: "*",
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.danger700)),
+                        TextSpan(text: AppStrings.theNeighborhood, style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
+                        TextSpan(text: "*", style: TextStyles.body14Medium.copyWith(color: ColorCode.danger700)),
                       ],
                     ),
                   ),
@@ -305,9 +406,7 @@ class Step1 extends GetView<SignupController> {
                       },
                       controller: controller.neighborhood,
                       validator: (val) {
-                        return (controller.neighborhood.text.isNotEmpty)
-                            ? null
-                            : AppStrings.emptyField;
+                        return (controller.neighborhood.text.isNotEmpty) ? null : AppStrings.emptyField;
                       },
                       inputType: TextInputType.text,
                       label: ""),
@@ -318,57 +417,8 @@ class Step1 extends GetView<SignupController> {
                   child: RichText(
                     text: TextSpan(
                       children: [
-                        TextSpan(
-                            text: AppStrings.theStreet,
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.neutral500)),
-                        TextSpan(
-                            text: "*",
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.danger700)),
-                      ],
-                    ),
-                  ),
-                ),
-                Gaps.vGap8,
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: CustomTextFormField(
-                      hint: "........",
-                      onSave: (String? val) {
-                        controller.street.text = val!;
-                      },
-                      onChange: (String? val) {
-                        controller.street.text = val!;
-                        // final englishText = convertArabicToEnglish(val ??"");
-                        // controller.floorNumber.value  =controller.floorNumber.value.copyWith(
-                        //   text: englishText,
-                        //   selection: TextSelection.collapsed(offset: englishText.length),
-                        // );
-                      },
-                      controller: controller.street,
-                      validator: (val) {
-                        return (controller.street.text.isNotEmpty)
-                            ? null
-                            : AppStrings.emptyField;
-                      },
-                      inputType: TextInputType.text,
-                      label: ""),
-                ),
-                Gaps.vGap8,
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                            text: AppStrings.locationLink,
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.neutral500)),
-                        TextSpan(
-                            text: "*",
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.danger700)),
+                        TextSpan(text: AppStrings.locationLink, style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
+                        TextSpan(text: "*", style: TextStyles.body14Medium.copyWith(color: ColorCode.danger700)),
                       ],
                     ),
                   ),
@@ -391,165 +441,16 @@ class Step1 extends GetView<SignupController> {
                       },
                       controller: controller.locationLink,
                       validator: (val) {
-                        return (controller.locationLink.text.isNotEmpty)
-                            ? null
-                            : AppStrings.emptyField;
+                        return (controller.locationLink.text.isNotEmpty) ? null : AppStrings.emptyField;
                       },
                       inputType: TextInputType.text,
                       label: ""),
                 ),
-                Gaps.vGap8,
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                            text: AppStrings.branchNames,
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.neutral500)),
-                        TextSpan(
-                            text: "*",
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.danger700)),
-                      ],
-                    ),
-                  ),
-                ),
-                Gaps.vGap8,
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: CustomTextFormField(
-                      hint: AppStrings.egBranchNames,
-                      onSave: (String? val) {
-                        controller.branchNames.text = val!;
-                      },
-                      onChange: (String? val) {
-                        controller.branchNames.text = val!;
-                        // final englishText = convertArabicToEnglish(val ??"");
-                        // controller.floorNumber.value  =controller.floorNumber.value.copyWith(
-                        //   text: englishText,
-                        //   selection: TextSelection.collapsed(offset: englishText.length),
-                        // );
-                      },
-                      controller: controller.branchNames,
-                      validator: (val) {
-                        return null;
-                      },
-                      inputType: TextInputType.text,
-                      label: ""),
-                ),
-                Gaps.vGap8,
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                            text: AppStrings.createPassword,
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.neutral500)),
-                        TextSpan(
-                            text: "*",
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.danger700)),
-                      ],
-                    ),
-                  ),
-                ),
-                Gaps.vGap8,
-                Obx(() {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: CustomTextFormField(
-                        isHiddenPassword: controller.isHidden.value,
-                        onTapShowHidePassword: () {
-                          controller.isHidden.value =
-                              !controller.isHidden.value;
-                        },
-                        hint: AppStrings.pleaseWriteAStrongPassword,
-                        onSave: (String? val) {
-                          controller.password.text = val!;
-                        },
-                        obscureText: true,
-                        onChange: (String? val) {
-                          controller.password.text = val!;
-                          // final englishText = convertArabicToEnglish(val ??"");
-                          // controller.floorNumber.value  =controller.floorNumber.value.copyWith(
-                          //   text: englishText,
-                          //   selection: TextSelection.collapsed(offset: englishText.length),
-                          // );
-                        },
-                        controller: controller.password,
-                        validator: (val) {
-                          return (controller.password.text.length >= 8)
-                              ? null
-                              : AppStrings.passwordValidation;
-                        },
-                        inputType: TextInputType.text,
-                        label: ""),
-                  );
-                }),
-                Gaps.vGap8,
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                            text: AppStrings.confirmPassword,
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.neutral500)),
-                        TextSpan(
-                            text: "*",
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.danger700)),
-                      ],
-                    ),
-                  ),
-                ),
-                Gaps.vGap8,
-                Obx(() {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: CustomTextFormField(
-                        controller: controller.confirmPassword,
-                        hint: AppStrings.pleaseWriteAStrongPassword,
-                        onSave: (String? val) {
-                          // controller.neighborhood.text = val!;
-                        },
-                        isHiddenPassword: controller.isHiddenConfirm.value,
-                        onTapShowHidePassword: () {
-                          controller.isHiddenConfirm.value =
-                              !controller.isHiddenConfirm.value;
-                        },
-                        obscureText: true,
-                        onChange: (String? val) {
-                          controller.confirmPassword.text = val!;
-                          // controller.neighborhood.text = val!;
-                          // final englishText = convertArabicToEnglish(val ??"");
-                          // controller.floorNumber.value  =controller.floorNumber.value.copyWith(
-                          //   text: englishText,
-                          //   selection: TextSelection.collapsed(offset: englishText.length),
-                          // );
-                        },
-                        // controller: controller.neighborhood,
-                        validator: (val) {
-                          return (controller.password.text ==
-                                  controller.confirmPassword.text)
-                              ? null
-                              : AppStrings.passwordDoesNotMatch;
-                        },
-                        inputType: TextInputType.text,
-                        label: ""),
-                  );
-                }),
                 Gaps.vGap16,
                 Center(
                   child: CustomText(
                     AppStrings.centerType,
-                    textStyle: TextStyles.body16Medium
-                        .copyWith(color: ColorCode.primary600),
+                    textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.primary600),
                   ),
                 ),
                 Gaps.vGap8,
@@ -560,16 +461,16 @@ class Step1 extends GetView<SignupController> {
                 //   ],
                 // ),
                 ...buildCheckBoxGrid(controller.centerTypes),
-                Gaps.vGap16,
-                Center(
-                  child: CustomText(
-                    AppStrings.availableServices,
-                    textStyle: TextStyles.body16Medium
-                        .copyWith(color: ColorCode.primary600),
-                  ),
-                ),
-                Gaps.vGap8,
-                ...buildCheckBoxGrid(controller.services),
+                // Gaps.vGap16,
+                // Center(
+                //   child: CustomText(
+                //     AppStrings.availableServices,
+                //     textStyle: TextStyles.body16Medium
+                //         .copyWith(color: ColorCode.primary600),
+                //   ),
+                // ),
+                // Gaps.vGap8,
+                // ...buildCheckBoxGrid(controller.services),
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.center,
                 //   children: [
@@ -585,83 +486,75 @@ class Step1 extends GetView<SignupController> {
                 //         3, 4, 5, controller.centerTypes),
                 //   ],
                 // ),
-                Gaps.vGap16,
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                            text:
-                                "${AppStrings.isThereAServiceThatHasNotBeenAdded} ",
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.neutral500)),
-                        TextSpan(
-                            text: AppStrings.egToiletTraining,
-                            style: TextStyles.button12
-                                .copyWith(color: ColorCode.neutral400)),
-                      ],
-                    ),
-                  ),
-                ),
-                Gaps.vGap8,
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: CustomTextFormField(
-                      hint: AppStrings.egWowNursery,
-                      onSave: (String? val) {
-                        controller.service.text = val!;
-                      },
-                      onChange: (String? val) {
-                        controller.service.text = val!;
-                        // final englishText = convertArabicToEnglish(val ??"");
-                        // controller.floorNumber.value  =controller.floorNumber.value.copyWith(
-                        //   text: englishText,
-                        //   selection: TextSelection.collapsed(offset: englishText.length),
-                        // );
-                      },
-                      controller: controller.service,
-                      validator: (val) {
-                        return null;
-                      },
-                      inputType: TextInputType.text,
-                      label: ""),
-                ),
+                // Gaps.vGap16,
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 16),
+                //   child: RichText(
+                //     text: TextSpan(
+                //       children: [
+                //         TextSpan(
+                //             text:
+                //                 "${AppStrings.isThereAServiceThatHasNotBeenAdded} ",
+                //             style: TextStyles.body14Medium
+                //                 .copyWith(color: ColorCode.neutral500)),
+                //         TextSpan(
+                //             text: AppStrings.egToiletTraining,
+                //             style: TextStyles.button12
+                //                 .copyWith(color: ColorCode.neutral400)),
+                //       ],
+                //     ),
+                //   ),
+                // ),
+                // Gaps.vGap8,
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 16),
+                //   child: CustomTextFormField(
+                //       hint: AppStrings.egWowNursery,
+                //       onSave: (String? val) {
+                //         controller.service.text = val!;
+                //       },
+                //       onChange: (String? val) {
+                //         controller.service.text = val!;
+                //         // final englishText = convertArabicToEnglish(val ??"");
+                //         // controller.floorNumber.value  =controller.floorNumber.value.copyWith(
+                //         //   text: englishText,
+                //         //   selection: TextSelection.collapsed(offset: englishText.length),
+                //         // );
+                //       },
+                //       controller: controller.service,
+                //       validator: (val) {
+                //         return null;
+                //       },
+                //       inputType: TextInputType.text,
+                //       label: ""),
+                // ),
                 Gaps.vGap24,
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: CustomButton(
                       child: CustomText(
                         AppStrings.next,
-                        textStyle: TextStyles.body16Medium.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: ColorCode.white),
+                        textStyle: TextStyles.body16Medium.copyWith(fontWeight: FontWeight.w700, color: ColorCode.white),
                       ),
                       onPressed: () {
-                        if (controller.formKey.currentState?.validate() ??
-                            false) {
+                        if (controller.formKey.currentState?.validate() ?? false) {
                           if (!(controller.centerTypes.any(
                             (element) => element["isChecked"].value == true,
                           ))) {
-                            customSnackBar(AppStrings.pleaseSelectACenterType,
-                                ColorCode.danger700);
-                          } else if (!(controller.services.any(
-                            (element) => element["isChecked"].value == true,
-                          ))) {
-                            customSnackBar(AppStrings.pleaseSelectAService,
-                                ColorCode.danger700);
-                          } else if (controller.logo == null) {
-                            customSnackBar(AppStrings.pleaseUploadYourLogo,
-                                ColorCode.danger700);
+                            customSnackBar(AppStrings.pleaseSelectACenterType, ColorCode.danger700);
+                          }
+                          // else if (!(controller.services.any(
+                          //   (element) => element["isChecked"].value == true,
+                          // ))) {
+                          //   customSnackBar(AppStrings.pleaseSelectAService,
+                          //       ColorCode.danger700);
+                          // }
+                          else if (controller.logo == null) {
+                            customSnackBar(AppStrings.pleaseUploadYourLogo, ColorCode.danger700);
                           } else if (controller.selectedCity == null) {
-                            customSnackBar(AppStrings.pleaseSelectACity,
-                                ColorCode.danger700);
+                            customSnackBar(AppStrings.pleaseSelectACity, ColorCode.danger700);
                           } else {
                             controller.index.value = 2;
-                            print(
-                                "centerTypes ${controller.getSelectedTypes(controller.centerTypes)}");
-                            print(
-                                "services ${controller.getSelectedServices(controller.services)}");
                           }
                         }
                       }),
@@ -673,15 +566,12 @@ class Step1 extends GetView<SignupController> {
                       children: [
                         TextSpan(
                           text: "${AppStrings.haveAnAccount} ",
-                          style: TextStyles.body16Medium
-                              .copyWith(color: ColorCode.neutral500),
+                          style: TextStyles.body16Medium.copyWith(color: ColorCode.neutral500),
                         ),
                         TextSpan(
                           text: AppStrings.login,
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () => Get.toNamed(Routes.LOGIN),
-                          style: TextStyles.body16Medium
-                              .copyWith(color: ColorCode.info600),
+                          recognizer: TapGestureRecognizer()..onTap = () => Get.toNamed(Routes.LOGIN),
+                          style: TextStyles.body16Medium.copyWith(color: ColorCode.info600),
                         ),
                       ],
                     ),
@@ -712,7 +602,7 @@ Widget buildCheckBoxRow(
           index: index1,
           isReadOnly: isReadOnly,
         ),
-      Gaps.hGap4,
+      Gaps.hGap20,
       if (index2 != null)
         CheckBox(
           isChecked[1]["isChecked"],
@@ -720,7 +610,7 @@ Widget buildCheckBoxRow(
           index: index2,
           isReadOnly: isReadOnly,
         ),
-      Gaps.hGap4,
+      Gaps.hGap20,
       if (index3 != null)
         CheckBox(
           isChecked[2]["isChecked"],

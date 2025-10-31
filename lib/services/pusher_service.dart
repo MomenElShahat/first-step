@@ -49,19 +49,32 @@ class PusherService extends GetxService {
     required String eventName,
     required Function(dynamic data) onEvent,
   }) async {
+    // 1️⃣ Subscribe to the channel only once
     if (!_channels.contains(channelName)) {
       await _pusher.subscribe(channelName: channelName);
       _channels.add(channelName);
     }
 
+    // 2️⃣ Prevent duplicate event binding
     _listeners[channelName] ??= {};
-    _listeners[channelName]![eventName] = onEvent;
+    final existingHandler = _listeners[channelName]![eventName];
+    if (existingHandler != null) {
+      print(
+          "⚠️ Event '$eventName' on '$channelName' already subscribed — skipping");
+      return;
+    }
 
-    _subscriptions.add(_PusherSubscription(
-      channelName: channelName,
-      eventName: eventName,
-      callback: onEvent,
-    ));
+    // 3️⃣ Bind event only once
+    _listeners[channelName]![eventName] = onEvent;
+    _subscriptions.add(
+      _PusherSubscription(
+        channelName: channelName,
+        eventName: eventName,
+        callback: onEvent,
+      ),
+    );
+
+    print("✅ Bound event '$eventName' on channel '$channelName'");
   }
 
   Future<void> reconnectAll() async {
@@ -79,10 +92,15 @@ class PusherService extends GetxService {
     if (_channels.contains(channelName)) {
       await _pusher.unsubscribe(channelName: channelName);
       _channels.remove(channelName);
-      _listeners.remove(channelName);
     }
 
+    // Clean only listeners from this channel
+    _listeners.remove(channelName);
+
+    // Remove its subscriptions
     _subscriptions.removeWhere((sub) => sub.channelName == channelName);
+
+    print("🛑 Unsubscribed from channel '$channelName'");
   }
 
   Future<void> disconnect() async {

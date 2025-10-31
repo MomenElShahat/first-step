@@ -97,6 +97,7 @@ class BlogScreen extends GetView<BlogScreenController> {
                               child: CustomTextFormField(
                                 hint: AppStrings.findTheArticle,
                                 inputType: TextInputType.text,
+                                validator: (p0) => null,
                                 label: "",
                                 onChange: (value) {
                                   controller.filteredBlogs.value = controller

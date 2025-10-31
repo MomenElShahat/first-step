@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 
 import '../../../../../consts/colors.dart';
+import '../../../../../resources/strings_generated.dart';
 import '../../../../../widgets/custom_snackbar.dart';
 import '../../../../center/control_panel/models/branch_model.dart';
 import '../../data/child_reservations_repository.dart';
@@ -19,6 +20,41 @@ class ChildReservationsController extends SuperController<bool> {
 
   CancelResponseModel? cancelResponseModel;
 
+  final List<String> statuses = [
+    "all",
+    "accepted",
+    "pending",
+    "cancelled",
+    "paid",
+    "existing",
+    "expired",
+  ];
+
+  RxList<ChildEnrollments> filteredEnrollments = <ChildEnrollments>[].obs;
+
+  String getStatusText(String? status) {
+    switch (status) {
+      case 'accepted':
+        return AppStrings.waitingForPayment;
+      case 'pending':
+        return AppStrings.waitingForApproval;
+      case 'cancelled':
+        return AppStrings.cancelled;
+      case 'rejected':
+        return AppStrings.rejected;
+      case 'paid':
+        return AppStrings.paid;
+      case 'existing':
+        return AppStrings.throughNursery;
+      case 'expired':
+        return AppStrings.expired;
+      default:
+        return AppStrings.unknown;
+    }
+  }
+
+  RxString selectedStatus = "all".obs;
+
   getChildEnrollments(int childId) async {
     // isChildrenLoading.value = true;
     change(false, status: RxStatus.loading());
@@ -27,6 +63,7 @@ class ChildReservationsController extends SuperController<bool> {
         if (value.statusCode == 200 || value.statusCode == 201) {
           enrollments = null;
           enrollments = value.body?.enrollments ?? [];
+          filteredEnrollments.addAll(enrollments ?? []);
           update();
         }
         // isChildrenLoading.value = false;
@@ -63,7 +100,7 @@ class ChildReservationsController extends SuperController<bool> {
     });
   }
 
-  enrollmentRespond(int enrollmentId) async {
+  Future<void> enrollmentRespond(int enrollmentId) async {
     enrollments
         ?.firstWhere(
           (element) => element.id == enrollmentId,
@@ -85,8 +122,7 @@ class ChildReservationsController extends SuperController<bool> {
             )
             .isRespondingReject
             .value = false;
-        customSnackBar(
-            cancelResponseModel?.message ?? "", ColorCode.success600);
+        customSnackBar(cancelResponseModel?.message ?? "", ColorCode.success600);
         await getChildEnrollments(childId ?? 0);
         update();
       },
@@ -106,7 +142,7 @@ class ChildReservationsController extends SuperController<bool> {
 
   int? childId;
 
-  Future<void> onRefresh()async{
+  Future<void> onRefresh() async {
     await getChildEnrollments(childId ?? 0);
     await getParentBranches();
   }

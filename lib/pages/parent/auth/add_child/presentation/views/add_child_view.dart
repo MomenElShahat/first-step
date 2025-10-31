@@ -39,14 +39,14 @@ class AddChildScreen extends GetView<AddChildController> {
               ),
             ),
             Gaps.vGap20,
-            Obx(() {
-              return ResponsiveStepperParent(currentIndex: controller.index.value,);
-            }),
-            Gaps.vGap16,
+            // Obx(() {
+            //   return ResponsiveStepperParent(currentIndex: controller.index.value,);
+            // }),
+            // Gaps.vGap16,
             const Step1(),
-            const Step2(),
-            const Step3(),
-            const Step4(),
+            // const Step2(),
+            // const Step3(),
+            // const Step4(),
           ],
         ),
       ),

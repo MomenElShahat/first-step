@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
 import '../../../../../consts/colors.dart';
 import '../../../../../widgets/custom_snackbar.dart';
-import '../../../../center/auth/signup/models/cities_model.dart';
+import '../../../../center/auth/signup/models/cities_model.dart' as city;
 import '../../data/home_parent_repository.dart';
 import '../../models/centers_model.dart';
 import '../../models/services_model.dart';
@@ -103,7 +103,7 @@ class HomeParentController extends SuperController<dynamic> {
     return cities.join(" - ");
   }
 
-  List<City> cities = [];
+  List<city.City> cities = [];
 
   getCities() async {
     change(false, status: RxStatus.loading());

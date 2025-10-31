@@ -116,7 +116,6 @@ class AuthService extends GetxService {
     // password = null;
     box.remove(StorageKeys.userDataKey);
     // passwordBox.remove(StorageKeys.password);
-    Get.offAllNamed(Routes.LOGIN);
   }
 
   Future<void> logoutSignupCenter() async {

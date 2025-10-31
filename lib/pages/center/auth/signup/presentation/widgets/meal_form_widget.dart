@@ -46,6 +46,7 @@ class _MealFormWidgetState extends State<MealFormWidget> {
           CustomTextFormField(
             hint: AppStrings.mealName,
             controller: nameController,
+            validator: (p0) => null,
             onChange: (val) {
               widget.onChanged(FirstMeals(
                 mealName: val ?? "",
@@ -60,6 +61,7 @@ class _MealFormWidgetState extends State<MealFormWidget> {
           CustomTextFormField(
             hint: AppStrings.theComponents,
             controller: componentsController,
+            validator: (p0) => null,
             onChange: (val) {
               widget.onChanged(FirstMeals(
                 mealName: nameController.text,
@@ -74,6 +76,7 @@ class _MealFormWidgetState extends State<MealFormWidget> {
           CustomTextFormField(
             hint: AppStrings.drinks,
             controller: drinksController,
+            validator: (p0) => null,
             onChange: (val) {
               widget.onChanged(FirstMeals(
                 mealName: nameController.text,
@@ -90,4 +93,3 @@ class _MealFormWidgetState extends State<MealFormWidget> {
     );
   }
 }
-

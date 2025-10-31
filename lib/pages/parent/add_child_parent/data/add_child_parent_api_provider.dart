@@ -17,7 +17,7 @@ class AddChildParentProvider extends BaseAuthProvider
       AddChildRequestModel addChildRequestModel) {
     print(addChildRequestModel.toJson());
     return post<AddChildResponseModel>(
-        EndPoints.childrenParentList,
+        EndPoints.childrenParentEdit,
         {
           "children": [addChildRequestModel.toJson()]
         },

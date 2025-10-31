@@ -89,9 +89,9 @@ class MainController extends SuperController<bool> {
           : ControlPanelScreen(openDrawer: () {}, currentIndex: currentIndex),
       (AuthService.to.userInfo?.user?.role == "parent") ? const BlogParentScreen() : const BlogScreen(),
       (AuthService.to.userInfo?.user?.role == "parent") ? const HomeParentScreen() : const HomeScreen(),
-      // (AuthService.to.userInfo?.user?.role == "parent")
-      //     ? const NotificationsParentScreen()
-      //     : const NotificationsScreen(),
+      (AuthService.to.userInfo?.user?.role == "parent")
+          ? const NotificationsParentScreen()
+          : const NotificationsScreen(),
       (AuthService.to.userInfo?.user?.role == "parent") ? const ProfileParentScreen() : const ProfileScreen(),
     ];
     super.onInit();

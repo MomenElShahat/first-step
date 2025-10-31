@@ -9,6 +9,7 @@ import 'package:first_step/widgets/gaps.dart';
 import 'package:first_step/widgets/language_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import '../../../../../routes/app_pages.dart';
@@ -24,14 +25,14 @@ class OnboardingScreen extends GetView<OnboardingController> {
     return Scaffold(
       backgroundColor: ColorCode.white,
       appBar: AppBar(
-        systemOverlayStyle:
-        const SystemUiOverlayStyle(statusBarColor: ColorCode.white),
+        systemOverlayStyle: const SystemUiOverlayStyle(statusBarColor: ColorCode.white),
         toolbarHeight: 0,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: const EdgeInsets.all(24),
         child: Column(
           children: [
+            Gaps.vGap12,
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -41,17 +42,15 @@ class OnboardingScreen extends GetView<OnboardingController> {
                       children: [
                         InkWell(
                           onTap: () {
-                            if(AuthService.to.isParent == false){
+                            if (AuthService.to.isParent == false) {
                               Get.toNamed(Routes.CENTER_FREE_TRAIL_SCREEN);
-                            }else {
+                            } else {
                               Get.toNamed(Routes.SIGNUP_PARENT);
                             }
                           },
                           child: CustomText(
                             AppStrings.skip,
-                            textStyle: TextStyles.body16Medium.copyWith(
-                                color: ColorCode.neutral600,
-                                fontWeight: FontWeight.w700),
+                            textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.neutral600, fontWeight: FontWeight.w700),
                           ),
                         ),
                         InkWell(
@@ -60,9 +59,7 @@ class OnboardingScreen extends GetView<OnboardingController> {
                           },
                           child: CustomText(
                             AppStrings.back,
-                            textStyle: TextStyles.body16Medium.copyWith(
-                                color: ColorCode.neutral500,
-                                fontWeight: FontWeight.w700),
+                            textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.neutral500, fontWeight: FontWeight.w700),
                           ),
                         ),
                       ],
@@ -72,14 +69,10 @@ class OnboardingScreen extends GetView<OnboardingController> {
                       return Visibility(
                         visible: AuthService.to.isParent == true,
                         replacement: OnboardingWidget(
-                          image: controller.index.value == 1
-                              ? AppAssets.centerOnboarding1
-                              : AppAssets.centerOnboarding2,
+                          image: controller.index.value == 1 ? AppAssets.centerOnboarding1 : AppAssets.centerOnboarding2,
                         ),
                         child: OnboardingWidget(
-                          image: controller.index.value == 1
-                              ? AppAssets.parentOnboarding1
-                              : AppAssets.parentOnboarding2,
+                          image: controller.index.value == 1 ? AppAssets.parentOnboarding1 : AppAssets.parentOnboarding2,
                         ),
                       );
                     }),
@@ -88,52 +81,42 @@ class OnboardingScreen extends GetView<OnboardingController> {
                       return Visibility(
                         visible: AuthService.to.isParent == true,
                         replacement: CustomText(
-                          controller.index.value == 1
-                              ? AppStrings.centerOnboarding1
-                              : AppStrings.centerOnboarding2,
-                          textStyle: TextStyles.title24Bold.copyWith(
-                              color: ColorCode.primary600),
+                          controller.index.value == 1 ? AppStrings.centerOnboarding1 : AppStrings.centerOnboarding2,
+                          textStyle: TextStyles.title24Bold.copyWith(color: ColorCode.primary600),
                         ),
                         child: CustomText(
-                          controller.index.value == 1
-                              ? AppStrings.parentOnboarding1
-                              : AppStrings.parentOnboarding2,
-                          textStyle: TextStyles.title24Bold.copyWith(
-                              color: ColorCode.primary600),
+                          controller.index.value == 1 ? AppStrings.parentOnboarding1 : AppStrings.parentOnboarding2,
+                          textStyle: TextStyles.title24Bold.copyWith(color: ColorCode.primary600),
                         ),
                       );
                     }),
                     Obx(() {
                       return Visibility(
                         visible: AuthService.to.isParent == true,
-                        replacement: controller.index.value == 1 ? Column(
-                          children: [
-                            CustomText(
-                              AppStrings.centerOnboarding1PreScene,
-                              maxLines: 3,
-                              textStyle: TextStyles.body16Medium.copyWith(
-                                  color: ColorCode.neutral600),
-                            ),
-                            CustomText(
-                              AppStrings.centerOnboarding1Scene,
-                              maxLines: 3,
-                              textStyle: TextStyles.body16Medium.copyWith(
-                                  color: ColorCode.neutral500),
-                            ),
-                          ],
-                        ) : CustomText(
-                          AppStrings.centerOnboarding2Scene,
-                          maxLines: 3,
-                          textStyle: TextStyles.body16Medium.copyWith(
-                              color: ColorCode.neutral500),
-                        ),
+                        replacement: controller.index.value == 1
+                            ? Column(
+                                children: [
+                                  CustomText(
+                                    AppStrings.centerOnboarding1PreScene,
+                                    maxLines: 3,
+                                    textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.neutral600),
+                                  ),
+                                  CustomText(
+                                    AppStrings.centerOnboarding1Scene,
+                                    maxLines: 3,
+                                    textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.neutral500),
+                                  ),
+                                ],
+                              )
+                            : CustomText(
+                                AppStrings.centerOnboarding2Scene,
+                                maxLines: 3,
+                                textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.neutral500),
+                              ),
                         child: CustomText(
-                          controller.index.value == 1
-                              ? AppStrings.parentOnboarding1Scene
-                              : AppStrings.parentOnboarding2Scene,
+                          controller.index.value == 1 ? AppStrings.parentOnboarding1Scene : AppStrings.parentOnboarding2Scene,
                           maxLines: 3,
-                          textStyle: TextStyles.body16Medium.copyWith(
-                              color: ColorCode.neutral500),
+                          textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.neutral500),
                         ),
                       );
                     }),
@@ -143,15 +126,16 @@ class OnboardingScreen extends GetView<OnboardingController> {
               ),
             ),
             InkWell(
+                borderRadius: BorderRadius.circular(50.r),
                 onTap: () {
-                 if(controller.index.value == 1){
-                   controller.index.value = 2;
-                   controller.update();
-                 }else if(AuthService.to.isParent == false){
-                   Get.toNamed(Routes.CENTER_FREE_TRAIL_SCREEN);
-                 }else {
-                   Get.toNamed(Routes.SIGNUP_PARENT);
-                 }
+                  if (controller.index.value == 1) {
+                    controller.index.value = 2;
+                    controller.update();
+                  } else if (AuthService.to.isParent == false) {
+                    Get.toNamed(Routes.CENTER_FREE_TRAIL_SCREEN);
+                  } else {
+                    Get.toNamed(Routes.SIGNUP_PARENT);
+                  }
                 },
                 child: const NextButton()),
             Gaps.vGap40,
@@ -161,4 +145,3 @@ class OnboardingScreen extends GetView<OnboardingController> {
     );
   }
 }
-

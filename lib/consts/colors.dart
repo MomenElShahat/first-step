@@ -18,6 +18,7 @@ class ColorCode {
   static const neutral50 = Color(0xffFAFAFA);
   static const neutral10 = Color(0xffFDFDFD);
   static const neutral0 = Color(0xffB1B1B1);
+  static const neutral5 = Color(0xffF4F4F4);
 
   //Primary colors
   static const primary700 = Color(0xff212C6E);
@@ -40,6 +41,7 @@ class ColorCode {
   static const secondary200 = Color(0xffD4EDE1);
   static const secondary100 = Color(0xffE2F3EB);
   static const secondary50 = Color(0xffF1F9F5);
+  static const secondary10 = Color(0xff5FB77E);
 
   //Secondary Burgundy
   static const secondaryBurgundy700 = Color(0xff912744);
@@ -103,6 +105,9 @@ class ColorCode {
   static const info100 = Color(0xffF1F8FF);
   static const info50 = Color(0xffF8FCFF);
 
-
   static const tableBg = Color(0xff808080);
+
+  static const tagColor = Color(0xffC6CEFF);
+
+  static const purple = Color(0xff9891FF);
 }

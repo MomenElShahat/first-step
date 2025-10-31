@@ -76,9 +76,7 @@ class CenterFreeTrailScreen extends GetView<CenterFreeTrailController> {
                   Center(
                     child: CustomText(
                       AppStrings.enjoyAllTheFeaturesOfFirstStepFor,
-                      textStyle: TextStyles.title24Bold.copyWith(
-                          height: 1,
-                          color: ColorCode.white),
+                      textStyle: TextStyles.title24Bold.copyWith(height: 1, color: ColorCode.white),
                     ),
                   ),
                   Gaps.vGap32,
@@ -102,7 +100,7 @@ class CenterFreeTrailScreen extends GetView<CenterFreeTrailController> {
                   ),
                   Gaps.vGap32,
                   InkWell(
-                    onTap: (){
+                    onTap: () {
                       Get.toNamed(Routes.SIGNUP);
                     },
                     child: Container(
@@ -116,9 +114,7 @@ class CenterFreeTrailScreen extends GetView<CenterFreeTrailController> {
                       child: Center(
                         child: CustomText(
                           AppStrings.subscribeNowForFree,
-                          textStyle: TextStyles.body16Medium.copyWith(
-                              fontWeight: FontWeight.w700,
-                              color: ColorCode.primary600),
+                          textStyle: TextStyles.body16Medium.copyWith(fontWeight: FontWeight.w700, color: ColorCode.primary600),
                         ),
                       ),
                     ),
@@ -128,8 +124,8 @@ class CenterFreeTrailScreen extends GetView<CenterFreeTrailController> {
             ),
           ),
           PositionedDirectional(
-            top: 50,
-            end: 20,
+            top: 80,
+            end: 30,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -139,9 +135,7 @@ class CenterFreeTrailScreen extends GetView<CenterFreeTrailController> {
                   },
                   child: CustomText(
                     AppStrings.back,
-                    textStyle: TextStyles.body16Medium.copyWith(
-                        color: ColorCode.white,
-                        fontWeight: FontWeight.w700),
+                    textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.white, fontWeight: FontWeight.w700),
                   ),
                 ),
               ],

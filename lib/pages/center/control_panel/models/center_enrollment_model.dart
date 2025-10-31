@@ -30,6 +30,7 @@ class CenterEnrollment {
   String? priceAmount;
   String? enrollmentDate;
   String? branchName;
+  String? parentName;
   int? branchId;
   int? branchPriceId;
   String? startingTime;
@@ -44,20 +45,21 @@ class CenterEnrollment {
 
   CenterEnrollment(
       {this.enrollmentId,
-        this.status,
-        this.enrollmentType,
-        this.priceAmount,
-        this.enrollmentDate,
-        this.branchName,
-        this.branchId,
-        this.branchPriceId,
-        this.startingTime,
-        this.endingTime,
-        this.startingDate,
-        this.endingDate,
-        this.day,
-        this.dayString,
-        this.children});
+      this.status,
+      this.enrollmentType,
+      this.priceAmount,
+      this.enrollmentDate,
+      this.branchName,
+      this.parentName,
+      this.branchId,
+      this.branchPriceId,
+      this.startingTime,
+      this.endingTime,
+      this.startingDate,
+      this.endingDate,
+      this.day,
+      this.dayString,
+      this.children});
 
   CenterEnrollment.fromJson(Map<String, dynamic> json) {
     enrollmentId = json['enrollment_id'];
@@ -66,6 +68,7 @@ class CenterEnrollment {
     priceAmount = json['price_amount'];
     enrollmentDate = json['enrollment_date'];
     branchName = json['branch_name'];
+    parentName = json['parent_name'];
     branchId = json['branch_id'];
     branchPriceId = json['branch_price_id'];
     startingTime = json['starting_time'];
@@ -90,6 +93,7 @@ class CenterEnrollment {
     data['price_amount'] = this.priceAmount;
     data['enrollment_date'] = this.enrollmentDate;
     data['branch_name'] = this.branchName;
+    data['parent_name'] = this.parentName;
     data['branch_id'] = this.branchId;
     data['branch_price_id'] = this.branchPriceId;
     data['starting_time'] = this.startingTime;

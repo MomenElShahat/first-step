@@ -22,35 +22,30 @@ class LoginController extends SuperController<dynamic> {
 
   onLoginClicked() async {
     change(false, status: RxStatus.loading());
-    loginRepository
-        .login(LoginRequest(
-      email: email.text,
-      password: password.text,
-    ))
-        .then((value) async {
-      if (value.body?.user != null) {
-        AuthService.to.isGuest = false;
-        // AuthService.to.savePassword(password.text);
-        // AuthService.to.isParent = value.body?.user?.role == "parent" ? true : false;
-        update();
-        if (value.body?.user?.role != "branch_admin") {
-          Get.offAllNamed(
-            Routes.BOTTOM_NAVIGATION,
-          );
-        } else {
-          Get.offAllNamed(Routes.CONTROL_PANEL_SCREEN);
-        }
+
+    try {
+      final value = await loginRepository.login(LoginRequest(
+        email: email.text.trim(),
+        password: password.text,
+      ));
+
+      AuthService.to.isGuest = false;
+      update();
+
+      if (value.body!.user!.role == "branch_admin") {
+        Get.offAllNamed(Routes.CONTROL_PANEL_SCREEN);
       } else {
-        customSnackBar(value.body?.message ?? "", ColorCode.danger600);
+        Get.offAllNamed(Routes.BOTTOM_NAVIGATION);
       }
-      change(true, status: RxStatus.success());
-    }, onError: (error) {
-      customSnackBar(error.toString() ?? "", ColorCode.danger600);
+    } catch (error) {
+      customSnackBar(error.toString(), ColorCode.danger600);
+    } finally {
       change(false, status: RxStatus.success());
-    });
+    }
   }
 
   RxBool isLoggingIn = false.obs;
+
   Future<void> onLoginWithGoogleClicked() async {
     isLoggingIn.value = true;
 

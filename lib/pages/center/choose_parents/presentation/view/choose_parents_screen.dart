@@ -21,9 +21,7 @@ class ChooseParentsScreen extends GetView<ChooseParentsController> {
       extendBodyBehindAppBar: true,
       body: AnnotatedRegion(
         value: const SystemUiOverlayStyle(
-            statusBarColor: ColorCode.white,
-            statusBarBrightness: Brightness.dark,
-            statusBarIconBrightness: Brightness.dark),
+            statusBarColor: ColorCode.white, statusBarBrightness: Brightness.dark, statusBarIconBrightness: Brightness.dark),
         child: SafeArea(
           child: Column(
             children: [
@@ -70,8 +68,7 @@ class ChooseParentsScreen extends GetView<ChooseParentsController> {
                               children: [
                                 CustomText(
                                   AppStrings.reports,
-                                  textStyle: TextStyles.title24Bold
-                                      .copyWith(color: ColorCode.primary600),
+                                  textStyle: TextStyles.title24Bold.copyWith(color: ColorCode.primary600),
                                 ),
                               ],
                             ),
@@ -82,11 +79,8 @@ class ChooseParentsScreen extends GetView<ChooseParentsController> {
                             Gaps.vGap24,
                             InkWell(
                               onTap: () {
-                                Get.toNamed(Routes.SEND_DAILY_REPORT_SCREEN,
-                                    arguments:
-                                        controller.getSelectedChildIdsForApi());
-                                debugPrint(
-                                    "getSelectedChildIdsForApi ${controller.getSelectedChildIdsForApi()}");
+                                Get.toNamed(Routes.SEND_DAILY_REPORT_SCREEN, arguments: controller.getSelectedChildIdsForApi());
+                                debugPrint("getSelectedChildIdsForApi ${controller.getSelectedChildIdsForApi()}");
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -101,17 +95,14 @@ class ChooseParentsScreen extends GetView<ChooseParentsController> {
                                     ],
                                     stops: [0.1117, 0.6374, 0.9471],
                                   ),
-                                  borderRadius: BorderRadius.circular(16.r),
+                                  borderRadius: BorderRadius.circular(8.r),
                                 ),
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 10.5),
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 50),
+                                padding: const EdgeInsets.symmetric(vertical: 10.5),
+                                margin: const EdgeInsets.symmetric(horizontal: 50),
                                 child: Center(
                                   child: CustomText(
                                     AppStrings.writeAReport,
-                                    textStyle: TextStyles.body16Medium
-                                        .copyWith(color: ColorCode.white),
+                                    textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.white),
                                   ),
                                 ),
                               ),

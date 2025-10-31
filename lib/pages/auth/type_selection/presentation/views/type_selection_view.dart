@@ -21,120 +21,117 @@ class TypeSelectionScreen extends GetView<TypeSelectionController> {
     return Scaffold(
       backgroundColor: ColorCode.white,
       appBar: AppBar(
-        systemOverlayStyle:
-        const SystemUiOverlayStyle(statusBarColor: ColorCode.white),
+        systemOverlayStyle: const SystemUiOverlayStyle(statusBarColor: ColorCode.white),
         toolbarHeight: 0,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          children: [
+            Expanded(
+              child: Column(
                 children: [
-                  CustomText(
-                    "${AppStrings.welcomeIn} First Step",
-                    textStyle: TextStyles.title24Bold
-                        .copyWith(color: ColorCode.primary600),
+                  Gaps.vGap12,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomText(
+                        "${AppStrings.welcomeIn} First Step",
+                        textStyle: TextStyles.title24Bold.copyWith(color: ColorCode.primary600),
+                      ),
+                      const LanguageDropdown(),
+                    ],
                   ),
-                  const LanguageDropdown(),
+                  Gaps.vGap(80),
+                  CustomText(
+                    AppStrings.createAnAccount,
+                    textStyle: TextStyles.title24Bold.copyWith(color: ColorCode.primary600),
+                  ),
+                  Gaps.vGap(99),
+                  CustomText(
+                    AppStrings.introduceYourself,
+                    textStyle: TextStyles.subtitle20Bold,
+                  ),
+                  Gaps.vGap50,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              AuthService.to.isParent = false;
+                              controller.update();
+                              Get.toNamed(Routes.ONBOARDING);
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(24), border: Border.all(color: ColorCode.secondary600)),
+                              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+                              child: Column(
+                                children: [
+                                  const Image(
+                                    image: AppAssets.center,
+                                  ),
+                                  Gaps.vGap10,
+                                  CustomText(
+                                    AppStrings.nurseryOrCenter,
+                                    textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.neutral600),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Gaps.hGap(25),
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              AuthService.to.isParent = true;
+                              controller.update();
+                              Get.toNamed(Routes.ONBOARDING);
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(24), border: Border.all(color: ColorCode.secondary600)),
+                              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+                              child: Column(
+                                children: [
+                                  const Image(
+                                    image: AppAssets.parents,
+                                  ),
+                                  Gaps.vGap10,
+                                  CustomText(
+                                    AppStrings.parent,
+                                    textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.neutral600),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
-              Gaps.vGap128,
-              CustomText(
-                AppStrings.introduceYourself,
-                textStyle: TextStyles.subtitle20Bold,
+            ),
+            CustomText(
+              AppStrings.haveAnAccount,
+              textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.neutral600),
+            ),
+            Gaps.vGap16,
+            CustomButton(
+              onPressed: () {
+                Get.toNamed(Routes.LOGIN);
+              },
+              child: CustomText(
+                AppStrings.login,
+                textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.neutral10, fontWeight: FontWeight.w700),
               ),
-              Gaps.vGap50,
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: InkWell(
-                        onTap: (){
-                          AuthService.to.isParent = false;
-                          controller.update();
-                          Get.toNamed(Routes.ONBOARDING);
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(24),
-                              border: Border.all(color: ColorCode.secondary600)),
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 16, horizontal: 10),
-                          child: Column(
-                            children: [
-                              const Image(
-                                image: AppAssets.center,
-                              ),
-                              Gaps.vGap10,
-                              CustomText(
-                                AppStrings.nurseryOrCenter,
-                                textStyle: TextStyles.body16Medium
-                                    .copyWith(color: ColorCode.neutral600),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Gaps.hGap(25),
-                    Expanded(
-                      child: InkWell(
-                        onTap: (){
-                          AuthService.to.isParent = true;
-                          controller.update();
-                          Get.toNamed(Routes.ONBOARDING);
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(24),
-                              border: Border.all(color: ColorCode.secondary600)),
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 16, horizontal: 10),
-                          child: Column(
-                            children: [
-                              const Image(
-                                image: AppAssets.parents,
-                              ),
-                              Gaps.vGap10,
-                              CustomText(
-                                AppStrings.parent,
-                                textStyle: TextStyles.body16Medium
-                                    .copyWith(color: ColorCode.neutral600),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Gaps.vGap60,
-              CustomText(
-                AppStrings.haveAnAccount,
-                textStyle: TextStyles.body16Medium
-                    .copyWith(color: ColorCode.neutral600),
-              ),
-              Gaps.vGap16,
-              CustomButton(
-                onPressed: (){
-                  Get.toNamed(Routes.LOGIN);
-                },
-                child: CustomText(
-                  AppStrings.login,
-                  textStyle: TextStyles.body16Medium
-                      .copyWith(color: ColorCode.neutral10,fontWeight: FontWeight.w700),
-                ),
-              ),
-            ],
-          ),
+            ),
+            Gaps.vGap24,
+          ],
         ),
       ),
     );
   }
 }
-

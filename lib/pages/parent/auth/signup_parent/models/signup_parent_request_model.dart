@@ -4,19 +4,19 @@ class SignupParentRequestModel {
   final String email;
   final String password;
   final String name;
-  final String address;
+  // final String address;
   final String nationalNumber;
   final String phone;
-  final List<ChildModel> children;
+  // final List<ChildModel> children;
 
   SignupParentRequestModel({
     required this.email,
     required this.password,
     required this.name,
-    required this.address,
+    // required this.address,
     required this.nationalNumber,
     required this.phone,
-    required this.children,
+    // required this.children,
   });
 
   factory SignupParentRequestModel.fromJson(json) {
@@ -24,12 +24,12 @@ class SignupParentRequestModel {
       email: json['email'],
       password: json['password'],
       name: json['name'],
-      address: json['address'],
+      // address: json['address'],
       nationalNumber: json['national_number'],
       phone: json['phone'],
-      children: (json['children'] as List)
-          .map((child) => ChildModel.fromJson(child))
-          .toList(),
+      // children: (json['children'] as List)
+      //     .map((child) => ChildModel.fromJson(child))
+      //     .toList(),
     );
   }
 
@@ -37,15 +37,14 @@ class SignupParentRequestModel {
         'email': email,
         'password': password,
         'name': name,
-        'address': address,
+        // 'address': address,
         'national_number': nationalNumber,
         'phone': phone,
-        'children': children.map((e) => e.toJson()).toList(),
+        // 'children': children.map((e) => e.toJson()).toList(),
       };
 }
 
 class ChildModel {
-  final String kinship;
   final String childName;
   final String birthdayDate;
   final String gender;
@@ -62,7 +61,6 @@ class ChildModel {
   List<AllergyModel>? allergies;
 
   ChildModel({
-    required this.kinship,
     required this.childName,
     required this.birthdayDate,
     required this.gender,
@@ -81,7 +79,6 @@ class ChildModel {
 
   factory ChildModel.fromJson(Map<String, dynamic> json) {
     return ChildModel(
-      kinship: json['kinship'],
       childName: json['child_name'],
       birthdayDate: json['birthday_date'],
       gender: json['gender'],
@@ -107,7 +104,6 @@ class ChildModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'kinship': kinship,
       'child_name': childName,
       'birthday_date': birthdayDate,
       'gender': gender,

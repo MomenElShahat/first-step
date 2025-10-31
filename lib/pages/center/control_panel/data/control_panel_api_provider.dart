@@ -1,7 +1,7 @@
 // ignore: one_member_abstracts
-import 'dart:convert';
+// import 'dart:convert';
 
-import 'package:first_step/pages/center/control_panel/models/center_info_model.dart';
+// import 'package:first_step/pages/center/control_panel/models/center_info_model.dart';
 import 'package:first_step/pages/center/control_panel/models/child_model.dart';
 import 'package:first_step/pages/center/control_panel/models/portfolio_response_model.dart';
 import 'package:first_step/services/auth_service.dart';
@@ -16,6 +16,8 @@ import '../../edit_member/models/branch_team_member_model.dart';
 import '../models/branch_model.dart';
 import '../models/branch_team_model.dart';
 import '../models/center_enrollment_model.dart';
+import '../models/center_notify_parents_request_model.dart';
+import '../models/center_notify_parents_response_model.dart';
 import '../models/chats_model.dart';
 import '../models/parent_model.dart';
 import '../models/portfolio_prices_model.dart';
@@ -50,10 +52,25 @@ abstract class IControlPanelProvider {
   Future<Response<PortfolioResponseModel>> updatePortfolio({String? centerId, required FormData formData, required bool isUpdate});
   Future<Response<ShowPortfolioResponseModel>> showPortfolio();
   Future<Response<List<PortfolioPrice>>> showPortfolioPrices(String branchId);
+  Future<Response<String>> deletePrice(String priceId);
   // Future<Response<String>> updatePortfolioPrices(
   //     {required String branchId, required PortfolioPricesModel hourly, required PortfolioPricesModel daily, required PortfolioPricesModel monthly});
-  Future<Response<String>> createPortfolioPrices(
-      {required String branchId, required List<PortfolioPrice> portfolioPrice});
+  Future<Response<String>> createPortfolioPrices({
+    required List<int> branchIds,
+    required List<PortfolioPrice> portfolioPrice,
+  });
+
+  Future<Response<CenterNotifyParentsResponseModel>> notifyParents({
+    required CenterNotifyParentsRequestModel body,
+  });
+
+  Future<Response<EnrollmentData>> updateExistingToPaid({
+    required String status,
+    required String enrollmentId,
+  });
+  Future<Response<String>> sendNotificationExpired({
+    required String enrollmentId,
+  });
 }
 
 class ControlPanelProvider extends BaseAuthProvider implements IControlPanelProvider {
@@ -112,15 +129,18 @@ class ControlPanelProvider extends BaseAuthProvider implements IControlPanelProv
 
   @override
   Future<Response<String>> createPortfolioPrices({
-    required String branchId,
+    required List<int> branchIds,
     required List<PortfolioPrice> portfolioPrice,
   }) {
-    final body = {
-      "pricing": portfolioPrice.map((p) => p.toJsonSnake()).toList(),
-    };
+    final List<Map<String, dynamic>> body = branchIds
+        .map((id) => {
+              "branch_id": id,
+              "prices": portfolioPrice.map((p) => p.toJsonSnake()).toList(),
+            })
+        .toList();
 
     return post<String>(
-      "${EndPoints.branchesList}/$branchId/${EndPoints.pricing}",
+      EndPoints.createOrUpdateBranchPrice,
       body,
       contentType: 'application/json',
       decoder: (data) => (data["message"] as String?) ?? "",
@@ -235,5 +255,52 @@ class ControlPanelProvider extends BaseAuthProvider implements IControlPanelProv
   @override
   Future<Response<EnrollmentData>> enrollmentRespond({required String enrollmentId, required String respond}) {
     return patch<EnrollmentData>("${EndPoints.parentEnrollmentRequest}/$enrollmentId", {"status": respond}, decoder: EnrollmentData.fromJson);
+  }
+
+  @override
+  Future<Response<String>> deletePrice(String priceId) {
+    return delete<String>(
+      "${EndPoints.deletePrice}/$priceId",
+      decoder: (data) => (data["message"] as String?) ?? "",
+    );
+  }
+
+  @override
+  Future<Response<CenterNotifyParentsResponseModel>> notifyParents({
+    required CenterNotifyParentsRequestModel body,
+  }) {
+    return post<CenterNotifyParentsResponseModel>(
+      EndPoints.notifyParents,
+      body.toJson(),
+      decoder: CenterNotifyParentsResponseModel.fromJson,
+    );
+  }
+
+  @override
+  Future<Response<EnrollmentData>> updateExistingToPaid({
+    required String status,
+    required String enrollmentId,
+  }) {
+    return put<EnrollmentData>(
+      "${EndPoints.parentEnrollmentRequest}/$enrollmentId/${EndPoints.paid}",
+      {
+        "status": status
+      },
+      decoder: EnrollmentData.fromJson,
+    );
+  }
+
+  @override
+  Future<Response<String>> sendNotificationExpired({
+    required String enrollmentId,
+  }) {
+    return post<String>(
+      "${EndPoints.sendNotificationExpired}/$enrollmentId",
+      {},
+      decoder: (data) {
+        final json = data["message"] as String;
+        return json;
+      },
+    );
   }
 }

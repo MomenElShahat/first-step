@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../../../resources/strings_generated.dart';
+import '../../../../../consts/colors.dart';
 import '../../../../../resources/assets_generated.dart';
 import '../../../../../services/auth_service.dart';
+import '../../../../../widgets/custom_snackbar.dart';
+import '../../../../parent/profile_parent/model/update_notification_model.dart';
 import '../../data/profile_repository.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
-
 
 class ProfileController extends SuperController<dynamic> {
   ProfileController({required this.profileRepository});
@@ -32,9 +34,50 @@ class ProfileController extends SuperController<dynamic> {
     }
   }
 
+  UpdateNotificationModel? updateNotificationModel;
+  RxBool isLoading = false.obs;
+  Future<void> updateNotifications(int receiveNotifications) async {
+    if (receiveNotifications == 0) {
+      isOpen.value = true;
+    } else {
+      isOpen.value = false;
+    }
+    isLoading.value = true;
+    profileRepository.updateNotifications(receiveNotifications: receiveNotifications).then(
+      (value) async {
+        if (value.statusCode == 200 || value.statusCode == 201) {
+          updateNotificationModel = null;
+          updateNotificationModel = value.body;
+          if (updateNotificationModel?.data?.receiveNotifications == 1) {
+            isOpen.value = true;
+          } else {
+            isOpen.value = false;
+          }
+          // update();
+        }
+        isLoading.value = false;
+      },
+    ).onError((error, stackTrace) {
+      print("Signup error: $error");
+      print("StackTrace: $stackTrace");
+      customSnackBar(error.toString(), ColorCode.danger600);
+      isLoading.value = false;
+      if (receiveNotifications == 0) {
+        isOpen.value = false;
+      } else {
+        isOpen.value = true;
+      }
+    });
+  }
+
+  RxBool isOpen = false.obs;
+
+  RxBool isLoggingOut = false.obs;
+
   @override
   void onInit() async {
     super.onInit();
+    isOpen.value = AuthService.to.userInfo?.user?.receiveNotifications == 0 ? false : true;
     // Future.delayed(const Duration(seconds: 3)).then((value) {
     //   final isLoggedIn = AuthService.to.isLoggedIn.value;
     //   final isSelectedLanguage = AuthService.to.isSelectedLanguage.value;

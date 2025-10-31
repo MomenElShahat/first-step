@@ -13,11 +13,11 @@ class Reservations extends GetView<ControlPanelController> {
 
   @override
   Widget build(BuildContext context) {
-    if(controller.enrollments?.isNotEmpty ?? false){
+    if (controller.enrollments?.isNotEmpty ?? false) {
       return CenterEnrollmentList(
         enrollments: controller.enrollments ?? [],
       );
-    }else {
+    } else {
       return Column(
         children: [
           SizedBox(

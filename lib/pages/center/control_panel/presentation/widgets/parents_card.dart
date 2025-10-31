@@ -74,7 +74,7 @@ class ParentCard extends StatelessWidget {
             child: Container(
               width: Get.width / 2,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(36.r),
+                borderRadius: BorderRadius.circular(8.r),
                 gradient: const LinearGradient(
                   begin: Alignment(-0.15, -1.0), // Approximate direction for 98.52 degrees
                   end: Alignment(1.0, 0.15),
@@ -86,7 +86,7 @@ class ParentCard extends StatelessWidget {
                   stops: [0.1117, 0.6374, 0.9471],
                 ),
               ),
-              padding: const EdgeInsets.symmetric(vertical: 14.5, horizontal: 24),
+              padding: const EdgeInsets.symmetric(vertical: 10.5, horizontal: 16),
               child: Center(
                 child: CustomText(
                   AppStrings.viewParent,

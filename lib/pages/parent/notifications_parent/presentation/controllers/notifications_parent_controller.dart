@@ -11,49 +11,98 @@ import '../../../../../consts/colors.dart';
 import '../../../../../services/auth_service.dart';
 import '../../../../../services/pusher_service.dart';
 import '../../../../../widgets/custom_snackbar.dart';
+import '../../../child_reservations/model/cancel_response_model.dart' as cancel;
 import '../../data/notifications_parent_repository.dart';
 import '../../model/parent_notifications_model.dart';
-
 
 class NotificationsParentScreenController extends SuperController<dynamic> {
   NotificationsParentScreenController({required this.notificationsParentRepository});
 
   final INotificationsParentRepository notificationsParentRepository;
 
-  List<ParentNotificationsModel> parentNotificationsModel = [];
-  getParentNotifications() async {
-    // isChildrenLoading.value = true;
-    change(false, status: RxStatus.loading());
-    notificationsParentRepository.getParentNotifications().then(
-          (value) async {
+  RxList<ParentNotificationsModel> parentNotificationsModel = <ParentNotificationsModel>[].obs;
+
+  cancel.CancelResponseModel? cancelResponseModel;
+
+  Future<void> enrollmentRespond(int enrollmentId) async {
+    List<Enrollment> enrollments = [];
+    for (var element in parentNotificationsModel) {
+      element.enrollment != null ? enrollments.add(element.enrollment!) : null;
+    }
+    enrollments
+        .firstWhere(
+          (element) => element.id == enrollmentId,
+        )
+        .isRespondingReject
+        .value = true;
+
+    // change(false, status: RxStatus.loading());
+    notificationsParentRepository.enrollmentRespond(enrollmentId.toString()).then(
+      (value) async {
         if (value.statusCode == 200 || value.statusCode == 201) {
-          parentNotificationsModel.clear();
-          parentNotificationsModel = value.body ?? [];
-          update();
+          cancelResponseModel = null;
+          cancelResponseModel = value.body;
         }
-        // isChildrenLoading.value = false;
-        change(true, status: RxStatus.success());
+        // change(true, status: RxStatus.success());
+        enrollments
+            .firstWhere(
+              (element) => element.id == enrollmentId,
+            )
+            .isRespondingReject
+            .value = false;
+        customSnackBar(cancelResponseModel?.message ?? "", ColorCode.success600);
+        await getParentNotifications();
+        update();
       },
     ).onError((error, stackTrace) {
       print("Signup error: $error");
       print("StackTrace: $stackTrace");
       customSnackBar(error.toString(), ColorCode.danger600);
-      change(true, status: RxStatus.success());
-      // isChildrenLoading.value = false;
+      // change(true, status: RxStatus.success());
+      enrollments
+          .firstWhere(
+            (element) => element.id == enrollmentId,
+          )
+          .isRespondingReject
+          .value = false;
     });
   }
 
-  readParentNotifications(String notificationId) async {
-    // isChildrenLoading.value = true;
+  RxBool isLoading = false.obs;
+  Future<void> getParentNotifications() async {
+    isLoading.value = true;
+    // change(false, status: RxStatus.loading());
+    notificationsParentRepository.getParentNotifications().then(
+      (value) async {
+        if (value.statusCode == 200 || value.statusCode == 201) {
+          parentNotificationsModel.value.clear();
+          parentNotificationsModel.value.assignAll(value.body ?? []);
+          parentNotificationsModel.refresh();
+          // update();
+        }
+        isLoading.value = false;
+        // change(true, status: RxStatus.success());
+      },
+    ).onError((error, stackTrace) {
+      print("Signup error: $error");
+      print("StackTrace: $stackTrace");
+      customSnackBar(error.toString(), ColorCode.danger600);
+      // change(true, status: RxStatus.success());
+      isLoading.value = false;
+    });
+  }
+
+  Future<void> readParentNotifications(String notificationId) async {
+    isLoading.value = true;
     // change(false, status: RxStatus.loading());
     notificationsParentRepository.readParentNotifications(notificationId).then(
-          (value) async {
+      (value) async {
         if (value.statusCode == 200 || value.statusCode == 201) {
           customSnackBar(value.body ?? "", ColorCode.success600);
           await getParentNotifications();
-          update();
+          // update();
         }
-        // isChildrenLoading.value = false;
+        isLoading.value = false;
         // change(true, status: RxStatus.success());
       },
     ).onError((error, stackTrace) {
@@ -61,21 +110,21 @@ class NotificationsParentScreenController extends SuperController<dynamic> {
       print("StackTrace: $stackTrace");
       customSnackBar(error.toString(), ColorCode.danger600);
       // change(true, status: RxStatus.success());
-      // isChildrenLoading.value = false;
+      isLoading.value = false;
     });
   }
 
-  readAllParentNotifications() async {
-    // isChildrenLoading.value = true;
+  Future<void> readAllParentNotifications() async {
+    isLoading.value = true;
     // change(false, status: RxStatus.loading());
     notificationsParentRepository.readAllParentNotifications().then(
-          (value) async {
+      (value) async {
         if (value.statusCode == 200 || value.statusCode == 201) {
           customSnackBar(value.body ?? "", ColorCode.success600);
           await getParentNotifications();
-          update();
+          // update();
         }
-        // isChildrenLoading.value = false;
+        isLoading.value = false;
         // change(true, status: RxStatus.success());
       },
     ).onError((error, stackTrace) {
@@ -83,45 +132,110 @@ class NotificationsParentScreenController extends SuperController<dynamic> {
       print("StackTrace: $stackTrace");
       customSnackBar(error.toString(), ColorCode.danger600);
       // change(true, status: RxStatus.success());
-      // isChildrenLoading.value = false;
+      isLoading.value = false;
     });
   }
 
   ScrollController scrollController = ScrollController();
+
+// inside NotificationsParentScreenController
+  bool _isSubscribed = false;
+  final String _channelName = 'universal-notifications';
+  final String _eventName = r'Illuminate\Notifications\Events\BroadcastNotificationCreated';
+
   Future<void> _subscribeToParentNotificationsList() async {
     final userId = AuthService.to.userInfo?.user?.id;
     if (userId == null) return;
+    if (_isSubscribed) {
+      print('[NOTIF] already subscribed, skipping subscribe');
+      return;
+    }
 
-    await PusherService.to.subscribe(
-      channelName: 'child-activity$userId',
-      eventName: 'new-activity',
-      onEvent: (data) {
-        try {
-          final parsed = jsonDecode(data);
-          final newNotification = ParentNotificationsModel(
+    try {
+      _isSubscribed = true;
+      await PusherService.to.subscribe(
+        channelName: _channelName,
+        eventName: _eventName,
+        onEvent: (dynamic data) {
+          try {
+            print('[PUSHER] raw event data: $data');
 
-            createdAt: parsed["created_at"],
-            id: parsed["id"],
-            updatedAt: parsed["updated_at"],
-          );
-          parentNotificationsModel.add(newNotification);
-          Future.delayed(
-            const Duration(milliseconds: 300),
-                () => scrollController.animateTo(
-              scrollController.position.minScrollExtent,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeOut,
-            ),
-          );
-          update();
-        } catch (e) {
-          print("Error parsing new-message: $e");
-        }
-      },
-    );
+            // robust parsing: accept a Map or a JSON string
+            dynamic payload;
+            if (data == null) return;
+            if (data is String) {
+              payload = jsonDecode(data);
+            } else {
+              payload = data;
+            }
+
+            // Laravel may nest payload under "data" or "notification"
+            final Map<String, dynamic> notifMap =
+                (payload is Map) ? (payload['data'] ?? payload['notification'] ?? payload) as Map<String, dynamic> : {};
+
+            print('[PUSHER] parsed notification map: $notifMap');
+
+            final newNotification = ParentNotificationsModel(
+                date: notifMap["date"],
+                createdAt: notifMap["created_at"],
+                id: notifMap["id"],
+                updatedAt: notifMap["updated_at"],
+                description: notifMap["description"],
+                enrollmentId: notifMap["enrollment_id"],
+                notifiableId: notifMap["notifiable_id"],
+                title: notifMap["title"],
+                reportId: notifMap["report_id"],
+                notifiableType: notifMap["notifiable_type"],
+                readAt: notifMap["read_at"],
+                notificationType: notifMap["notification_type"],
+                time: notifMap["time"],
+                type: notifMap["type"],
+                enrollment: notifMap["enrollment"] != null ? Enrollment.fromJson(notifMap["enrollment"]) : null,
+                report: notifMap["report"] != null ? Report.fromJson(notifMap["report"]) : null);
+
+            // Insert and trigger UI update
+            if (newNotification.notifiableId == AuthService.to.userInfo?.user?.id) {
+              parentNotificationsModel.insert(0, newNotification);
+              parentNotificationsModel.refresh();
+            }
+
+            // safe scroll to top if attached
+            if (scrollController.hasClients) {
+              Future.delayed(const Duration(milliseconds: 300), () {
+                if (scrollController.hasClients) {
+                  scrollController.animateTo(
+                    scrollController.position.minScrollExtent,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeOut,
+                  );
+                }
+              });
+            }
+          } catch (e, st) {
+            print('[PUSHER] onEvent handler error: $e\n$st');
+          }
+        },
+      );
+      print('[NOTIF] subscribed to $_channelName / $_eventName');
+    } catch (e, st) {
+      print('[NOTIF] subscribe failed: $e\n$st');
+      _isSubscribed = false;
+    }
   }
 
-  Future<void> onRefresh()  async{
+  @override
+  void onClose() {
+    // cleanup subscription to avoid duplicates
+    try {
+      PusherService.to.unsubscribe(_channelName);
+      print('[NOTIF] unsubscribed from $_channelName on controller close');
+    } catch (e) {
+      print('[NOTIF] unsubscribe error: $e');
+    }
+    super.onClose();
+  }
+
+  Future<void> onRefresh() async {
     await getParentNotifications();
   }
 

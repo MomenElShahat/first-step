@@ -537,11 +537,19 @@ class ChatDetailsScreen extends GetView<ChatDetailsScreenController> {
                 )
               : InkWell(
                   onTap: () {
-                    if (controller.inputController.text.isNotEmpty &&
+                    if ((controller.inputController.text.isNotEmpty &&
+                            (controller.selectedVideo != null ||
+                                controller.selectedImage != null)) ||
+                        controller.inputController.text.isNotEmpty ||
                         (controller.selectedVideo != null ||
-                        controller.selectedImage != null)) {
+                            controller.selectedImage != null)) {
                       controller.sendMessages(
-                        message: controller.inputController.text,
+                        message: (controller.inputController.text.isEmpty &&
+                                (controller.selectedVideo != null))
+                            ? AppStrings.video
+                            : (controller.inputController.text.isEmpty &&
+                            (controller.selectedImage != null))
+                            ? AppStrings.image : controller.inputController.text,
                         videoUrl: controller.selectedVideo,
                         image: controller.selectedImage,
                       );

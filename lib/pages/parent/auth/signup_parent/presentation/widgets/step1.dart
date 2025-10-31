@@ -1,6 +1,8 @@
 import 'package:first_step/routes/app_pages.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 
 import '../../../../../../consts/colors.dart';
@@ -65,49 +67,49 @@ class Step1 extends GetView<SignupParentController> {
                 inputType: TextInputType.text,
                 label: ""),
           ),
-          Gaps.vGap8,
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                      text: AppStrings.kinship,
-                      style: TextStyles.body14Medium
-                          .copyWith(color: ColorCode.neutral500)),
-                  TextSpan(
-                      text: "*",
-                      style: TextStyles.body14Medium
-                          .copyWith(color: ColorCode.danger700)),
-                ],
-              ),
-            ),
-          ),
-          Gaps.vGap8,
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: CustomTextFormField(
-                hint: AppStrings.egFatherGrandmotherOrUncle,
-                onSave: (String? val) {
-                  controller.kinship.text = val!;
-                },
-                onChange: (String? val) {
-                  controller.kinship.text = val!;
-                  // final englishText = convertArabicToEnglish(val ??"");
-                  // controller.floorNumber.value  =controller.floorNumber.value.copyWith(
-                  //   text: englishText,
-                  //   selection: TextSelection.collapsed(offset: englishText.length),
-                  // );
-                },
-                controller: controller.kinship,
-                validator: (val) {
-                  return (controller.kinship.text.isNotEmpty)
-                      ? null
-                      : AppStrings.emptyField;
-                },
-                inputType: TextInputType.text,
-                label: ""),
-          ),
+          // Gaps.vGap8,
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 16),
+          //   child: RichText(
+          //     text: TextSpan(
+          //       children: [
+          //         TextSpan(
+          //             text: AppStrings.kinship,
+          //             style: TextStyles.body14Medium
+          //                 .copyWith(color: ColorCode.neutral500)),
+          //         TextSpan(
+          //             text: "*",
+          //             style: TextStyles.body14Medium
+          //                 .copyWith(color: ColorCode.danger700)),
+          //       ],
+          //     ),
+          //   ),
+          // ),
+          // Gaps.vGap8,
+          // Padding(
+          //   padding: const EdgeInsets.symmetric(horizontal: 16),
+          //   child: CustomTextFormField(
+          //       hint: AppStrings.egFatherGrandmotherOrUncle,
+          //       onSave: (String? val) {
+          //         controller.kinship.text = val!;
+          //       },
+          //       onChange: (String? val) {
+          //         controller.kinship.text = val!;
+          //         // final englishText = convertArabicToEnglish(val ??"");
+          //         // controller.floorNumber.value  =controller.floorNumber.value.copyWith(
+          //         //   text: englishText,
+          //         //   selection: TextSelection.collapsed(offset: englishText.length),
+          //         // );
+          //       },
+          //       controller: controller.kinship,
+          //       validator: (val) {
+          //         return (controller.kinship.text.isNotEmpty)
+          //             ? null
+          //             : AppStrings.emptyField;
+          //       },
+          //       inputType: TextInputType.text,
+          //       label: ""),
+          // ),
           Gaps.vGap8,
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -131,47 +133,59 @@ class Step1 extends GetView<SignupParentController> {
             textDirection: TextDirection.ltr,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 12),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.grey.shade100,
-                    ),
-                    child: const Text(
-                      '+966 🇸🇦', // Saudi code with flag
-                      style: TextStyle(fontSize: 16),
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.grey.shade100,
+                        ),
+                        child: const Text(
+                          '+966 🇸🇦', // Saudi code with flag
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                      Gaps.hGap8,
+                      Expanded(
+                        child: CustomTextFormField(
+                          hint: AppStrings.egMobileNumber,
+                          onSave: (val) => controller.mobileNumber.text = val ?? '',
+                          onChange: (val) {
+                            controller.mobileNumber.text = val ?? '';
+                            controller.phone.value = controller.mobileNumber.text;
+                          },
+                          maxLength: 9,
+                          controller: controller.mobileNumber,
+                          // ✅ Don't use the internal validator
+                          validator: (_) => null,
+                          inputType: TextInputType.phone,
+                          label: "",
+                        ),
+                      ),
+                    ],
                   ),
-                  Gaps.hGap8,
-                  Expanded(
-                    child: CustomTextFormField(
-                        hint: AppStrings.egMobileNumber,
-                        onSave: (String? val) {
-                          controller.mobileNumber.text = val!;
-                        },
-                        onChange: (String? val) {
-                          controller.mobileNumber.text = val!;
-                          // final englishText = convertArabicToEnglish(val ??"");
-                          // controller.floorNumber.value  =controller.floorNumber.value.copyWith(
-                          //   text: englishText,
-                          //   selection: TextSelection.collapsed(offset: englishText.length),
-                          // );
-                        },
-                        maxLength: 9,
-                        controller: controller.mobileNumber,
-                        validator: (val) {
-                          return (isValidSaudiNumber(
-                                  controller.mobileNumber.text))
-                              ? null
-                              : AppStrings.phoneValidation;
-                        },
-                        inputType: TextInputType.phone,
-                        label: ""),
-                  ),
+                  // ✅ Custom error text below (keeps field position stable)
+                  Obx(() {
+                    final isValid = isValidSaudiNumber(controller.phone.value);
+                    return isValid
+                        ? const SizedBox.shrink()
+                        : Padding(
+                      padding: const EdgeInsets.only(left: 72, top: 4),
+                      child: CustomText(
+                        AppStrings.phoneValidation,
+                        textAlign: TextAlign.start,
+                        textStyle: TextStyles.button12.copyWith(
+                            color: ColorCode.danger700,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    );
+                  }),
                 ],
               ),
             ),
@@ -344,7 +358,7 @@ class Step1 extends GetView<SignupParentController> {
                   isHiddenPassword: controller.isHiddenConfirm.value,
                   onTapShowHidePassword: () {
                     controller.isHiddenConfirm.value =
-                        !controller.isHiddenConfirm.value;
+                    !controller.isHiddenConfirm.value;
                   },
                   obscureText: true,
                   onChange: (String? val) {
@@ -359,7 +373,7 @@ class Step1 extends GetView<SignupParentController> {
                   // controller: controller.neighborhood,
                   validator: (val) {
                     return (controller.password.text ==
-                            controller.confirmPassword.text)
+                        controller.confirmPassword.text)
                         ? null
                         : AppStrings.passwordDoesNotMatch;
                   },
@@ -370,24 +384,99 @@ class Step1 extends GetView<SignupParentController> {
           Gaps.vGap24,
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: CustomButton(
-                child: CustomText(
-                  AppStrings.createAnAccount,
-                  textStyle: TextStyles.body16Medium.copyWith(
-                      fontWeight: FontWeight.w700, color: ColorCode.white),
-                ),
-                onPressed: () {
-                  if (controller.formKey.currentState?.validate() ?? false) {
-                    Get.toNamed(Routes.ADD_CHILD, arguments: {
-                      "name": controller.name.text,
-                      "kinship": controller.kinship.text,
-                      "mobileNumber": controller.mobileNumber.text,
-                      "email": controller.email.text,
-                      "password": controller.password.text,
-                      "national_number": controller.nationalId.text,
-                    });
-                  }
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Obx(() {
+                  return Visibility(
+                    replacement: const Center(
+                      child: SpinKitCircle(
+                        color: ColorCode.primary600,
+                      ),
+                    ),
+                    visible: !controller.isLoadingChild.value,
+                    child: Expanded(
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(8.r),
+                        onTap: () async {
+                          if (controller.formKey.currentState?.validate() ??
+                              false) {
+                            if(isValidSaudiNumber(controller.phone.value)){
+                              await controller.onRegisterParentClicked(
+                                  context, Routes.ADD_CHILD);
+                            }
+                          }
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.r),
+                            gradient: const LinearGradient(
+                              begin: Alignment.centerRight,
+                              end: Alignment.centerLeft,
+                              transform:
+                              GradientRotation(98.52 * (3.1415926535 / 180)),
+                              // Convert degrees to radians
+                              colors: [
+                                Color(0xFF7A8CFD), // 11.17%
+                                Color(0xFF404FB1), // 63.74%
+                                Color(0xFF2B3990), // 94.71%
+                              ],
+                              stops: [
+                                0.1117,
+                                0.6374,
+                                0.9471,
+                              ],
+                            ),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 10.5),
+                          child: CustomText(
+                            AppStrings.addChild,
+                            textStyle: TextStyles.body16Medium
+                                .copyWith(color: ColorCode.white),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
                 }),
+                Gaps.hGap16,
+                Obx(() {
+                  return Visibility(
+                    replacement: const Center(
+                      child: SpinKitCircle(
+                        color: ColorCode.primary600,
+                      ),
+                    ),
+                    visible: !controller.isLoading.value,
+                    child: Expanded(
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(8.r),
+                        onTap: () async {
+                          if (controller.formKey.currentState?.validate() ??
+                              false) {
+                            if(isValidSaudiNumber(controller.phone.value)){
+                              await controller.onRegisterParentClicked(
+                                  context, Routes.LOGIN);
+                            }
+                          }
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.r),
+                              border: Border.all(color: ColorCode.neutral400)),
+                          padding: const EdgeInsets.symmetric(vertical: 10.5),
+                          child: CustomText(
+                            AppStrings.createAnAccount,
+                            textStyle: TextStyles.body16Medium
+                                .copyWith(color: ColorCode.neutral500),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ],
+            ),
           ),
           Gaps.vGap24,
           Center(

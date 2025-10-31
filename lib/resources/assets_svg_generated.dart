@@ -234,7 +234,16 @@ class AppSVGAssets {
   static const iconBase = "assets/svg_icons/icon_base.svg";
   static const checkMark = "assets/svg_icons/check_mark.svg";
   static const billingControl = "assets/svg_icons/billing_control.svg";
-  // static const warningIcon = "assets/svg_icons/warning_icon.svg";
+  static const noPricing = "assets/svg_icons/no_pricing.svg";
+  static const globeLocation = "assets/svg_icons/globe_location.svg";
+  static const abstractSearch = "assets/svg_icons/abstract_search.svg";
+  static const centerIcon = "assets/svg_icons/center_icon.svg";
+  static const checkMarkPink = "assets/svg_icons/check_mark_pink.svg";
+  static const closeDialog = "assets/svg_icons/close_dialog.svg";
+  static const subLocation = "assets/svg_icons/sub_location.svg";
+  static const childProgram = "assets/svg_icons/child_program.svg";
+  static const creditCardVisa = "assets/svg_icons/credit_card_visa.svg";
+  static const youtube = "assets/svg_icons/youtube.svg";
 
   static SvgPicture getWidget(String assetName, {BoxFit fit = BoxFit.none, Color? color, double? width, double? height}) {
     if (width != null && height != null) {

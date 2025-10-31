@@ -36,7 +36,7 @@ class BaseProvider extends GetConnect {
 
       // Handle unauthorized globally
       if ((response.unauthorized || response.statusCode == 401) &&
-          request.url.path != "/api/${EndPoints.login}") {
+          request.url.path != "/api/${EndPoints.loginV2}") {
         await AuthService.to.logout();
         final currentRoute = Get.currentRoute;
         if (currentRoute != Routes.BOTTOM_NAVIGATION) {

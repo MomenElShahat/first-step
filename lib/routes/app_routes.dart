@@ -43,4 +43,6 @@ abstract class Routes {
   static const EDIT_PROFILE_SCREEN = '/editProfileScreen';
   static const EDIT_PROFILE_PARENT_SCREEN = '/editProfileParentScreen';
   static const BILLING_HISTORY_SCREEN = '/billingHistoryScreen';
+  static const ADD_PARENTS_SCREEN = '/addParentsScreen';
+  static const REVIEW_RESERVATION_SCREEN = '/reviewReservationScreen';
 }

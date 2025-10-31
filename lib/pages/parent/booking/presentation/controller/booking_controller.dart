@@ -135,7 +135,7 @@ class BookingController extends SuperController<bool> {
 
   RxBool isEnrollLoading = false.obs;
 
-  enroll() async {
+  Future<void> enroll() async {
     isEnrollLoading.value = true;
     // change(false, status: RxStatus.loading());
     ParentEnrollmentRequestModel? parentEnrollmentRequestModel;

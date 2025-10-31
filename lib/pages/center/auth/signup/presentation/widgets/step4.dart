@@ -22,7 +22,7 @@ class Step4 extends GetView<SignupController> {
   Widget build(BuildContext context) {
     return Obx(() {
       return Visibility(
-          visible: controller.index.value == 4,
+          visible: controller.index.value == 2,
           replacement: const SizedBox(),
           child: Form(
             key: controller.formKey4,
@@ -34,14 +34,8 @@ class Step4 extends GetView<SignupController> {
                   child: RichText(
                     text: TextSpan(
                       children: [
-                        TextSpan(
-                            text: AppStrings.practiceLicense,
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.neutral500)),
-                        TextSpan(
-                            text: "*",
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.danger700)),
+                        TextSpan(text: AppStrings.practiceLicense, style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
+                        TextSpan(text: "*", style: TextStyles.body14Medium.copyWith(color: ColorCode.danger700)),
                       ],
                     ),
                   ),
@@ -51,12 +45,8 @@ class Step4 extends GetView<SignupController> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: InkWell(
                     onTap: () async {
-                      controller.practiceLicenceFile =
-                      await controller.pickFile();
-                      controller.practiceLicence.text =
-                          controller.practiceLicenceFile?.path
-                              .split('/')
-                              .last ?? "";
+                      controller.practiceLicenceFile = await controller.pickFile();
+                      controller.practiceLicence.text = controller.practiceLicenceFile?.path.split('/').last ?? "";
                     },
                     child: CustomTextFormField(
                         hint: AppStrings.selectAFile,
@@ -66,18 +56,10 @@ class Step4 extends GetView<SignupController> {
                         readOnly: true,
                         enable: false,
                         onTap: () async {
-                          controller.practiceLicenceFile =
-                          await controller.pickFile();
-                          controller.practiceLicence.text =
-                              controller.practiceLicenceFile?.path
-                                  .split('/')
-                                  .last ?? "";
+                          controller.practiceLicenceFile = await controller.pickFile();
+                          controller.practiceLicence.text = controller.practiceLicenceFile?.path.split('/').last ?? "";
                         },
-                        suffixIcon: AppSVGAssets.getWidget(
-                            AppSVGAssets.attachLine,
-                            width: 16,
-                            height: 16,
-                            color: ColorCode.neutral400),
+                        suffixIcon: AppSVGAssets.getWidget(AppSVGAssets.attachLine, width: 16, height: 16, color: ColorCode.neutral400),
                         onChange: (String? val) {
                           controller.practiceLicence.text = val!;
                           // final englishText = convertArabicToEnglish(val ??"");
@@ -88,9 +70,7 @@ class Step4 extends GetView<SignupController> {
                         },
                         controller: controller.practiceLicence,
                         validator: (val) {
-                          return (controller.practiceLicence.text.isNotEmpty)
-                              ? null
-                              : AppStrings.emptyField;
+                          return (controller.practiceLicence.text.isNotEmpty) ? null : AppStrings.emptyField;
                         },
                         inputType: TextInputType.text,
                         label: ""),
@@ -102,14 +82,8 @@ class Step4 extends GetView<SignupController> {
                   child: RichText(
                     text: TextSpan(
                       children: [
-                        TextSpan(
-                            text: AppStrings.commercialRegister,
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.neutral500)),
-                        TextSpan(
-                            text: "*",
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.danger700)),
+                        TextSpan(text: AppStrings.commercialRegister, style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
+                        TextSpan(text: "*", style: TextStyles.body14Medium.copyWith(color: ColorCode.danger700)),
                       ],
                     ),
                   ),
@@ -119,12 +93,8 @@ class Step4 extends GetView<SignupController> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: InkWell(
                     onTap: () async {
-                      controller.commercialRegisterFile =
-                      await controller.pickFile();
-                      controller.commercialRegister.text =
-                          controller.commercialRegisterFile?.path
-                              .split('/')
-                              .last ?? "";
+                      controller.commercialRegisterFile = await controller.pickFile();
+                      controller.commercialRegister.text = controller.commercialRegisterFile?.path.split('/').last ?? "";
                     },
                     child: CustomTextFormField(
                         hint: AppStrings.sunday,
@@ -134,18 +104,10 @@ class Step4 extends GetView<SignupController> {
                         readOnly: true,
                         enable: false,
                         onTap: () async {
-                          controller.commercialRegisterFile =
-                          await controller.pickFile();
-                          controller.commercialRegister.text =
-                              controller.commercialRegisterFile?.path
-                                  .split('/')
-                                  .last ?? "";
+                          controller.commercialRegisterFile = await controller.pickFile();
+                          controller.commercialRegister.text = controller.commercialRegisterFile?.path.split('/').last ?? "";
                         },
-                        suffixIcon: AppSVGAssets.getWidget(
-                            AppSVGAssets.attachLine,
-                            width: 16,
-                            height: 16,
-                            color: ColorCode.neutral400),
+                        suffixIcon: AppSVGAssets.getWidget(AppSVGAssets.attachLine, width: 16, height: 16, color: ColorCode.neutral400),
                         onChange: (String? val) {
                           controller.commercialRegister.text = val!;
                           // final englishText = convertArabicToEnglish(val ??"");
@@ -156,9 +118,7 @@ class Step4 extends GetView<SignupController> {
                         },
                         controller: controller.commercialRegister,
                         validator: (val) {
-                          return (controller.commercialRegister.text.isNotEmpty)
-                              ? null
-                              : AppStrings.emptyField;
+                          return (controller.commercialRegister.text.isNotEmpty) ? null : AppStrings.emptyField;
                         },
                         inputType: TextInputType.text,
                         label: ""),
@@ -171,9 +131,7 @@ class Step4 extends GetView<SignupController> {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                            text: AppStrings.isThereAnythingYouWouldLikeToAdd,
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.neutral500)),
+                            text: AppStrings.isThereAnythingYouWouldLikeToAdd, style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
                       ],
                     ),
                   ),
@@ -184,17 +142,17 @@ class Step4 extends GetView<SignupController> {
                   child: CustomTextFormField(
                       hint: AppStrings.writeHere,
                       onSave: (String? val) {
-                        controller.finalAdd.text = val!;
+                        controller.notes.text = val!;
                       },
                       onChange: (String? val) {
-                        controller.finalAdd.text = val!;
+                        controller.notes.text = val!;
                         // final englishText = convertArabicToEnglish(val ??"");
                         // controller.floorNumber.value  =controller.floorNumber.value.copyWith(
                         //   text: englishText,
                         //   selection: TextSelection.collapsed(offset: englishText.length),
                         // );
                       },
-                      controller: controller.finalAdd,
+                      controller: controller.notes,
                       validator: (val) {
                         return null;
                       },
@@ -209,34 +167,23 @@ class Step4 extends GetView<SignupController> {
                       Obx(() {
                         return Visibility(
                           visible: controller.isRegistering.value == false,
-                          replacement: const Center(child: SpinKitCircle(
-                            color: ColorCode.primary600,
-                          ),),
+                          replacement: const Center(
+                            child: SpinKitCircle(
+                              color: ColorCode.primary600,
+                            ),
+                          ),
                           child: Expanded(
                             child: CustomButton(
                                 child: CustomText(
                                   AppStrings.createAnAccount,
-                                  textStyle: TextStyles.body16Medium.copyWith(
-                                      fontWeight: FontWeight.w700,
-                                      color: ColorCode.white),
+                                  textStyle: TextStyles.body16Medium.copyWith(fontWeight: FontWeight.w700, color: ColorCode.white),
                                 ),
                                 onPressed: () {
-                                  if (controller.formKey4.currentState
-                                      ?.validate() ??
-                                      false) {
-                                    if (controller.practiceLicenceFile ==
-                                        null) {
-                                      customSnackBar(
-                                          AppStrings
-                                              .pleaseUploadAPracticeLicence,
-                                          ColorCode.danger700);
-                                    } else if (controller
-                                        .commercialRegisterFile ==
-                                        null) {
-                                      customSnackBar(
-                                          AppStrings
-                                              .pleaseUploadACommercialRegister,
-                                          ColorCode.danger700);
+                                  if (controller.formKey4.currentState?.validate() ?? false) {
+                                    if (controller.practiceLicenceFile == null) {
+                                      customSnackBar(AppStrings.pleaseUploadAPracticeLicence, ColorCode.danger700);
+                                    } else if (controller.commercialRegisterFile == null) {
+                                      customSnackBar(AppStrings.pleaseUploadACommercialRegister, ColorCode.danger700);
                                     } else {
                                       controller.onRegisterClicked(context);
                                     }
@@ -247,24 +194,16 @@ class Step4 extends GetView<SignupController> {
                       }),
                       Gaps.hGap(48),
                       Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            controller.index.value = 3;
-                          },
-                          child: Container(
+                        child: CustomButton(
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(36),
-                                border:
-                                Border.all(color: ColorCode.neutral400)),
-                            padding: const EdgeInsets.symmetric(vertical: 14.5),
+                                borderRadius: BorderRadius.circular(8), color: Colors.white, border: Border.all(color: ColorCode.neutral400)),
                             child: CustomText(
                               AppStrings.previous,
-                              textStyle: TextStyles.body16Medium.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  color: ColorCode.neutral500),
+                              textStyle: TextStyles.body16Medium.copyWith(fontWeight: FontWeight.w700, color: ColorCode.neutral500),
                             ),
-                          ),
-                        ),
+                            onPressed: () {
+                              controller.index.value = 3;
+                            }),
                       ),
                     ],
                   ),
@@ -276,15 +215,12 @@ class Step4 extends GetView<SignupController> {
                       children: [
                         TextSpan(
                           text: "${AppStrings.haveAnAccount} ",
-                          style: TextStyles.body16Medium
-                              .copyWith(color: ColorCode.neutral500),
+                          style: TextStyles.body16Medium.copyWith(color: ColorCode.neutral500),
                         ),
                         TextSpan(
                           text: AppStrings.login,
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () => Get.toNamed(Routes.LOGIN),
-                          style: TextStyles.body16Medium
-                              .copyWith(color: ColorCode.info600),
+                          recognizer: TapGestureRecognizer()..onTap = () => Get.toNamed(Routes.LOGIN),
+                          style: TextStyles.body16Medium.copyWith(color: ColorCode.info600),
                         ),
                       ],
                     ),

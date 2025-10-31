@@ -1,18 +1,16 @@
 class SendReportResponseModel {
   final String message;
-  final List<DailyReportData> data;
+  final List<DailyReportData>? data;
 
   SendReportResponseModel({
     required this.message,
-    required this.data,
+    this.data,
   });
 
   factory SendReportResponseModel.fromJson(json) {
     return SendReportResponseModel(
-      message: json['message'],
-      data: (json['data'] as List)
-          .map((e) => DailyReportData.fromJson(e))
-          .toList(),
+      message: json['message'] ?? '',
+      data: (json['data'] as List?)?.map((e) => DailyReportData.fromJson(e)).toList() ?? [],
     );
   }
 }
@@ -42,7 +40,7 @@ class DailyReportData {
     required this.pdfUrl,
   });
 
-  factory DailyReportData.fromJson(Map<String, dynamic> json) {
+  factory DailyReportData.fromJson(json) {
     return DailyReportData(
       id: json['id'],
       activities: json['activities'],
@@ -77,7 +75,7 @@ class Child {
     required this.user,
   });
 
-  factory Child.fromJson(Map<String, dynamic> json) {
+  factory Child.fromJson(json) {
     return Child(
       id: json['id'],
       name: json['name'],
@@ -105,7 +103,7 @@ class User {
     this.phone,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) {
+  factory User.fromJson(json) {
     return User(
       id: json['id'],
       name: json['name'],
@@ -131,7 +129,7 @@ class Center {
     required this.branch,
   });
 
-  factory Center.fromJson(Map<String, dynamic> json) {
+  factory Center.fromJson(json) {
     return Center(
       id: json['id'],
       name: json['name'],
@@ -151,7 +149,7 @@ class Branch {
     required this.name,
   });
 
-  factory Branch.fromJson(Map<String, dynamic> json) {
+  factory Branch.fromJson(json) {
     return Branch(
       id: json['id'],
       name: json['name'],

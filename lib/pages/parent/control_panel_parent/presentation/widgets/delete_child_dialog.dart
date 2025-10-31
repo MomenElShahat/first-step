@@ -2,6 +2,7 @@ import 'package:first_step/consts/colors.dart';
 import 'package:first_step/resources/strings_generated.dart';
 import 'package:first_step/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 
@@ -31,11 +32,16 @@ Future<void> showDeleteChildConfirmDialog({
         actionsPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         actions: <Widget>[
           CustomButton(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.r),
+                border: Border.all(color: ColorCode.neutral400),
+              ),
               onPressed: () {
                 Get.back();
               },
               backGroundColor: ColorCode.white,
               child: CustomText(AppStrings.cancel)),
+          Gaps.vGap8,
           Obx(() {
             return isDeletingMember.value
                 ? const Center(

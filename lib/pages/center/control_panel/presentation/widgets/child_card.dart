@@ -25,8 +25,7 @@ class ChildCard extends StatelessWidget {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(24.r),
           color: ColorCode.neutral10,
-          border:
-              const Border(bottom: BorderSide(color: ColorCode.neutral400))),
+          border: const Border(bottom: BorderSide(color: ColorCode.neutral400))),
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,9 +45,7 @@ class ChildCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              childModel.gender == "boy"
-                  ? const Image(image: AppAssets.boyFill)
-                  : const Image(image: AppAssets.girlFill),
+              childModel.gender == "boy" ? const Image(image: AppAssets.boyFill) : const Image(image: AppAssets.girlFill),
               Gaps.hGap8,
               Expanded(
                   child: Column(
@@ -57,27 +54,22 @@ class ChildCard extends StatelessWidget {
                 children: [
                   CustomText(
                     childModel.childName ?? "",
-                    textStyle: TextStyles.body16Medium.copyWith(
-                        fontWeight: FontWeight.w700,
-                        color: ColorCode.primary600),
+                    textStyle: TextStyles.body16Medium.copyWith(fontWeight: FontWeight.w700, color: ColorCode.primary600),
                   ),
                   Gaps.vGap8,
                   CustomText(
                     "${AppStrings.dateOfBirth}: ${childModel.birthdayDate ?? ""}",
-                    textStyle: TextStyles.body16Medium
-                        .copyWith(fontSize: 12.sp, color: ColorCode.neutral500),
+                    textStyle: TextStyles.body16Medium.copyWith(fontSize: 12.sp, color: ColorCode.neutral500),
                   ),
                   Gaps.vGap8,
                   CustomText(
                     "${AppStrings.gender}: ${childModel.gender == "boy" ? AppStrings.boy : AppStrings.girl}",
-                    textStyle: TextStyles.body16Medium
-                        .copyWith(fontSize: 12.sp, color: ColorCode.neutral500),
+                    textStyle: TextStyles.body16Medium.copyWith(fontSize: 12.sp, color: ColorCode.neutral500),
                   ),
                   Gaps.vGap8,
                   CustomText(
                     "${AppStrings.parentName}: ${childModel.parentName ?? ""}",
-                    textStyle: TextStyles.body16Medium
-                        .copyWith(fontSize: 12.sp, color: ColorCode.neutral500),
+                    textStyle: TextStyles.body16Medium.copyWith(fontSize: 12.sp, color: ColorCode.neutral500),
                   ),
                 ],
               )),
@@ -90,12 +82,11 @@ class ChildCard extends StatelessWidget {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          Get.toNamed(Routes.CHILD_DETAILS_SCREEN,
-                              arguments: childModel.id.toString());
+                          Get.toNamed(Routes.CHILD_DETAILS_SCREEN, arguments: childModel.id.toString());
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(36.r),
+                            borderRadius: BorderRadius.circular(8.r),
                             gradient: const LinearGradient(
                               begin: Alignment(-0.15, -1.0), // Approximate direction for 98.52 degrees
                               end: Alignment(1.0, 0.15),
@@ -107,13 +98,11 @@ class ChildCard extends StatelessWidget {
                               stops: [0.1117, 0.6374, 0.9471],
                             ),
                           ),
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 14.5, horizontal: 24),
+                          padding: const EdgeInsets.symmetric(vertical: 10.5, horizontal: 24),
                           child: Center(
                             child: CustomText(
                               AppStrings.viewTheChildFile,
-                              textStyle: TextStyles.body14Regular
-                                  .copyWith(color: ColorCode.white),
+                              textStyle: TextStyles.body14Regular.copyWith(color: ColorCode.white),
                             ),
                           ),
                         ),
@@ -123,21 +112,18 @@ class ChildCard extends StatelessWidget {
                     Expanded(
                       child: InkWell(
                         onTap: () {
-                          Get.toNamed(Routes.EDIT_CHILD_DETAILS_SCREEN,
-                              arguments: childModel.id.toString());
+                          Get.toNamed(Routes.EDIT_CHILD_DETAILS_SCREEN, arguments: childModel.id.toString());
                         },
                         child: Container(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(36.r),
+                            borderRadius: BorderRadius.circular(8.r),
                             border: Border.all(color: ColorCode.primary600),
                           ),
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 14.5, horizontal: 24),
+                          padding: const EdgeInsets.symmetric(vertical: 10.5, horizontal: 16),
                           child: Center(
                             child: CustomText(
                               AppStrings.editChild,
-                              textStyle: TextStyles.body14Regular
-                                  .copyWith(color: ColorCode.primary600),
+                              textStyle: TextStyles.body14Regular.copyWith(color: ColorCode.primary600),
                             ),
                           ),
                         ),
@@ -147,13 +133,12 @@ class ChildCard extends StatelessWidget {
                 )
               : InkWell(
                   onTap: () {
-                    Get.toNamed(Routes.CHILD_DETAILS_SCREEN,
-                        arguments: childModel.id.toString());
+                    Get.toNamed(Routes.CHILD_DETAILS_SCREEN, arguments: childModel.id.toString());
                   },
                   child: Container(
                     width: Get.width / 2,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(36.r),
+                      borderRadius: BorderRadius.circular(8.r),
                       gradient: const LinearGradient(
                         begin: Alignment(-0.15, -1.0), // Approximate direction for 98.52 degrees
                         end: Alignment(1.0, 0.15),
@@ -165,13 +150,11 @@ class ChildCard extends StatelessWidget {
                         stops: [0.1117, 0.6374, 0.9471],
                       ),
                     ),
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 14.5, horizontal: 24),
+                    padding: const EdgeInsets.symmetric(vertical: 10.5, horizontal: 16),
                     child: Center(
                       child: CustomText(
                         AppStrings.viewTheChildFile,
-                        textStyle: TextStyles.body14Regular
-                            .copyWith(color: ColorCode.white),
+                        textStyle: TextStyles.body14Regular.copyWith(color: ColorCode.white),
                       ),
                     ),
                   ),
@@ -179,79 +162,64 @@ class ChildCard extends StatelessWidget {
           Gaps.vGap16,
           CustomText(
             AppStrings.chronicDiseases,
-            textStyle:
-                TextStyles.body16Medium.copyWith(color: ColorCode.primary600),
+            textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.primary600),
           ),
-          if (childModel.diseaseDetails != null ||
-              (childModel.diseaseDetails?.isNotEmpty ?? false))
+          if (childModel.diseaseDetails != null || (childModel.diseaseDetails?.isNotEmpty ?? false))
             ...List.generate(
               childModel.diseaseDetails?.length ?? 0,
-                  (index) => Padding(
-                    padding: const EdgeInsets.only(top: 5),
-                    child: CustomText(
-                                    childModel.diseaseDetails?[index].diseaseName ?? "",
-                                    textStyle: TextStyles.body16Medium
-                      .copyWith(fontSize: 12.sp, color: ColorCode.neutral500),
-                                  ),
-                  ),
+              (index) => Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: CustomText(
+                  childModel.diseaseDetails?[index].diseaseName ?? "",
+                  textStyle: TextStyles.body16Medium.copyWith(fontSize: 12.sp, color: ColorCode.neutral500),
+                ),
+              ),
             ),
-          if (childModel.diseaseDetails == null ||
-              (childModel.diseaseDetails?.isEmpty ?? false))
+          if (childModel.diseaseDetails == null || (childModel.diseaseDetails?.isEmpty ?? false))
             CustomText(
               AppStrings.notFound,
-              textStyle: TextStyles.body16Medium
-                  .copyWith(fontSize: 12.sp, color: ColorCode.neutral500),
+              textStyle: TextStyles.body16Medium.copyWith(fontSize: 12.sp, color: ColorCode.neutral500),
             ),
           Gaps.vGap16,
           CustomText(
             AppStrings.allergies,
-            textStyle:
-                TextStyles.body16Medium.copyWith(color: ColorCode.primary600),
+            textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.primary600),
           ),
           Gaps.vGap8,
-          if (childModel.allergies != null ||
-              (childModel.allergies?.isNotEmpty ?? false))
+          if (childModel.allergies != null || (childModel.allergies?.isNotEmpty ?? false))
             ...List.generate(
               childModel.allergies?.length ?? 0,
               (index) => Padding(
                 padding: const EdgeInsets.only(top: 5),
                 child: CustomText(
                   childModel.allergies?[index].name ?? "",
-                  textStyle: TextStyles.body16Medium
-                      .copyWith(fontSize: 12.sp, color: ColorCode.neutral500),
+                  textStyle: TextStyles.body16Medium.copyWith(fontSize: 12.sp, color: ColorCode.neutral500),
                 ),
               ),
             ),
-          if (childModel.allergies == null ||
-              (childModel.allergies?.isEmpty ?? false))
+          if (childModel.allergies == null || (childModel.allergies?.isEmpty ?? false))
             CustomText(
               AppStrings.notFound,
-              textStyle: TextStyles.body16Medium
-                  .copyWith(fontSize: 12.sp, color: ColorCode.neutral500),
+              textStyle: TextStyles.body16Medium.copyWith(fontSize: 12.sp, color: ColorCode.neutral500),
             ),
           Gaps.vGap16,
           CustomText(
             AppStrings.authorizedPersons,
-            textStyle:
-                TextStyles.body16Medium.copyWith(color: ColorCode.primary600),
+            textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.primary600),
           ),
           Gaps.vGap8,
-          if (childModel.authorizedPeople != null ||
-              (childModel.authorizedPeople?.isNotEmpty ?? false))
+          if (childModel.authorizedPeople != null || (childModel.authorizedPeople?.isNotEmpty ?? false))
             ...List.generate(
               childModel.authorizedPeople?.length ?? 0,
               (index) => CustomText(
                 "${childModel.authorizedPeople?[index].name ?? ""} - ${childModel.authorizedPeople?[index].cin ?? ""}",
-                textStyle: TextStyles.body16Medium
-                    .copyWith(fontSize: 12.sp, color: ColorCode.neutral500),
+                textStyle: TextStyles.body16Medium.copyWith(fontSize: 12.sp, color: ColorCode.neutral500),
               ),
             ),
-          if (childModel.authorizedPeople == null ||
-              (childModel.authorizedPeople?.isEmpty ?? false))
+          if (childModel.authorizedPeople == null || (childModel.authorizedPeople?.isEmpty ?? false))
             CustomText(
               AppStrings.notFound,
-              textStyle: TextStyles.body16Medium
-                  .copyWith(fontSize: 12.sp, color: ColorCode.neutral500),
+              textStyle: TextStyles.body16Medium.copyWith(fontSize: 12.sp, color: ColorCode.neutral500),
             ),
         ],
       ),

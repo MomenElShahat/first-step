@@ -17,7 +17,7 @@ class BranchAddScreenController extends SuperController<dynamic> {
   BranchAddScreenController({required this.branchAddRepository});
 
   final IBranchAddRepository branchAddRepository;
-
+  RxString phone = "".obs;
   RxInt index = 1.obs;
   TextEditingController arabic = TextEditingController();
   TextEditingController english = TextEditingController();

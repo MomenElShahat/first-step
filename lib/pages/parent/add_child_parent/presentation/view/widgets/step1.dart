@@ -30,14 +30,8 @@ class Step1 extends GetView<AddChildParentController> {
                   child: RichText(
                     text: TextSpan(
                       children: [
-                        TextSpan(
-                            text: AppStrings.childName,
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.neutral500)),
-                        TextSpan(
-                            text: "*",
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.danger700)),
+                        TextSpan(text: AppStrings.childName, style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
+                        TextSpan(text: "*", style: TextStyles.body14Medium.copyWith(color: ColorCode.danger700)),
                       ],
                     ),
                   ),
@@ -60,9 +54,7 @@ class Step1 extends GetView<AddChildParentController> {
                       },
                       controller: controller.childName,
                       validator: (val) {
-                        return (controller.childName.text.isNotEmpty)
-                            ? null
-                            : AppStrings.emptyField;
+                        return (controller.childName.text.isNotEmpty) ? null : AppStrings.emptyField;
                       },
                       inputType: TextInputType.text,
                       label: ""),
@@ -73,14 +65,8 @@ class Step1 extends GetView<AddChildParentController> {
                   child: RichText(
                     text: TextSpan(
                       children: [
-                        TextSpan(
-                            text: AppStrings.dateOfBirth,
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.neutral500)),
-                        TextSpan(
-                            text: "*",
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.danger700)),
+                        TextSpan(text: AppStrings.dateOfBirth, style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
+                        TextSpan(text: "*", style: TextStyles.body14Medium.copyWith(color: ColorCode.danger700)),
                       ],
                     ),
                   ),
@@ -90,8 +76,7 @@ class Step1 extends GetView<AddChildParentController> {
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: InkWell(
                     onTap: () async {
-                      controller.dateOfBirth.text =
-                          await controller.pickDate(context) ?? "08/08/2019";
+                      controller.dateOfBirth.text = await controller.pickDate(context) ?? "08/08/2019";
                     },
                     child: CustomTextFormField(
                         hint: "08/08/2019",
@@ -110,9 +95,7 @@ class Step1 extends GetView<AddChildParentController> {
                         },
                         controller: controller.dateOfBirth,
                         validator: (val) {
-                          return (controller.dateOfBirth.text.isNotEmpty)
-                              ? null
-                              : AppStrings.emptyField;
+                          return (controller.dateOfBirth.text.isNotEmpty) ? null : AppStrings.emptyField;
                         },
                         inputType: TextInputType.text,
                         label: ""),
@@ -124,14 +107,8 @@ class Step1 extends GetView<AddChildParentController> {
                   child: RichText(
                     text: TextSpan(
                       children: [
-                        TextSpan(
-                            text: AppStrings.fatherName,
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.neutral500)),
-                        TextSpan(
-                            text: "*",
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.danger700)),
+                        TextSpan(text: AppStrings.fatherName, style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
+                        TextSpan(text: "*", style: TextStyles.body14Medium.copyWith(color: ColorCode.danger700)),
                       ],
                     ),
                   ),
@@ -154,9 +131,7 @@ class Step1 extends GetView<AddChildParentController> {
                       },
                       controller: controller.fatherName,
                       validator: (val) {
-                        return (controller.fatherName.text.isNotEmpty)
-                            ? null
-                            : AppStrings.emptyField;
+                        return (controller.fatherName.text.isNotEmpty) ? null : AppStrings.emptyField;
                       },
                       inputType: TextInputType.text,
                       label: ""),
@@ -167,14 +142,8 @@ class Step1 extends GetView<AddChildParentController> {
                   child: RichText(
                     text: TextSpan(
                       children: [
-                        TextSpan(
-                            text: AppStrings.motherName,
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.neutral500)),
-                        TextSpan(
-                            text: "*",
-                            style: TextStyles.body14Medium
-                                .copyWith(color: ColorCode.danger700)),
+                        TextSpan(text: AppStrings.motherName, style: TextStyles.body14Medium.copyWith(color: ColorCode.neutral500)),
+                        TextSpan(text: "*", style: TextStyles.body14Medium.copyWith(color: ColorCode.danger700)),
                       ],
                     ),
                   ),
@@ -197,9 +166,7 @@ class Step1 extends GetView<AddChildParentController> {
                       },
                       controller: controller.motherName,
                       validator: (val) {
-                        return (controller.motherName.text.isNotEmpty)
-                            ? null
-                            : AppStrings.emptyField;
+                        return (controller.motherName.text.isNotEmpty) ? null : AppStrings.emptyField;
                       },
                       inputType: TextInputType.text,
                       label: ""),
@@ -208,8 +175,7 @@ class Step1 extends GetView<AddChildParentController> {
                 Center(
                   child: CustomText(
                     AppStrings.babyGender,
-                    textStyle: TextStyles.body16Medium
-                        .copyWith(color: ColorCode.primary600),
+                    textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.primary600),
                   ),
                 ),
                 Gaps.vGap8,
@@ -227,29 +193,18 @@ class Step1 extends GetView<AddChildParentController> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(24),
                                   border: Border.all(
-                                      color: controller.selectedGender.value ==
-                                              AppStrings.boy
-                                          ? ColorCode.secondary600
-                                          : ColorCode.neutral400)),
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 16, horizontal: 10),
+                                      color: controller.selectedGender.value == AppStrings.boy ? ColorCode.secondary600 : ColorCode.neutral400)),
+                              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
                               child: Column(
                                 children: [
                                   Image(
-                                    image: controller.selectedGender.value ==
-                                            AppStrings.boy
-                                        ? AppAssets.boyFill
-                                        : AppAssets.boy,
+                                    image: controller.selectedGender.value == AppStrings.boy ? AppAssets.boyFill : AppAssets.boy,
                                   ),
                                   Gaps.vGap10,
                                   CustomText(
                                     AppStrings.boy,
                                     textStyle: TextStyles.body16Medium.copyWith(
-                                        color:
-                                            controller.selectedGender.value ==
-                                                    AppStrings.boy
-                                                ? ColorCode.primary600
-                                                : ColorCode.neutral600),
+                                        color: controller.selectedGender.value == AppStrings.boy ? ColorCode.primary600 : ColorCode.neutral600),
                                   )
                                 ],
                               ),
@@ -266,30 +221,19 @@ class Step1 extends GetView<AddChildParentController> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(24),
                                 border: Border.all(
-                                    color: controller.selectedGender.value ==
-                                            AppStrings.girl
-                                        ? ColorCode.secondary600
-                                        : ColorCode.neutral400),
+                                    color: controller.selectedGender.value == AppStrings.girl ? ColorCode.secondary600 : ColorCode.neutral400),
                               ),
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 16, horizontal: 10),
+                              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
                               child: Column(
                                 children: [
                                   Image(
-                                    image: controller.selectedGender.value ==
-                                            AppStrings.girl
-                                        ? AppAssets.girlFill
-                                        : AppAssets.girl,
+                                    image: controller.selectedGender.value == AppStrings.girl ? AppAssets.girlFill : AppAssets.girl,
                                   ),
                                   Gaps.vGap10,
                                   CustomText(
                                     AppStrings.girl,
                                     textStyle: TextStyles.body16Medium.copyWith(
-                                        color:
-                                            controller.selectedGender.value ==
-                                                    AppStrings.girl
-                                                ? ColorCode.primary600
-                                                : ColorCode.neutral600),
+                                        color: controller.selectedGender.value == AppStrings.girl ? ColorCode.primary600 : ColorCode.neutral600),
                                   )
                                 ],
                               ),
@@ -309,37 +253,26 @@ class Step1 extends GetView<AddChildParentController> {
                         child: CustomButton(
                             child: CustomText(
                               AppStrings.next,
-                              textStyle: TextStyles.body16Medium.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  color: ColorCode.white),
+                              textStyle: TextStyles.body16Medium.copyWith(fontWeight: FontWeight.w700, color: ColorCode.white),
                             ),
                             onPressed: () {
-                              if (controller.formKey.currentState?.validate() ??
-                                  false) {
+                              if (controller.formKey.currentState?.validate() ?? false) {
                                 controller.index.value = 2;
                               }
                             }),
                       ),
                       Gaps.hGap(48),
                       Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            Get.back();
-                          },
-                          child: Container(
+                        child: CustomButton(
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                border:
-                                    Border.all(color: ColorCode.neutral400)),
-                            padding: const EdgeInsets.symmetric(vertical: 14.5),
+                                borderRadius: BorderRadius.circular(8), color: Colors.white, border: Border.all(color: ColorCode.neutral400)),
                             child: CustomText(
                               AppStrings.previous,
-                              textStyle: TextStyles.body16Medium.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  color: ColorCode.neutral500),
+                              textStyle: TextStyles.body16Medium.copyWith(fontWeight: FontWeight.w700, color: ColorCode.neutral500),
                             ),
-                          ),
-                        ),
+                            onPressed: () {
+                              Get.back();
+                            }),
                       ),
                     ],
                   ),
@@ -352,8 +285,7 @@ class Step1 extends GetView<AddChildParentController> {
   }
 }
 
-Widget buildCheckBoxRow(
-    int? index1, int? index2, int? index3, List<RxBool> isChecked) {
+Widget buildCheckBoxRow(int? index1, int? index2, int? index3, List<RxBool> isChecked) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -364,12 +296,9 @@ Widget buildCheckBoxRow(
           index: index1,
         ),
       Gaps.hGap4,
-      if (index2 != null)
-        CheckBox(isChecked, label: AppStrings.nursing, index: index2),
+      if (index2 != null) CheckBox(isChecked, label: AppStrings.nursing, index: index2),
       Gaps.hGap4,
-      if (index3 != null)
-        CheckBox(isChecked,
-            label: AppStrings.supportAndRehabilitation, index: index3),
+      if (index3 != null) CheckBox(isChecked, label: AppStrings.supportAndRehabilitation, index: index3),
     ],
   );
 }

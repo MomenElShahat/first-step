@@ -30,6 +30,7 @@ class EditProfileScreen extends GetView<EditProfileController> {
     TextInputType inputType = TextInputType.text,
     TextInputAction inputAction = TextInputAction.next,
     int? maxLength,
+    String? isMobile,
   }) {
     return Obx(() {
       bool isEditable = controller.editableField.value == fieldKey;
@@ -42,7 +43,14 @@ class EditProfileScreen extends GetView<EditProfileController> {
           readOnly: !isEditable,
           maxLength: maxLength,
           onSave: (val) => controllerField.text = val ?? "",
-          onChange: (val) => controller.onFieldChanged(fieldKey, val ?? ""),
+          onChange: (val) {
+            if(isMobile != null){
+              controller.onFieldChanged(fieldKey, val ?? "");
+              controller.phone.value = val!;
+            }else {
+              controller.onFieldChanged(fieldKey, val ?? "");
+            }
+          },
           suffixIcon: controller.changedFields[fieldKey] == true || isEditable
               ? const SizedBox()
               : InkWell(
@@ -185,36 +193,63 @@ class EditProfileScreen extends GetView<EditProfileController> {
                                 ),
                               ),
                               Gaps.vGap8,
-                              Row(
-                                children: [
-                                  Gaps.hGap16,
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 12),
-                                    decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.grey),
-                                      borderRadius: BorderRadius.circular(8),
-                                      color: Colors.grey.shade100,
-                                    ),
-                                    child: const Text('+966 🇸🇦',
-                                        style: TextStyle(fontSize: 16)),
+                              Directionality(
+                                textDirection: TextDirection.ltr,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                                            decoration: BoxDecoration(
+                                              border: Border.all(color: Colors.grey),
+                                              borderRadius: BorderRadius.circular(8),
+                                              color: Colors.grey.shade100,
+                                            ),
+                                            child: const Text(
+                                              '+966 🇸🇦', // Saudi code with flag
+                                              style: TextStyle(fontSize: 16),
+                                            ),
+                                          ),
+                                          // Gaps.hGap8,
+                                          Expanded(
+                                            child: buildEditableField(
+                                                fieldKey: "mobile",
+                                                focusNode: controller.mobileFocus,
+                                                controllerField: controller
+                                                    .mobileNumber,
+                                                hint: AppStrings.egMobileNumber,
+                                                validator: (val) => null,
+                                                inputType: TextInputType.phone,
+                                                maxLength: 9,
+                                                isMobile: "mobile"
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      // ✅ Custom error text below (keeps field position stable)
+                                      Obx(() {
+                                        final isValid = isValidSaudiNumber(controller.phone.value);
+                                        return isValid
+                                            ? const SizedBox.shrink()
+                                            : Padding(
+                                          padding: const EdgeInsets.only(left: 72, top: 4),
+                                          child: CustomText(
+                                            AppStrings.phoneValidation,
+                                            textAlign: TextAlign.start,
+                                            textStyle: TextStyles.button12.copyWith(
+                                                color: ColorCode.danger700,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        );
+                                      }),
+                                    ],
                                   ),
-                                  // Gaps.hGap8,
-                                  Expanded(
-                                    child: buildEditableField(
-                                      fieldKey: "mobile",
-                                      focusNode: controller.mobileFocus,
-                                      controllerField: controller.mobileNumber,
-                                      hint: AppStrings.egMobileNumber,
-                                      validator: (val) => isValidSaudiNumber(
-                                              controller.mobileNumber.text)
-                                          ? null
-                                          : AppStrings.phoneValidation,
-                                      inputType: TextInputType.phone,
-                                      maxLength: 9,
-                                    ),
-                                  ),
-                                ],
+                                ),
                               ),
 
                               // Email

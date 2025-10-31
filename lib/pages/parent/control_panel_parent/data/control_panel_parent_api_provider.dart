@@ -23,7 +23,7 @@ class ControlPanelParentProvider extends BaseAuthProvider implements IControlPan
     return get<List<ChildModel>>(
       EndPoints.childrenParentList,
       decoder: (data) {
-        final jsonList = data as List<dynamic>;
+        final jsonList = data["data"] as List<dynamic>;
         return jsonList.map((e) => ChildModel.fromJson(e)).toList();
       },
     );

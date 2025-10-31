@@ -1,8 +1,7 @@
-import 'dart:ffi';
-
 import 'package:first_step/consts/colors.dart';
+import 'package:first_step/pages/center/control_panel/presentation/widgets/pricing_expandable_item.dart';
 import 'package:first_step/pages/center/control_panel/presentation/widgets/pricing_row.dart';
-import 'package:first_step/pages/center/control_panel/presentation/widgets/pricing_types_dropdown.dart';
+import 'package:first_step/resources/assets_generated.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -11,15 +10,9 @@ import '../../../../../consts/text_styles.dart';
 import '../../../../../resources/assets_svg_generated.dart';
 import '../../../../../resources/strings_generated.dart';
 import '../../../../../widgets/custom_text.dart';
-import '../../../../../widgets/custom_text_form_field.dart';
 import '../../../../../widgets/gaps.dart';
-import '../../models/portfolio_prices_model.dart';
-import '../../models/program_model.dart';
 import '../controllers/control_panel_controller.dart';
 import 'branches_dropdown.dart';
-import 'custom_range_slider.dart';
-import 'custom_slider.dart';
-import 'custom_slider_thumb.dart';
 
 class PricingSection extends GetView<ControlPanelController> {
   const PricingSection({super.key});
@@ -35,7 +28,7 @@ class PricingSection extends GetView<ControlPanelController> {
           CustomText(
             AppStrings.branch,
             textAlign: TextAlign.start,
-            textStyle: TextStyles.body14Regular.copyWith(color: ColorCode.neutral500),
+            textStyle: TextStyles.body14Regular.copyWith(color: ColorCode.info600),
           ),
           Gaps.vGap4,
 
@@ -58,23 +51,51 @@ class PricingSection extends GetView<ControlPanelController> {
           ),
           Gaps.vGap8,
 
-          if (controller.isShowingPrices.value)
-            const Center(child: SpinKitCircle(color: ColorCode.primary600)),
+          if (controller.isShowingPrices.value) const Center(child: SpinKitCircle(color: ColorCode.primary600)),
 
           if (!controller.isShowingPrices.value) ...[
-            // Build from RxList directly (no ?.value)
+            if (controller.portfolioPricesModel.isEmpty) ...[
+              Image(
+                image: AppAssets.noPricing,
+                width: 80,
+                height: 80,
+              ),
+              Gaps.vGap4,
+              CustomText(
+                AppStrings.noPlansFound,
+                textStyle: TextStyles.body16Medium.copyWith(color: ColorCode.neutral500, fontWeight: FontWeight.w500),
+              )
+            ],
+            // AppSVGAssets.getWidget(AppSVGAssets.noPricing),
+
+            // Build from RxList directly using custom PricingExpandableItem
             ...List.generate(controller.portfolioPricesModel.length, (index) {
               final program = controller.portfolioPricesModel[index];
-              return ProgramPriceRow(
-                key: ValueKey('${controller.selectedBranchPricing?.id}_${program.id ?? index}'),
-                ctrl: controller,
-                program: program,
-                index: index,
-              );
+              return Obx(() => PricingExpandableItem(
+                    key: ValueKey('${controller.selectedBranchPricing?.id}_${program.id ?? index}'),
+                    title: program.title?.isNotEmpty == true ? program.title! : "Program ${index + 1}",
+                    isExpanded: controller.isPricingExpanded(index),
+                    onEdit: () {
+                      // Always open dialog for editing
+                      controller.showEditPricingDialog(index);
+                    },
+                    onDelete: (program.id != null) ? () => controller.deletePriceById(program.id!) : null,
+                    isDeleting: (program.id != null) ? (controller.isDeletingPriceById[program.id!] ?? false) : false,
+                    onExpand: () {
+                      // Toggle expansion when tapping on the title
+                      controller.togglePricingExpansion(index);
+                    },
+                    expandedContent: ProgramPriceRow(
+                      ctrl: controller,
+                      program: program,
+                      index: index,
+                      enable: false,
+                    ),
+                  ));
             }),
 
             TextButton.icon(
-              onPressed: controller.addProgram, // uses RxList.add
+              onPressed: controller.showAddPricingDialog,
               icon: Padding(
                 padding: const EdgeInsets.only(top: 5),
                 child: CustomText(

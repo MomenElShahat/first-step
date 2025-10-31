@@ -25,13 +25,10 @@ class _TeamSectionState extends State<TeamSection> {
   final ImagePicker _picker = ImagePicker();
 
   void _initializeControllers() {
-    widget.controller.nameControllers.value = widget.controller.members
-        .map((member) => TextEditingController(text: member.name))
-        .toList();
+    widget.controller.nameControllers.value = widget.controller.members.map((member) => TextEditingController(text: member.name)).toList();
 
-    widget.controller.professionControllers.value = widget.controller.members
-        .map((member) => TextEditingController(text: member.profession))
-        .toList();
+    widget.controller.professionControllers.value =
+        widget.controller.members.map((member) => TextEditingController(text: member.profession)).toList();
 
     widget.controller.imageControllers.value = widget.controller.members
         .map((member) => TextEditingController(
@@ -52,8 +49,7 @@ class _TeamSectionState extends State<TeamSection> {
       widget.controller.members[index].imageUrl = file;
       widget.controller.imageControllers[index].value = TextEditingValue(
         text: path.basename(file.path),
-        selection:
-            TextSelection.collapsed(offset: path.basename(file.path).length),
+        selection: TextSelection.collapsed(offset: path.basename(file.path).length),
       );
       // setState(() {}); // Trigger UI refresh
     }
@@ -98,8 +94,7 @@ class _TeamSectionState extends State<TeamSection> {
                         setState(() {
                           widget.controller.members.removeAt(index);
                           widget.controller.nameControllers.removeAt(index);
-                          widget.controller.professionControllers
-                              .removeAt(index);
+                          widget.controller.professionControllers.removeAt(index);
                           widget.controller.imageControllers.removeAt(index);
                           _initializeControllers();
                         });
@@ -115,8 +110,7 @@ class _TeamSectionState extends State<TeamSection> {
             setState(() {
               widget.controller.members.add(TeamMemberModel());
               widget.controller.nameControllers.add(TextEditingController());
-              widget.controller.professionControllers
-                  .add(TextEditingController());
+              widget.controller.professionControllers.add(TextEditingController());
               widget.controller.imageControllers.add(TextEditingController());
               _initializeControllers();
             });
@@ -131,8 +125,7 @@ class _TeamSectionState extends State<TeamSection> {
               ),
             ),
           ),
-          label: AppSVGAssets.getWidget(AppSVGAssets.plusLine,
-              color: ColorCode.primary600, width: 16, height: 16),
+          label: AppSVGAssets.getWidget(AppSVGAssets.plusLine, color: ColorCode.primary600, width: 16, height: 16),
         ),
       ],
     );
@@ -149,8 +142,7 @@ class _TeamSectionState extends State<TeamSection> {
       children: [
         CustomText(
           label,
-          textStyle:
-              TextStyles.body14Regular.copyWith(color: ColorCode.neutral500),
+          textStyle: TextStyles.body14Regular.copyWith(color: ColorCode.neutral500),
         ),
         Gaps.vGap4,
         CustomTextFormField(
@@ -158,6 +150,7 @@ class _TeamSectionState extends State<TeamSection> {
           onChange: onChanged,
           controller: controller,
           inputType: TextInputType.text,
+          validator: (p0) => null,
           label: "",
         ),
       ],
@@ -170,8 +163,7 @@ class _TeamSectionState extends State<TeamSection> {
       children: [
         CustomText(
           AppStrings.personPicture,
-          textStyle:
-              TextStyles.body14Regular.copyWith(color: ColorCode.neutral500),
+          textStyle: TextStyles.body14Regular.copyWith(color: ColorCode.neutral500),
         ),
         const SizedBox(height: 4),
         GestureDetector(
@@ -181,8 +173,8 @@ class _TeamSectionState extends State<TeamSection> {
               hint: AppStrings.personPicture,
               enable: false,
               readOnly: true,
-              suffixIcon: AppSVGAssets.getWidget(AppSVGAssets.attachLine,
-                  color: ColorCode.neutral400),
+              validator: (p0) => null,
+              suffixIcon: AppSVGAssets.getWidget(AppSVGAssets.attachLine, color: ColorCode.neutral400),
               controller: widget.controller.imageControllers[index],
               inputType: TextInputType.text,
               label: "",
