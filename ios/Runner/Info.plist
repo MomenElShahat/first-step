@@ -43,6 +43,14 @@
 	<string>This app requires photo library access so you can select and upload photos.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+    <string>This app uses the camera to let you capture photos or scan QR codes.</string>
+
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>This app uses your location to improve accuracy and provide location-based services even when the app is running in the background.</string>
+
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app needs access to your location to show nearby information and enhance user experience.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
